@@ -25,33 +25,88 @@
 <h3>
 <a id="big-ideas" class="anchor" href="#big-ideas" aria-hidden="true"><span class="octicon octicon-link"></span></a>Big Ideas</h3>
 
-<p>This automatic page generator is the easiest way to create beautiful pages for all of your projects. Author your page content here using GitHub Flavored Markdown, select a template crafted by a designer, and publish. After your page is generated, you can check out the new branch:</p>
+<p>The big idea for our project will be to make a program that will emulate
+LaTex, only simpler and easier to pick up. The program name will be called aztex.
+The program will take a text file that is in aztex format, and convert it into a
+nicely formatted pdf document.
+The minimum viable product for our project is a program that takes a text
+file with minimal formatting and converts it into a professional pdf using the
+latex compiler. 
+The following features are highly desired:</p>
+
+<ol>
+<li>Numbered Lists</li>
+<li>Unordered Lists</li>
+<li>Headers</li>
+<li>Links</li>
+<li>Bold, italic, underline, strike-through</li>
+</ol>
+
+<p>Some stretch goals that may be pursued are programming our own pdf
+compiler, integrated gui to see how the documents will be formatted, and adding
+further features like images and such.</p>
 
 <h3>
 <a id="learning-goals" class="anchor" href="#learning-goals" aria-hidden="true"><span class="octicon octicon-link"></span></a>Learning Goals</h3>
 
-<p>We've crafted some handsome templates for you to use. Go ahead and continue to layouts to browse through them. You can easily go back to edit your page before publishing. After publishing your page, you can revisit the page generator and switch to another theme. Your Page content will be preserved if it remained markdown format.</p>
+<p>Shared:
+1. Learn more about parsing documents
+2. Learn more about working in project teams
+3. Interfacing with other libraries.
+Individual:
+Jordan Van Duyne:
+1. Make more in-line comments
+2. Test more often
+Thuc Tran:
+1. Develop better unit tests.
+2. Write more efficient code -&gt; Use less nested for loops.
+Isaac Getto:
+1. Write more tests
+2. Organize code better</p>
 
 <h3>
 <a id="implementation-plan" class="anchor" href="#implementation-plan" aria-hidden="true"><span class="octicon octicon-link"></span></a>Implementation Plan</h3>
 
-<p>If you prefer to not use the automatic generator, push a branch named <code>gh-pages</code> to your repository to create a page manually. In addition to supporting regular HTML content, GitHub Pages support Jekyll, a simple, blog aware static site generator written by our own Tom Preston-Werner. Jekyll makes it easy to create site-wide headers and footers without having to copy them across every page. It also offers intelligent blog support and other advanced templating features.</p>
+<ol>
+<li>Find latex compiling library</li>
+<li>Determine how to simplify LaTeX language
+a. Develop our own language based off of simplified LaTex</li>
+<li>Learn how to parse our language</li>
+<li>Separate projects into components -&gt; i.e. compiling, parsing, processing</li>
+<li>Develop our own compiler</li>
+</ol>
 
 <h3>
 <a id="project-schedule" class="anchor" href="#project-schedule" aria-hidden="true"><span class="octicon octicon-link"></span></a>Project Schedule</h3>
 
-<p>You can <a href="https://github.com/blog/821" class="user-mention">@mention</a> a GitHub username to generate a link to their profile. The resulting <code>&lt;a&gt;</code> element will link to the contributor's GitHub Profile. For example: In 2007, Chris Wanstrath (<a href="https://github.com/defunkt" class="user-mention">@defunkt</a>), PJ Hyett (<a href="https://github.com/pjhyett" class="user-mention">@pjhyett</a>), and Tom Preston-Werner (<a href="https://github.com/mojombo" class="user-mention">@mojombo</a>) founded GitHub.</p>
+<p>Weekly Goals:
+1. Figure out the program architecture (with UML/diagrams)
+2. Create our language (unit tests for individual formatting options)
+3. Working on parsing text file into intermediate representation.
+4. Processing intermediate into LaTex Format
+5. Compile the intermediate into a PDF
+6. Stretch Goals + Debugging.</p>
 
 <h3>
 <a id="collaboration-plan" class="anchor" href="#collaboration-plan" aria-hidden="true"><span class="octicon octicon-link"></span></a>Collaboration Plan</h3>
 
-<p>Having trouble with Pages? Check out the documentation at <a href="https://help.github.com/pages">https://help.github.com/pages</a> or contact <a href="mailto:support@github.com">support@github.com</a> and we’ll help you sort it out.</p>
+<p>Overall plan is to work collaboratively on the program architecture and
+developing the simplified language. This is to make sure that we are all on the
+same page for what kind of implementation on which we will be working. After
+which we will subdivide parts of the parsing, processing, and compiling when we
+have functions and subfunctions that do not interact with each other directly.
+This will let us work in parallel for sections of the project.</p>
 
 <h3>
 <a id="risks" class="anchor" href="#risks" aria-hidden="true"><span class="octicon octicon-link"></span></a>Risks</h3>
 
-<h3>
-<a id="additional-course-content" class="anchor" href="#additional-course-content" aria-hidden="true"><span class="octicon octicon-link"></span></a>Additional Course Content</h3>
+<ul>
+<li>The project could be more complex than we thought</li>
+<li>Libraries are non-existent or difficult to work with.</li>
+<li>Unexpected lack of free work time.
+###Additional Course Content</li>
+<li>language processing</li>
+</ul>
 
       <footer class="site-footer">
         <span class="site-footer-owner"><a href="https://github.com/thuctran289/aztex">aztex</a> is maintained by <a href="https://github.com/thuctran289">thuctran289</a>.</span>

@@ -132,6 +132,107 @@ This will let us work in parallel for sections of the project.</p>
 <li>language processing</li>
 </ul>
 
+<h1>
+<a id="preparation-and-framing-document" class="anchor" href="#preparation-and-framing-document" aria-hidden="true"><span class="octicon octicon-link"></span></a>Preparation and Framing Document</h1>
+
+<h3>
+<a id="the-big-idea" class="anchor" href="#the-big-idea" aria-hidden="true"><span class="octicon octicon-link"></span></a>The big idea</h3>
+
+<p>Making a LaTex that is simpler to use.</p>
+
+<p>How?</p>
+
+<p>Instead of latex style, use markdown style</p>
+
+<p>What is markdown?</p>
+
+<p><a href="http://en.wikipedia.org/wiki/Markdown#Example">http://en.wikipedia.org/wiki/Markdown#Example</a></p>
+
+<h3>
+<a id="formatting-that-we-want-to-include" class="anchor" href="#formatting-that-we-want-to-include" aria-hidden="true"><span class="octicon octicon-link"></span></a>Formatting that we want to include:</h3>
+
+<ul>
+<li>Math symbols</li>
+<li>Lists (ordered and unordered)</li>
+<li>Size of text</li>
+<li>Bold, underline, strikethrough, italics</li>
+<li>Title</li>
+<li>Headers</li>
+</ul>
+
+<p>The goal is for teachers to be able to make (math) homework documents with it</p>
+
+<p>Have user input simple code, which our program turns into the analogous latex code.</p>
+
+<p>We then input this latex code into a latex compiler using the PyLaTeX library: <a href="https://github.com/JelteF/PyLaTeX">https://github.com/JelteF/PyLaTeX</a> </p>
+
+<h3>
+<a id="general-compiler-architecture" class="anchor" href="#general-compiler-architecture" aria-hidden="true"><span class="octicon octicon-link"></span></a>General compiler architecture</h3>
+
+<p>Effectively, the task is to compile a LaTex language in another (new) language.</p>
+
+<p>Generally a compiler will have a front end, middle end, back end.</p>
+
+<ul>
+<li><p>The front end will focus on converting user input into some intermediate form.</p></li>
+<li><p>The middle end will generally optimize code so one gets rid of extraneous/unreachable code, and other tricks. This will be seen more often in writing programs, rather than text. We may not end up doing some of this.</p></li>
+<li><p>The back end will focus on converting the intermediate representation into the needed LaTex code, and then compiling the code. </p></li>
+</ul>
+
+<p>Why would we not have a middle end?</p>
+
+<ul>
+<li>We don't necessarily want to optimize the code due to the fact that we want to represent the user intentions as accurately as possible.</li>
+</ul>
+
+<h3>
+<a id="key-questions" class="anchor" href="#key-questions" aria-hidden="true"><span class="octicon octicon-link"></span></a>Key Questions</h3>
+
+<ol>
+<li>How do we want to represent each character? </li>
+<li>Should attributes like underlining and bolding be its own class/token or should it be part of a text class?</li>
+<li>How are the parts (tokenizer and parser) connected?</li>
+<li>Is it parsed all at once or token by token?</li>
+<li>As a stream or with files?</li>
+<li>Do we need a middle end?</li>
+<li>How can we make the language simpler for users? Give context of math teacher</li>
+<li>Do we want a gui?</li>
+<li>How do we make the language simpler for us? Easier to parse</li>
+<li>Should the final outputted pdf document be able to be formatted with an option of different themes?
+E.g. a math theme, note-taking theme, etc. </li>
+<li>Should we have users type in our program? If not, what text format do we want to use? .txt? .doc?</li>
+</ol>
+
+<h3>
+<a id="agenda-for-technical-review-session" class="anchor" href="#agenda-for-technical-review-session" aria-hidden="true"><span class="octicon octicon-link"></span></a>Agenda for technical review session</h3>
+
+<p>The beginning will mostly be under a std. powerpoint presentation of information. </p>
+
+<ul>
+<li>2 Minutes on what we want out of the review: affirmation that we’re on the right track and feedback on our key questions</li>
+<li>1 Minute: Who are we? What are we doing?</li>
+<li>5 Minutes: Background context with PPT</li>
+<li>3 Minutes: How we’re structuring the system + UML</li>
+<li>Until we get kicked off: QUESTION SLIDES</li>
+</ul>
+
+<p>This will mostly be done in a conversational, “Here is our question, here are some thoughts, help us”</p>
+
+<h3>
+<a id="the-main-questions-to-be-addressed-at-the-review" class="anchor" href="#the-main-questions-to-be-addressed-at-the-review" aria-hidden="true"><span class="octicon octicon-link"></span></a>The main questions to be addressed at the review:</h3>
+
+<ol>
+<li>Are elementary school math teachers an appropriate target audience? Any other ideas for possible audiences?</li>
+<li>How are the parts of the program connected (tokenizer, parser)? Are tokens sent to the parser one by one, or all together?</li>
+<li>How should we set up the language itself?</li>
+<li>How can it be easy for the user?</li>
+<li>How can it be easy for us to parse?</li>
+<li>How do you think we might want to store our intermediate representation?</li>
+<li>Should it be a class for each attribute? Or should attributes be under a class?</li>
+<li>Do we need a middle end?</li>
+<li>Any concerns y’all have?</li>
+</ol>
+
       <footer class="site-footer">
         <span class="site-footer-owner"><a href="https://github.com/thuctran289/aztex">aztex</a> is maintained by <a href="https://github.com/thuctran289">thuctran289</a>.</span>
 

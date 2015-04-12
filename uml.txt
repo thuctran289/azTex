@@ -1,0 +1,46 @@
+[Parser]-->[Tokenizer]
+[Parser]-->[Token]
+[Tokenizer]-->[Token]
+[Parser]-->[IntermediateRepresentation]
+[IntermediateRepresentation]-->[Element]
+
+[GenericOutput]<:-[LatexOutput]
+[GenericOutput]-->[IntermediateRepresentation]
+
+[Element]<:-[ListElement]
+[Element]<:-[ParagraphElement]
+[Element]<:-[LinkElement]
+[Element]<:-[EquationElement]
+
+[Tokenizer|
+splits the input file
+into individual tokens]
+
+[Token|
+represents a single
+keyword or literal value]
+
+[Parser|
+builds an intemediate
+representation of the document
+using the list tokens]
+
+[IntermediateRepresentation|
+a list of Elements that m
+ake up the document]
+
+[Element|
+a single component of
+the document such as a
+list, header, or link]
+
+[GenericOutput|
+superclass of all outputs. 
+uses the intermediate 
+representation to build a document]
+
+[LatexOutput|
+subclass of GenericOutput.
+outputs a latex document]
+
+#spacing: 70

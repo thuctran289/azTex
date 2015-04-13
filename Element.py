@@ -15,11 +15,23 @@ class Element(object):
 		return '%s: %s' % (self.element_type, self.subelements)
 
 	def get_type(self):
-		""" Returns the 
+		"""
+		Returns the element_type of self
+
+		>>> element = Element("e_type", "this subelement is text")
+		>>> get_type(element)
+		e_type
 		"""
 		return self.element_type
 
 	def get_elements(self):
+		"""
+		Returns the element_type of self
+
+		>>> element = Element("e_type", "this subelement is text")
+		>>> get_elements(element)
+		this subelement is text
+		"""
 		return self.subelements
 
 
@@ -83,3 +95,4 @@ print text
 print type(text)
 
 print text.get_type()
+print text.get_elements()

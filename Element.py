@@ -15,22 +15,20 @@ class Element(object):
 		return '%s: %s' % (self.element_type, self.subelements)
 
 	def get_type(self):
-		"""
-		Returns the element_type of self
+		""" Returns the element_type of self
 
-		>>> element = Element("e_type", "this subelement is text")
-		>>> get_type(element)
-		e_type
+		>>> element = Element('e_type', 'this subelement is text')
+		>>> element.get_type()
+		'e_type'
 		"""
 		return self.element_type
 
 	def get_elements(self):
-		"""
-		Returns the element_type of self
+		""" Returns the element_type of self
 
-		>>> element = Element("e_type", "this subelement is text")
-		>>> get_elements(element)
-		this subelement is text
+		>>> element = Element('e_type', 'this subelement is text')
+		>>> element.get_elements()
+		'this subelement is text'
 		"""
 		return self.subelements
 
@@ -43,12 +41,12 @@ class ListElement(Element):
 class UnorderedListElement(ListElement):
 	""" An Element object that represents an unordered list """
 	def __init__(self, subelements):
-		super(Element, self).__init__("Unordered List", subelements)
+		super(ListElement, self).__init__("Unordered List", subelements)
 
 class OrderedListElement(ListElement):
 	""" An Element object that represents an ordered list """
 	def __init__(self, subelements):
-		super(Element, self).__init__("Ordered List", subelements)
+		super(ListElement, self).__init__("Ordered List", subelements)
 
 class TextElement(Element):
 	""" An Element object that represents text """
@@ -90,9 +88,25 @@ class QuoteElement(Element):
 	def __init__(self, subelements):
 		super(QuoteElement, self).__init__("Quote", subelements)
 
-text = TextElement("these are words yay")
-print text
-print type(text)
+class HeadingElement(Element):
+	""" An Element object that represents text surrounded by quotations """
+	levels = ['Heading', 'Subheading', 'Subsubheading']
+	def __init__(self, level, subelements):
+		self.level = HeadingElement.levels[level]
+		super(QuoteElement, self).__init__("Heading - " + self.level, subelements)
 
-print text.get_type()
-print text.get_elements()
+
+if __name__ == "__main__":
+	import doctest
+	doctest.testmod()
+	uolist = UnorderedListElement(['these are words', 'more words', 'omg even more!'])
+	print uolist
+	print type(uolist)
+	print uolist.get_type()
+	print uolist.get_elements()
+	# text = TextElement('these are words yay')
+	# print text
+	# print type(text)
+
+	# print text.get_type()
+	# print text.get_elements()

@@ -11,8 +11,12 @@ class Element(object):
 		self.element_type = element_type
 		self.content = content
 
+	def __str__(self):
+		return '%s: %s' % (self.element_type, self.content)
+
 	def get_type(self):
 		return self.element_type
+
 
 class ListElement(Element):
 	""" An Element object that represents a list """

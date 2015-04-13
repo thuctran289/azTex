@@ -4,12 +4,15 @@
 
 class Element(object):
 	""" A single component of the document """
-	def __init__(self, e_type, content):
+	def __init__(self, element_type, content):
 		""" Initializes an Element object
 			e_type = type of Element
 		"""
-		self.e_type = e_type
+		self.element_type = element_type
 		self.content = content
+
+	def get_type(self):
+		return self.element_type
 
 class ListElement(Element):
 	""" An Element object that represents a list """

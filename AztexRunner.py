@@ -15,6 +15,8 @@ aztex is cool\n\
 - no fun\n\
 \n\
 #### It's so hard ####\n\
+\n\
+So, **aztex** is here to help!\n\
 "
 
 print text
@@ -33,4 +35,10 @@ while block:
     block = tokenizer.get_next_block()
 
 print elements
+
+print "\n"
+
+for element in elements:
+    print type(element), ": ", element.subelements
+
 

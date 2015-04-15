@@ -48,6 +48,4 @@ START_PLAIN_TEXT_REGEX = r"(.+?)(" + \
                                     LINK_TEXT_REGEX + "|" +\
                                "$)"
 
-print START_PLAIN_TEXT_REGEX
-
 START_PLAIN_TEXT_PATTERN = re.compile(START_PLAIN_TEXT_REGEX)

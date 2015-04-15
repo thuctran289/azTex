@@ -53,6 +53,11 @@ class TextElement(Element):
 	def __init__(self, subelements):
 		super(TextElement, self).__init__("Text", subelements)
 
+class ParagraphElement(Element):
+	""" An Element object that represents text """
+	def __init__(self, subelements):
+		super(ParagraphElement, self).__init__("Paragraph", subelements)
+
 class LinkElement(Element):
 	""" An Element object that represents a link """
 	def __init__(self, subelements):

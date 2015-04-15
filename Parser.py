@@ -169,8 +169,67 @@ class Parser(object):
     def paragraphComponents(self, block):
         """ gets the elements within a paragraph
         """
-        if startsWithBoldText(block):
-            pass
+        components = []
+        while block:
+            if self.startsWithBoldText(block):
+                match = START_BOLD_TEXT_PATTERN.match(block)
+                text = match.groups()[0]
+                end = match.end()
+                block = block[end:]
+
+                components.append(BoldElement(text))
+
+            elif self.startsWithItalicText(block):
+                match = START_ITALIC_TEXT_PATTERN.match(block)
+                text = match.groups()[0]
+                end = match.end()
+                block = block[end:]
+
+                components.append(ItalicElement(text))
+
+            elif self.startsWithStrikethroughText(block):
+                match = START_STRIKETHROUGH_TEXT_PATTERN.match(block)
+                text = match.groups()[0]
+                end = match.end()
+                block = block[end:]
+
+                components.append(StrikethroughElement(text))
+
+            elif self.startsWithUnderlineText(block):
+                match = START_UNDERLINE_TEXT_PATTERN.match(block)
+                text = match.groups()[0]
+                end = match.end()
+                block = block[end:]
+
+                components.append(UnderlineElement(text))
+
+            elif self.startsWithQuoteText(block):
+                match = START_QUOTE_TEXT_PATTERN.match(block)
+                text = match.groups()[0]
+                end = match.end()
+                block = block[end:]
+
+                components.append(QuoteElement(text))
+
+            elif self.startsWithLinkText(block):
+                match = START_LINK_TEXT_PATTERN.match(block)
+                text = match.groups()[0]
+                url = match.groups()[1]
+                end = match.end()
+                block = block[end:]
+
+                components.append(LinkElement((text, url)))
+
+            else:
+                match = START_PLAIN_TEXT_PATTERN.match(block)
+                text = match.groups()[0]
+                end = len(text)
+                block = block[end:]
+                
+                components.append(TextElement(text))
+
+
+        return components
 
     def startsWithBoldText(self, block):
         """ determines if a block starts with bold text
@@ -180,7 +239,16 @@ class Parser(object):
         >>> p.startsWithBoldText("*nope, this is italic*")
         False
         """
-        return BOLD_TEXT_PATTERN.match(block) != None
+        return START_BOLD_TEXT_PATTERN.match(block) != None
+
+    def boldText(self, block):
+        """ gets the text in bold at the start of a block
+        >>> p = Parser()
+        >>> p.boldText("**aztex**")
+        'aztex'
+        """
+        match = START_BOLD_TEXT_PATTERN.match(block)
+        return match.groups()[0]
 
     def startsWithItalicText(self, block):
         """ determines if a block starts with italic text
@@ -190,7 +258,10 @@ class Parser(object):
         >>> p.startsWithItalicText("**nope, this is bold**")
         False
         """
-        return ITALIC_TEXT_PATTERN.match(block) != None
+        return START_ITALIC_TEXT_PATTERN.match(block) != None
+
+    def italicText(self, block):
+        pass
 
     def startsWithStrikethroughText(self, block):
         """ determines if a block starts with strike through text
@@ -200,7 +271,7 @@ class Parser(object):
         >>> p.startsWithStrikethroughText("**nope, this is bold**")
         False
         """
-        return STRIKETHROUGH_TEXT_PATTERN.match(block) != None
+        return START_STRIKETHROUGH_TEXT_PATTERN.match(block) != None
 
     def startsWithUnderlineText(self, block):
         """ determines if a block starts with underlined text
@@ -210,7 +281,7 @@ class Parser(object):
         >>> p.startsWithUnderlineText("**nope, this is bold**")
         False
         """
-        return UNDERLINE_TEXT_PATTERN.match(block) != None
+        return START_UNDERLINE_TEXT_PATTERN.match(block) != None
 
     def startsWithQuoteText(self, block):
         """ determines if a block starts with quoted text
@@ -220,7 +291,7 @@ class Parser(object):
         >>> p.startsWithQuoteText("**nope, this is bold**")
         False
         """
-        return QUOTE_TEXT_PATTERN.match(block) != None
+        return START_QUOTE_TEXT_PATTERN.match(block) != None
 
     def startsWithLinkText(self, block):
         """ determines if a block starts with linked text
@@ -230,7 +301,7 @@ class Parser(object):
         >>> p.startsWithLinkText("**nope, this is bold**")
         False
         """
-        return LINK_TEXT_PATTERN.match(block) != None
+        return START_LINK_TEXT_PATTERN.match(block) != None
 
 class HeaderElement(object):
 

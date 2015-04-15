@@ -1,7 +1,7 @@
 import re
 
 class Tokenizer(object):
-    BLOCK_REGEX = "(\S+(?:\n\S+)*(?=\n|$))"
+    BLOCK_REGEX = "([^\n]+(?:\n[^\n]+)*(?=\n|$))"
     BLOCK_PATTERN = re.compile(BLOCK_REGEX)
     
     def __init__(self, text):

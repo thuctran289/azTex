@@ -1,35 +1,23 @@
 import re
 from Element import *
+from Regex import *
 
 class Parser(object):
-    HEADING_REGEX = r"^[^\n]+\n={2,}"
-    HEADING_PATTERN = re.compile(HEADING_REGEX)
-
-    SUB_HEADING_REGEX = r"^[^\n]+\n-{2,}"
-    SUB_HEADING_PATTERN = re.compile(SUB_HEADING_REGEX)
-
-    SUB_SUB_HEADING_REGEX = r"^(?:(\#+) .+ \1)"
-    SUB_SUB_HEADING_PATTERN = re.compile(SUB_SUB_HEADING_REGEX)
-
-    ORDERED_LIST_REGEX = r"^(?:\d\..+(?:\n|$))+"
-    ORDERED_LIST_PATTERN = re.compile(ORDERED_LIST_REGEX)
-
-    UNORDERED_LIST_REGEX = r"^(?:(?:\*|\-) .+(?:\n|$))+"
-    UNORDERED_LIST_PATTERN = re.compile(UNORDERED_LIST_REGEX)
 
     def parse(self, block):
+#        print "parsing:\n", block, "\n"
         if self.isHeading(block):
             return HeaderElement(self.headingText(block), 1)
         elif self.isSubHeading(block):
             return HeaderElement(self.subHeadingText(block), 2) 
         elif self.isSubSubHeading(block):
-            return HeaderElement(self.subSubHeadingText(block, subSubHeadingLevel(block))) 
+            return HeaderElement(self.subSubHeadingText(block), self.subSubHeadingLevel(block)) 
         elif self.isOrderedList(block):
-            return OrderedListElement(listElements(block))
+            return OrderedListElement(self.orderedListItems(block))
         elif self.isUnorderedList(block):
-            return UnorderedListElement(listElements(block))
-        elif self.isParagraph(block):
-            return ParagraphElement(block)
+            return UnorderedListElement(self.unorderedListItems(block))
+        else:
+            return ParagraphElement(self.paragraphComponents(block))
 
     def isHeading(self, block):
         """ determines if a block is a header
@@ -47,7 +35,7 @@ class Parser(object):
         >>> p.isHeading('Voldemort\\n=')
         False
         """
-        return self.HEADING_PATTERN.match(block) != None
+        return HEADING_PATTERN.match(block) != None
 
     def headingText(self, block):
         """ gets the text out of a heading block
@@ -79,7 +67,7 @@ class Parser(object):
         >>> p.isSubHeading('Voldemort\\n-')
         False
         """
-        return self.SUB_HEADING_PATTERN.match(block) != None
+        return SUB_HEADING_PATTERN.match(block) != None
 
     def subHeadingText(self, block):
         """ gets the text out of a subheading block
@@ -113,7 +101,7 @@ class Parser(object):
         >>> p.isSubSubHeading('## Ron')
         False
         """
-        return self.SUB_SUB_HEADING_PATTERN.match(block) != None
+        return SUB_SUB_HEADING_PATTERN.match(block) != None
 
     def subSubHeadingText(self, block):
         """ gets the text out of a subsubheading block
@@ -146,7 +134,7 @@ class Parser(object):
         >>> p.isOrderedList("1. eggs\\n2. bread\\n3. rice")
         True
         """
-        return self.ORDERED_LIST_PATTERN.match(block) != None
+        return ORDERED_LIST_PATTERN.match(block) != None
 
     def orderedListItems(self, block):
         """ gets the list of items
@@ -165,7 +153,7 @@ class Parser(object):
         >>> p.isUnorderedList("- eggs\\n- bread\\n- rice")
         True
         """
-        return self.UNORDERED_LIST_PATTERN.match(block) != None
+        return UNORDERED_LIST_PATTERN.match(block) != None
 
     def unorderedListItems(self, block):
         """ gets the list of items
@@ -177,6 +165,72 @@ class Parser(object):
         """
         itemRegex = r"(?<=(?:\*|\-) )(.+)(?=(?:\n|$))"
         return re.findall(itemRegex, block)
+
+    def paragraphComponents(self, block):
+        """ gets the elements within a paragraph
+        """
+        if startsWithBoldText(block):
+            pass
+
+    def startsWithBoldText(self, block):
+        """ determines if a block starts with bold text
+        >>> p = Parser()
+        >>> p.startsWithBoldText("**yup, it does**")
+        True
+        >>> p.startsWithBoldText("*nope, this is italic*")
+        False
+        """
+        return BOLD_TEXT_PATTERN.match(block) != None
+
+    def startsWithItalicText(self, block):
+        """ determines if a block starts with italic text
+        >>> p = Parser()
+        >>> p.startsWithItalicText("*yup, it does*")
+        True
+        >>> p.startsWithItalicText("**nope, this is bold**")
+        False
+        """
+        return ITALIC_TEXT_PATTERN.match(block) != None
+
+    def startsWithStrikethroughText(self, block):
+        """ determines if a block starts with strike through text
+        >>> p = Parser()
+        >>> p.startsWithStrikethroughText("--yup, it does--")
+        True
+        >>> p.startsWithStrikethroughText("**nope, this is bold**")
+        False
+        """
+        return STRIKETHROUGH_TEXT_PATTERN.match(block) != None
+
+    def startsWithUnderlineText(self, block):
+        """ determines if a block starts with underlined text
+        >>> p = Parser()
+        >>> p.startsWithUnderlineText("_yup, it does_")
+        True
+        >>> p.startsWithUnderlineText("**nope, this is bold**")
+        False
+        """
+        return UNDERLINE_TEXT_PATTERN.match(block) != None
+
+    def startsWithQuoteText(self, block):
+        """ determines if a block starts with quoted text
+        >>> p = Parser()
+        >>> p.startsWithQuoteText("``yup, it does\'\'")
+        True
+        >>> p.startsWithQuoteText("**nope, this is bold**")
+        False
+        """
+        return QUOTE_TEXT_PATTERN.match(block) != None
+
+    def startsWithLinkText(self, block):
+        """ determines if a block starts with linked text
+        >>> p = Parser()
+        >>> p.startsWithLinkText("[yup](http://example.com)")
+        True
+        >>> p.startsWithLinkText("**nope, this is bold**")
+        False
+        """
+        return LINK_TEXT_PATTERN.match(block) != None
 
 class HeaderElement(object):
 

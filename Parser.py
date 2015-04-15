@@ -7,11 +7,11 @@ class Parser(object):
     def parse(self, block):
 #        print "parsing:\n", block, "\n"
         if self.isHeading(block):
-            return HeaderElement(self.headingText(block), 1)
+            return HeadingElement(self.headingText(block), 1)
         elif self.isSubHeading(block):
-            return HeaderElement(self.subHeadingText(block), 2) 
+            return HeadingElement(self.subHeadingText(block), 2) 
         elif self.isSubSubHeading(block):
-            return HeaderElement(self.subSubHeadingText(block), self.subSubHeadingLevel(block)) 
+            return HeadingElement(self.subSubHeadingText(block), self.subSubHeadingLevel(block)) 
         elif self.isOrderedList(block):
             return OrderedListElement(self.orderedListItems(block))
         elif self.isUnorderedList(block):
@@ -303,11 +303,6 @@ class Parser(object):
         """
         return START_LINK_TEXT_PATTERN.match(block) != None
 
-class HeaderElement(object):
-
-    def __init__(self, subelements, level):
-        self.subelements = subelements
-        self.level = level
 
 
 if __name__ == "__main__":

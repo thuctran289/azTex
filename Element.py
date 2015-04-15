@@ -94,12 +94,10 @@ class QuoteElement(Element):
 		super(QuoteElement, self).__init__("Quote", subelements)
 
 class HeadingElement(Element):
-	""" An Element object that represents text surrounded by quotations """
-	levels = ['Heading', 'Subheading', 'Subsubheading']
-	def __init__(self, level, subelements):
-		self.level = HeadingElement.levels[level]
-		super(QuoteElement, self).__init__("Heading - " + self.level, subelements)
-
+    """ An Element object that represents a section heading """
+    def __init__(self, subelements, level):
+        super(HeadingElement, self).__init__("Heading", subelements)
+        self.level = level
 
 if __name__ == "__main__":
 	import doctest

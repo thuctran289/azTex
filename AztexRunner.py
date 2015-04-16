@@ -1,23 +1,9 @@
-text = "\
-aztex is cool\n\
-=============\n\
-\n\
-1. build tokenizer\n\
-2. build parser\n\
-3. build internal representation\n\
-4. ???\n\
-5. profit\n\
-\n\
-### Latex ###\n\
-\n\
-- difficult to learn\n\
-- verbose\n\
-- no fun\n\
-\n\
-#### It's so hard ####\n\
-\n\
-So, **aztex** is here to help!\n\
-"
+import sys
+from Element import Element
+
+filename = "input.txt"
+f = open(filename, 'r')
+text = f.read()
 
 print text
 
@@ -39,6 +25,6 @@ print elements
 print "\n"
 
 for element in elements:
-    print type(element), ": ", element.subelements
+    print element
 
 

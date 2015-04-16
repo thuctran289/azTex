@@ -39,13 +39,15 @@ LINK_TEXT_REGEX = r"\[(.+?)\]\((.+?)\)"
 START_LINK_TEXT_REGEX = r"^" + LINK_TEXT_REGEX
 START_LINK_TEXT_PATTERN = re.compile(START_LINK_TEXT_REGEX)
 
-START_PLAIN_TEXT_REGEX = r"(.+?)(" + \
-                                    BOLD_TEXT_REGEX + "|" +\
-                                    ITALIC_TEXT_REGEX + "|" +\
-                                    STRIKETHROUGH_TEXT_REGEX + "|" +\
-                                    UNDERLINE_TEXT_REGEX + "|" +\
-                                    QUOTE_TEXT_REGEX + "|" +\
-                                    LINK_TEXT_REGEX + "|" +\
-                               "$)"
+START_PLAIN_TEXT_REGEX = r"((?:.|\n)+?)(" + \
+									BOLD_TEXT_REGEX + "|" +\
+									ITALIC_TEXT_REGEX + "|" +\
+									STRIKETHROUGH_TEXT_REGEX + "|" +\
+									UNDERLINE_TEXT_REGEX + "|" +\
+									QUOTE_TEXT_REGEX + "|" +\
+									LINK_TEXT_REGEX + "|" +\
+							   "$)"
+
+print START_PLAIN_TEXT_REGEX
 
 START_PLAIN_TEXT_PATTERN = re.compile(START_PLAIN_TEXT_REGEX)

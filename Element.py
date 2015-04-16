@@ -77,9 +77,3 @@ class QuoteElement(Element):
 	""" An Element object that represents text surrounded by quotations """
 	def __init__(self, subelements):
 		super(QuoteElement, self).__init__("Quote", subelements)
-
-text = TextElement("these are words yay")
-print text
-print type(text)
-
-print text.get_type()

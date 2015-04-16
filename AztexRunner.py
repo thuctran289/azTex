@@ -5,7 +5,9 @@ filename = "input.txt"
 f = open(filename, 'r')
 text = f.read()
 
+print "===== ORIGINAL FILE =====\n"
 print text
+print "=========================\n\n"
 
 from Tokenizer import Tokenizer
 from Parser import Parser
@@ -20,11 +22,14 @@ while block:
     elements.append(element)
     block = tokenizer.get_next_block()
 
-print elements
+print "===== DOCUMENT ELEMENTS ====="
+for i in range(len(elements)):
+    print "%d. %s" % (i+1, elements[i])
+print "==============================\n\n"
 
-print "\n"
 
-for element in elements:
-    print element
+print "==============="
+print "=== SUCCESS ==="
+print "==============="
 
 

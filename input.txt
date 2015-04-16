@@ -25,4 +25,3 @@ You can also use an *unordered list*:
 You can event link to your favorite sites, like [aztex](http://github.com/thuc289/azTex).
 
 Don't forget to ``quote your sources'' too.
-

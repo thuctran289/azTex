@@ -12,7 +12,11 @@ class Element(object):
 		self.subelements = subelements
 
 	def __str__(self):
-		return '%s: %s' % (self.element_type, self.subelements)
+		if not isinstance(self.subelements, str):
+			subs = ', '.join(map(lambda x: x.__str__(), self.subelements))
+		else:
+			subs = self.subelements
+		return '%s: %s' % (self.element_type, subs)
 
 	def get_type(self):
 		""" Returns the element_type of self
@@ -94,10 +98,10 @@ class QuoteElement(Element):
 		super(QuoteElement, self).__init__("Quote", subelements)
 
 class HeadingElement(Element):
-    """ An Element object that represents a section heading """
-    def __init__(self, subelements, level):
-        super(HeadingElement, self).__init__("Heading", subelements)
-        self.level = level
+	""" An Element object that represents a section heading """
+	def __init__(self, subelements, level):
+		super(HeadingElement, self).__init__("Heading", subelements)
+		self.level = level
 
 if __name__ == "__main__":
 	import doctest

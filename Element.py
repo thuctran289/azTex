@@ -111,7 +111,9 @@ class TableElement(Element):
 		self.items = items
 
 	def __str__(self):
-		return '%s: %s\n%s' % (self.element_type, self.headers, self.items)
+		headers = ' | '.join(map(lambda x: x.__str__(), self.headers))
+		items = ' |  '.join(map(lambda x: x.__str__(), self.items))
+		return '%s:\n\t%s\n\t%s' % (self.element_type, headers, items)
 
 if __name__ == "__main__":
 	import doctest

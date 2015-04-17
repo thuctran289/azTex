@@ -48,7 +48,7 @@ class Parser(object):
 		'Harry Potter'
 		"""
 		text = str.split(block, "\n")[0]
-		return self.parseText(text)
+		return self.parseBlock(text)
 
 	def isSubHeading(self, block):
 		""" determines if a block is a subheader
@@ -81,7 +81,7 @@ class Parser(object):
 		'Harry Potter'
 		"""
 		text = str.split(block, "\n")[0]
-		return self.parseText(text)
+		return self.parseBlock(text)
 
 	def isSubSubHeading(self, block):
 		""" determines if a block is a subsubheader
@@ -118,7 +118,7 @@ class Parser(object):
 		pat = re.compile(r"^(\#+) (.+) \1")
 		match = pat.search(block)
 		text = match.groups()[1]
-		return self.parseText(text)
+		return self.parseBlock(text)
 
 	def subSubHeadingLevel(self, block):
 		""" gets the heading level
@@ -152,7 +152,7 @@ class Parser(object):
 	def tableRowItems(self, row):
 		items = row.split("|")
 		items = filter(lambda x: x.strip(), items)
-		return map(self.parseText, items)
+		return map(self.parseBlock, items)
 		
 	def tableHeaders(self, block):
 		""" gets a list of heading elements """
@@ -178,7 +178,7 @@ class Parser(object):
 		""" gets the list of items """
 		itemRegex = r"(?<=\d\. )(.+)(?=(?:\n|$))"
 		items = re.findall(itemRegex, block)
-		return map(self.parseText, items)
+		return map(self.parseBlock, items)
 
 	def isUnorderedList(self, block):
 		""" determines if the block is an ordered list
@@ -194,7 +194,7 @@ class Parser(object):
 		""" gets the list of items """
 		itemRegex = r"(?<=(?:\*|\-) )(.+)(?=(?:\n|$))"
 		items = re.findall(itemRegex, block)
-		return map(self.parseText, items)
+		return map(self.parseBlock, items)
 
 	def parseText(self, block):
 		""" gets the elements within a paragraph
@@ -207,7 +207,7 @@ class Parser(object):
 				end = match.end()
 				block = block[end:]
 
-				element = self.parseText(text)
+				element = self.parseBlock(text)
 				components.append(BoldElement(element))
 
 			elif self.startsWithItalicText(block):
@@ -216,7 +216,7 @@ class Parser(object):
 				end = match.end()
 				block = block[end:]
 
-				element = self.parseText(text)
+				element = self.parseBlock(text)
 				components.append(ItalicElement(element))
 
 			elif self.startsWithStrikethroughText(block):
@@ -225,7 +225,7 @@ class Parser(object):
 				end = match.end()
 				block = block[end:]
 
-				element = self.parseText(text)
+				element = self.parseBlock(text)
 				components.append(StrikethroughElement(element))
 
 			elif self.startsWithUnderlineText(block):
@@ -234,7 +234,7 @@ class Parser(object):
 				end = match.end()
 				block = block[end:]
 
-				element = self.parseText(text)
+				element = self.parseBlock(text)
 				components.append(UnderlineElement(element))
 
 			elif self.startsWithQuoteText(block):
@@ -243,7 +243,7 @@ class Parser(object):
 				end = match.end()
 				block = block[end:]
 
-				element = self.parseText(text)
+				element = self.parseBlock(text)
 				components.append(QuoteElement(element))
 
 			elif self.startsWithLinkText(block):
@@ -253,7 +253,7 @@ class Parser(object):
 				end = match.end()
 				block = block[end:]
 
-				element = self.parseText(text)
+				element = self.parseBlock(text)
 				components.append(LinkElement((element, url)))
 
 			else:

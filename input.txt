@@ -14,7 +14,7 @@ This is an ordered list:
 You can also use an *unordered list*:
 
 - milk
-- eggs
+- --one-- _three_ eggs
 - *bread*
 - potatos
 
@@ -36,4 +36,4 @@ Don't forget to ``quote your sources'' too.
 
 ## _Altogether_ ##
 
-We can --**mix**-- it _*all*_ together!
+We can --**mix** it--  _*all*_ together!

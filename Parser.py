@@ -148,23 +148,16 @@ class Parser(object):
 
 	def tableRowItems(self, row):
 		items = row.split("|")
-		return filter(lambda x: x.strip(), items)
+		items = filter(lambda x: x.strip(), items)
+		return map(self.parse, items)
 		
 	def tableHeaders(self, block):
-		""" gets a list of heading elements
-		>>> p = Parser()
-		>>> p.tableHeaders(p.tableString())
-		[' id ', ' name ', '     email    ']
-		"""
+		""" gets a list of heading elements """
 		firstLine = block.split("\n")[0]	
 		return self.tableRowItems(firstLine)
 
 	def tableItems(self, block):
-		""" get a 2D list of items
-		>>> p = Parser()
-		>>> p.tableItems(p.tableString())
-		[[' 1  ', ' bob  ', ' bob@mail.com '], [' 2  ', ' tom  ', ' tom@mail.com '], [' 3  ', ' ron  ', ' ron@mail.com ']]
-		"""
+		""" get a 2D list of items """
 		lines = block.split("\n")
 		lines = lines[2:] # remove first two rows (header and separator)
 		return map(self.tableRowItems, lines)
@@ -179,13 +172,10 @@ class Parser(object):
 		return ORDERED_LIST_PATTERN.match(block) != None
 
 	def orderedListItems(self, block):
-		""" gets the list of items
-		>>> p = Parser()
-		>>> p.orderedListItems("1. cats\\n2. dogs\\n3. mice")
-		['cats', 'dogs', 'mice']
-		"""
+		""" gets the list of items """
 		itemRegex = r"(?<=\d\. )(.+)(?=(?:\n|$))"
-		return re.findall(itemRegex, block)
+		items = re.findall(itemRegex, block)
+		return map(self.parse, items)
 
 	def isUnorderedList(self, block):
 		""" determines if the block is an ordered list
@@ -198,15 +188,10 @@ class Parser(object):
 		return UNORDERED_LIST_PATTERN.match(block) != None
 
 	def unorderedListItems(self, block):
-		""" gets the list of items
-		>>> p = Parser()
-		>>> p.unorderedListItems("* cats\\n* dogs\\n* mice")
-		['cats', 'dogs', 'mice']
-		>>> p.unorderedListItems("- apple\\n- orange\\n- banana")
-		['apple', 'orange', 'banana']
-		"""
+		""" gets the list of items """
 		itemRegex = r"(?<=(?:\*|\-) )(.+)(?=(?:\n|$))"
-		return re.findall(itemRegex, block)
+		items = re.findall(itemRegex, block)
+		return map(self.parse, items)
 
 	def paragraphComponents(self, block):
 		""" gets the elements within a paragraph
@@ -219,7 +204,8 @@ class Parser(object):
 				end = match.end()
 				block = block[end:]
 
-				components.append(BoldElement(text))
+				element = self.parse(text)
+				components.append(BoldElement(element))
 
 			elif self.startsWithItalicText(block):
 				match = START_ITALIC_TEXT_PATTERN.match(block)
@@ -227,7 +213,8 @@ class Parser(object):
 				end = match.end()
 				block = block[end:]
 
-				components.append(ItalicElement(text))
+				element = self.parse(text)
+				components.append(ItalicElement(element))
 
 			elif self.startsWithStrikethroughText(block):
 				match = START_STRIKETHROUGH_TEXT_PATTERN.match(block)
@@ -235,7 +222,8 @@ class Parser(object):
 				end = match.end()
 				block = block[end:]
 
-				components.append(StrikethroughElement(text))
+				element = self.parse(text)
+				components.append(StrikethroughElement(element))
 
 			elif self.startsWithUnderlineText(block):
 				match = START_UNDERLINE_TEXT_PATTERN.match(block)
@@ -243,7 +231,8 @@ class Parser(object):
 				end = match.end()
 				block = block[end:]
 
-				components.append(UnderlineElement(text))
+				element = self.parse(text)
+				components.append(UnderlineElement(element))
 
 			elif self.startsWithQuoteText(block):
 				match = START_QUOTE_TEXT_PATTERN.match(block)
@@ -251,7 +240,8 @@ class Parser(object):
 				end = match.end()
 				block = block[end:]
 
-				components.append(QuoteElement(text))
+				element = self.parse(text)
+				components.append(QuoteElement(element))
 
 			elif self.startsWithLinkText(block):
 				match = START_LINK_TEXT_PATTERN.match(block)
@@ -260,7 +250,8 @@ class Parser(object):
 				end = match.end()
 				block = block[end:]
 
-				components.append(LinkElement((text, url)))
+				element = self.parse(text)
+				components.append(LinkElement((element, url)))
 
 			else:
 				match = START_PLAIN_TEXT_PATTERN.match(block)
@@ -283,15 +274,6 @@ class Parser(object):
 		"""
 		return START_BOLD_TEXT_PATTERN.match(block) != None
 
-	def boldText(self, block):
-		""" gets the text in bold at the start of a block
-		>>> p = Parser()
-		>>> p.boldText("**aztex**")
-		'aztex'
-		"""
-		match = START_BOLD_TEXT_PATTERN.match(block)
-		return match.groups()[0]
-
 	def startsWithItalicText(self, block):
 		""" determines if a block starts with italic text
 		>>> p = Parser()
@@ -301,9 +283,6 @@ class Parser(object):
 		False
 		"""
 		return START_ITALIC_TEXT_PATTERN.match(block) != None
-
-	def italicText(self, block):
-		pass
 
 	def startsWithStrikethroughText(self, block):
 		""" determines if a block starts with strike through text

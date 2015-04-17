@@ -8,14 +8,14 @@ This is an ordered list:
 1. write tokenizer
 2. write parser
 3. write internal representation
-4. ???
+4. **???**
 5. profit
 
 You can also use an *unordered list*:
 
 - milk
 - eggs
-- bread
+- *bread*
 - potatos
 
 ## Text ##
@@ -33,3 +33,7 @@ Don't forget to ``quote your sources'' too.
 | 1  | bob  | bob@mail.com |
 | 2  | tom  | tom@mail.com |
 | 3  | ron  | ron@mail.com |
+
+## Altogether ##
+
+We can --**mix**-- it _*all*_ together!

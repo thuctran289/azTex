@@ -1,4 +1,6 @@
-- list with subelements
+- list with subelements (DONE)
+
+- list with sublists or indents
 
 - add argument for file name
 
@@ -8,7 +10,7 @@
 
 - equations
 
-- tables
+- tables (DONE)
 
 - check if library supports all things
 

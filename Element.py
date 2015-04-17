@@ -12,11 +12,11 @@ class Element(object):
 		self.subelements = subelements
 
 	def __str__(self):
-		if not isinstance(self.subelements, str):
+		if isinstance(self.subelements, list):
 			subs = ', '.join(map(lambda x: x.__str__(), self.subelements))
 		else:
 			subs = self.subelements
-		return '%s: %s' % (self.element_type, subs)
+		return '(%s: %s)' % (self.element_type, subs)
 
 	def get_type(self):
 		""" Returns the element_type of self

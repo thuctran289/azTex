@@ -4,7 +4,7 @@ from Regex import *
 
 class Parser(object):
 
-	def parse(self, block):
+	def parseBlock(self, block):
 		if self.isHeading(block):
 			return HeadingElement(self.headingText(block), 1)
 		elif self.isSubHeading(block):
@@ -18,7 +18,7 @@ class Parser(object):
 		elif self.isUnorderedList(block):
 			return UnorderedListElement(self.unorderedListItems(block))
 		else:
-			return ParagraphElement(self.paragraphComponents(block))
+			return ParagraphElement(self.parseText(block))
 
 	def isHeading(self, block):
 		""" determines if a block is a header
@@ -47,7 +47,8 @@ class Parser(object):
 		>>> p.headingText("Harry Potter\\n=====")
 		'Harry Potter'
 		"""
-		return str.split(block, "\n")[0]
+		text = str.split(block, "\n")[0]
+		return self.parseText(text)
 
 	def isSubHeading(self, block):
 		""" determines if a block is a subheader
@@ -79,7 +80,8 @@ class Parser(object):
 		>>> p.subHeadingText("Harry Potter\\n-----")
 		'Harry Potter'
 		"""
-		return str.split(block, "\n")[0]
+		text = str.split(block, "\n")[0]
+		return self.parseText(text)
 
 	def isSubSubHeading(self, block):
 		""" determines if a block is a subsubheader
@@ -115,7 +117,8 @@ class Parser(object):
 		"""
 		pat = re.compile(r"^(\#+) (.+) \1")
 		match = pat.search(block)
-		return match.groups()[1]
+		text = match.groups()[1]
+		return self.parseText(text)
 
 	def subSubHeadingLevel(self, block):
 		""" gets the heading level
@@ -149,7 +152,7 @@ class Parser(object):
 	def tableRowItems(self, row):
 		items = row.split("|")
 		items = filter(lambda x: x.strip(), items)
-		return map(self.parse, items)
+		return map(self.parseText, items)
 		
 	def tableHeaders(self, block):
 		""" gets a list of heading elements """
@@ -175,7 +178,7 @@ class Parser(object):
 		""" gets the list of items """
 		itemRegex = r"(?<=\d\. )(.+)(?=(?:\n|$))"
 		items = re.findall(itemRegex, block)
-		return map(self.parse, items)
+		return map(self.parseText, items)
 
 	def isUnorderedList(self, block):
 		""" determines if the block is an ordered list
@@ -191,9 +194,9 @@ class Parser(object):
 		""" gets the list of items """
 		itemRegex = r"(?<=(?:\*|\-) )(.+)(?=(?:\n|$))"
 		items = re.findall(itemRegex, block)
-		return map(self.parse, items)
+		return map(self.parseText, items)
 
-	def paragraphComponents(self, block):
+	def parseText(self, block):
 		""" gets the elements within a paragraph
 		"""
 		components = []
@@ -204,7 +207,7 @@ class Parser(object):
 				end = match.end()
 				block = block[end:]
 
-				element = self.parse(text)
+				element = self.parseText(text)
 				components.append(BoldElement(element))
 
 			elif self.startsWithItalicText(block):
@@ -213,7 +216,7 @@ class Parser(object):
 				end = match.end()
 				block = block[end:]
 
-				element = self.parse(text)
+				element = self.parseText(text)
 				components.append(ItalicElement(element))
 
 			elif self.startsWithStrikethroughText(block):
@@ -222,7 +225,7 @@ class Parser(object):
 				end = match.end()
 				block = block[end:]
 
-				element = self.parse(text)
+				element = self.parseText(text)
 				components.append(StrikethroughElement(element))
 
 			elif self.startsWithUnderlineText(block):
@@ -231,7 +234,7 @@ class Parser(object):
 				end = match.end()
 				block = block[end:]
 
-				element = self.parse(text)
+				element = self.parseText(text)
 				components.append(UnderlineElement(element))
 
 			elif self.startsWithQuoteText(block):
@@ -240,7 +243,7 @@ class Parser(object):
 				end = match.end()
 				block = block[end:]
 
-				element = self.parse(text)
+				element = self.parseText(text)
 				components.append(QuoteElement(element))
 
 			elif self.startsWithLinkText(block):
@@ -250,7 +253,7 @@ class Parser(object):
 				end = match.end()
 				block = block[end:]
 
-				element = self.parse(text)
+				element = self.parseText(text)
 				components.append(LinkElement((element, url)))
 
 			else:

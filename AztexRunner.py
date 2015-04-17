@@ -18,7 +18,7 @@ parser = Parser()
 elements = []
 block = tokenizer.get_next_block()
 while block:
-    element = parser.parse(block)
+    element = parser.parseBlock(block)
     elements.append(element)
     block = tokenizer.get_next_block()
 

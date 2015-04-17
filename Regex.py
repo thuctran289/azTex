@@ -9,6 +9,9 @@ SUB_HEADING_PATTERN = re.compile(SUB_HEADING_REGEX)
 SUB_SUB_HEADING_REGEX = r"^(?:(\#+) .+ \1)"
 SUB_SUB_HEADING_PATTERN = re.compile(SUB_SUB_HEADING_REGEX)
 
+TABLE_REGEX = r"^(.*\|.*)+\n(.*(-|:)\|(-|:).*)+\n((.*\|.*)+(\n|$))+"
+TABLE_PATTERN = re.compile(TABLE_REGEX)
+
 ORDERED_LIST_REGEX = r"^(?:\d\..+(?:\n|$))+"
 ORDERED_LIST_PATTERN = re.compile(ORDERED_LIST_REGEX)
 

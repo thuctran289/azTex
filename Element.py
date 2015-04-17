@@ -103,6 +103,16 @@ class HeadingElement(Element):
 		super(HeadingElement, self).__init__("Heading", subelements)
 		self.level = level
 
+class TableElement(Element):
+	""" An Element object that represents a table """
+	def __init__(self, headers, items):
+		super(TableElement, self).__init__("Table", None)
+		self.headers = headers
+		self.items = items
+
+	def __str__(self):
+		return '%s: %s\n%s' % (self.element_type, self.headers, self.items)
+
 if __name__ == "__main__":
 	import doctest
 	doctest.testmod()

@@ -11,6 +11,8 @@ class Parser(object):
 			return HeadingElement(self.subHeadingText(block), 2) 
 		elif self.isSubSubHeading(block):
 			return HeadingElement(self.subSubHeadingText(block), self.subSubHeadingLevel(block)) 
+		elif self.isTable(block):
+			return TableElement(self.tableHeaders(block), self.tableItems(block))
 		elif self.isOrderedList(block):
 			return OrderedListElement(self.orderedListItems(block))
 		elif self.isUnorderedList(block):
@@ -126,6 +128,47 @@ class Parser(object):
 		"""
 		match = re.match(r"^#+", block)
 		return len(match.group())
+
+	def tableString(self):
+		return "| id | name |     email    |\n\
+				|----|------|--------------|\n\
+				| 1  | bob  | bob@mail.com |\n\
+				| 2  | tom  | tom@mail.com |\n\
+				| 3  | ron  | ron@mail.com |"
+
+	def isTable(self, block):
+		""" determines if the block is a table
+		>>> p = Parser()
+		>>> p.isTable("| cat |")
+		False
+		>>> p.isTable(p.tableString())
+		True
+		"""
+		return TABLE_PATTERN.match(block) != None
+
+	def tableRowItems(self, row):
+		items = row.split("|")
+		return filter(lambda x: x.strip(), items)
+		
+	def tableHeaders(self, block):
+		""" gets a list of heading elements
+		>>> p = Parser()
+		>>> p.tableHeaders(p.tableString())
+		[' id ', ' name ', '     email    ']
+		"""
+		firstLine = block.split("\n")[0]	
+		return self.tableRowItems(firstLine)
+
+	def tableItems(self, block):
+		""" get a 2D list of items
+		>>> p = Parser()
+		>>> p.tableItems(p.tableString())
+		[[' 1  ', ' bob  ', ' bob@mail.com '], [' 2  ', ' tom  ', ' tom@mail.com '], [' 3  ', ' ron  ', ' ron@mail.com ']]
+		"""
+		lines = block.split("\n")
+		lines = lines[2:] # remove first two rows (header and separator)
+		return map(self.tableRowItems, lines)
+
 
 	def isOrderedList(self, block):
 		""" determines if the block is an ordered list

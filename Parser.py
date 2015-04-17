@@ -48,7 +48,7 @@ class Parser(object):
 		'Harry Potter'
 		"""
 		text = str.split(block, "\n")[0]
-		return self.parseBlock(text)
+		return self.parseText(text)
 
 	def isSubHeading(self, block):
 		""" determines if a block is a subheader
@@ -81,7 +81,7 @@ class Parser(object):
 		'Harry Potter'
 		"""
 		text = str.split(block, "\n")[0]
-		return self.parseBlock(text)
+		return self.parseText(text)
 
 	def isSubSubHeading(self, block):
 		""" determines if a block is a subsubheader
@@ -118,7 +118,7 @@ class Parser(object):
 		pat = re.compile(r"^(\#+) (.+) \1")
 		match = pat.search(block)
 		text = match.groups()[1]
-		return self.parseBlock(text)
+		return self.parseText(text)
 
 	def subSubHeadingLevel(self, block):
 		""" gets the heading level
@@ -207,7 +207,7 @@ class Parser(object):
 				end = match.end()
 				block = block[end:]
 
-				element = self.parseBlock(text)
+				element = self.parseText(text)
 				components.append(BoldElement(element))
 
 			elif self.startsWithItalicText(block):
@@ -216,7 +216,7 @@ class Parser(object):
 				end = match.end()
 				block = block[end:]
 
-				element = self.parseBlock(text)
+				element = self.parseText(text)
 				components.append(ItalicElement(element))
 
 			elif self.startsWithStrikethroughText(block):
@@ -225,7 +225,7 @@ class Parser(object):
 				end = match.end()
 				block = block[end:]
 
-				element = self.parseBlock(text)
+				element = self.parseText(text)
 				components.append(StrikethroughElement(element))
 
 			elif self.startsWithUnderlineText(block):
@@ -234,7 +234,7 @@ class Parser(object):
 				end = match.end()
 				block = block[end:]
 
-				element = self.parseBlock(text)
+				element = self.parseText(text)
 				components.append(UnderlineElement(element))
 
 			elif self.startsWithQuoteText(block):
@@ -243,7 +243,7 @@ class Parser(object):
 				end = match.end()
 				block = block[end:]
 
-				element = self.parseBlock(text)
+				element = self.parseText(text)
 				components.append(QuoteElement(element))
 
 			elif self.startsWithLinkText(block):
@@ -253,7 +253,7 @@ class Parser(object):
 				end = match.end()
 				block = block[end:]
 
-				element = self.parseBlock(text)
+				element = self.parseText(text)
 				components.append(LinkElement((element, url)))
 
 			else:

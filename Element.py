@@ -12,8 +12,8 @@ class Element(object):
 		self.subelements = subelements
 
 	def __str__(self):
-		if isinstance(self.subelements, list):
-			subs = ', '.join(map(lambda x: x.__str__(), self.subelements))
+		if isinstance(self.subelements, list): 
+			subs = ', '.join(map(lambda x: str(x), self.subelements))
 		else:
 			subs = self.subelements
 		return '(%s: %s)' % (self.element_type, subs)

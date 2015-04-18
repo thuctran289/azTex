@@ -34,6 +34,12 @@ Don't forget to ``quote your sources'' too.
 | 2  | tom  | tom@mail.com |
 | 3  | ron  | ron@mail.com |
 
+ id | name |     email    
+----|------|--------------
+ 1  | bob  | bob@mail.com 
+ 2  | tom  | tom@mail.com
+ 3  | ron  | ron@mail.com 
+
 ## _Altogether_ ##
 
 We can --**mix** it--  _*all*_ together!

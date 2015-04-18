@@ -23,8 +23,8 @@ while block:
     block = tokenizer.get_next_block()
 
 print "===== DOCUMENT ELEMENTS ====="
-for i in range(len(elements)):
-    print "%d. %s" % (i+1, elements[i])
+for element in elements:
+    print element
 print "==============================\n\n"
 
 

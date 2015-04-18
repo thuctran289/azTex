@@ -12,10 +12,9 @@ class Element(object):
 		self.subelements = subelements
 
 	def __str__(self):
-		if isinstance(self.subelements, list): 
-			subs = ', '.join(map(lambda x: str(x), self.subelements))
-		else:
-			subs = self.subelements
+		subs = ""
+		for element in self.subelements:
+			subs += str(element) 
 		return '(%s: %s)' % (self.element_type, subs)
 
 	def get_type(self):

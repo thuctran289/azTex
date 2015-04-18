@@ -1,9 +1,9 @@
 import re
 
-HEADING_REGEX = r"^[^\n]+\n={2,}"
+HEADING_REGEX = r"^[^\n]+\n={2,}$"
 HEADING_PATTERN = re.compile(HEADING_REGEX)
 
-SUB_HEADING_REGEX = r"^[^\n]+\n-{2,}"
+SUB_HEADING_REGEX = r"^[^\n]+\n-{2,}$"
 SUB_HEADING_PATTERN = re.compile(SUB_HEADING_REGEX)
 
 SUB_SUB_HEADING_REGEX = r"^(?:(\#+) .+ \1)"

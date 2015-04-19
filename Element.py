@@ -66,6 +66,11 @@ class LinkElement(Element):
 	def __init__(self, subelements):
 		super(LinkElement, self).__init__("Link", subelements)
 
+class ImageElement(Element):
+	""" An Element object that represents an image """
+	def __init__(self, subelements):
+		super(ImageElement, self).__init__("Image", subelements)
+
 class EquationElement(Element):
 	""" An Element object that represents an equation """
 	def __init__(self, subelements):

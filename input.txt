@@ -14,17 +14,19 @@ This is an ordered list:
 You can also use an *unordered list*:
 
 - milk
-- --one-- _three_ eggs
+- ~~one~~ _three_ eggs
 - *bread*
 - potatos
 
 ## Text ##
 
---If-- **when** you make mistakes you can --strike through-- text.
+~~If~~ **when** you make mistakes you can ~~strike through~~ text.
 
 You can event link to your favorite sites, like [aztex](http://github.com/thuc289/azTex).
 
 Don't forget to ``quote your sources'' too.
+
+Here's a picture of a monkey ![monkey](http://www.animalspot.net/wp-content/uploads/2012/01/Monkey-Photos.jpg)
 
 ## Tables ##
 
@@ -42,4 +44,4 @@ Don't forget to ``quote your sources'' too.
 
 ## _Altogether_ ##
 
-We can --**mix** it--  _*all*_ together!
+We can ~~mix** it~~  _*all*_ together!

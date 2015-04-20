@@ -1,308 +1,126 @@
 import re
 from Element import *
 from Regex import *
+from Matcher import *
+
+class Container(object):
+	""" simple class to hold data
+		makes if else look better"""
+
+	def __init__(self, data=None):
+		self.data = data
+
+	def set(self, data):
+		self.data = data
+		return data
+	
+	def get(self):
+		return self.data
 
 class Parser(object):
 
-	def parse(self, block):
-		if self.isHeading(block):
-			return HeadingElement(self.headingText(block), 1)
-		elif self.isSubHeading(block):
-			return HeadingElement(self.subHeadingText(block), 2) 
-		elif self.isSubSubHeading(block):
-			return HeadingElement(self.subSubHeadingText(block), self.subSubHeadingLevel(block)) 
-		elif self.isOrderedList(block):
-			return OrderedListElement(self.orderedListItems(block))
-		elif self.isUnorderedList(block):
-			return UnorderedListElement(self.unorderedListItems(block))
+	def __init__(self):
+		self.matcher = Matcher()
+
+	def parseBlock(self, block):
+		container = Container()
+		if container.set(self.matcher.matchHeading(block)):
+			match = container.get()
+			em = HeadingMatch(match)
+			element = self.parseText(em.text())
+			return HeadingElement(element, 1)
+
+		elif container.set(self.matcher.matchSubHeading(block)):
+			match = container.get()
+			em = SubHeadingMatch(match)
+			element = self.parseText(em.text())
+			return HeadingElement(element, 2) 
+
+		elif container.set(self.matcher.matchSubSubHeading(block)):
+			match = container.get()
+			em = SubSubHeadingMatch(match)
+			element = self.parseText(em.text())
+			return HeadingElement(element, em.level()) 
+
+		elif container.set(self.matcher.matchTable(block)):
+			match = container.get()
+			em = TableMatch(match)
+			tableHeaders = map(self.parseText, em.tableHeaders())
+			tableItems = map(lambda row: map(self.parseText, row), em.tableItems())
+			return TableElement(tableHeaders, tableItems)
+
+		elif container.set(self.matcher.matchOrderedList(block)):
+			match = container.get()
+			em = OrderedListMatch(match)
+			listItems = map(self.parseText, em.listItems())
+			return OrderedListElement(listItems)
+
+		elif container.set(self.matcher.matchUnorderedList(block)):
+			match = container.get()
+			em = UnorderedListMatch(match)
+			listItems = map(self.parseText, em.listItems())
+			return UnorderedListElement(listItems)
+
 		else:
-			return ParagraphElement(self.paragraphComponents(block))
+			return ParagraphElement(self.parseText(block))
 
-	def isHeading(self, block):
-		""" determines if a block is a header
-		ie: 
-				aztex
-				=====
-
-		>>> p = Parser()
-		>>> p.isHeading("aztex\\n=====") 
-		True
-
-		>>> p.isHeading('Harry Potter\\n====')
-		True
-
-		>>> p.isHeading('Voldemort\\n=')
-		False
-		"""
-		return HEADING_PATTERN.match(block) != None
-
-	def headingText(self, block):
-		""" gets the text out of a heading block
-		>>> p = Parser()
-		>>> p.headingText("aztex\\n====")
-		'aztex'
-
-		>>> p.headingText("Harry Potter\\n=====")
-		'Harry Potter'
-		"""
-		return str.split(block, "\n")[0]
-
-	def isSubHeading(self, block):
-		""" determines if a block is a subheader
-		ie: 
-				aztex
-				-----
-
-		>>> p = Parser()
-		>>> p.isSubHeading("aztex\\n=====") 
-		False
-
-		>>> p.isSubHeading("aztex\\n-----") 
-		True
-
-		>>> p.isSubHeading("Harry Potter\\n-----")
-		True
-
-		>>> p.isSubHeading('Voldemort\\n-')
-		False
-		"""
-		return SUB_HEADING_PATTERN.match(block) != None
-
-	def subHeadingText(self, block):
-		""" gets the text out of a subheading block
-		>>> p = Parser()
-		>>> p.subHeadingText("aztex\\n-----")
-		'aztex'
-
-		>>> p.subHeadingText("Harry Potter\\n-----")
-		'Harry Potter'
-		"""
-		return str.split(block, "\n")[0]
-
-	def isSubSubHeading(self, block):
-		""" determines if a block is a subsubheader
-		ie: 
-				#### aztex ####
-
-		>>> p = Parser()
-		>>> p.isSubSubHeading("## aztex ##") 
-		True
-
-		>>> p.isSubSubHeading("#### aztex ####") 
-		True
-
-		>>> p.isSubSubHeading("# Harry Potter #")
-		True
-
-		>>> p.isSubSubHeading('### Voldemort #')
-		False
-
-		>>> p.isSubSubHeading('## Ron')
-		False
-		"""
-		return SUB_SUB_HEADING_PATTERN.match(block) != None
-
-	def subSubHeadingText(self, block):
-		""" gets the text out of a subsubheading block
-		>>> p = Parser()
-		>>> p.subSubHeadingText("## aztex ##")
-		'aztex'
-
-		>>> p.subSubHeadingText("### Harry Potter ###")
-		'Harry Potter'
-		"""
-		pat = re.compile(r"^(\#+) (.+) \1")
-		match = pat.search(block)
-		return match.groups()[1]
-
-	def subSubHeadingLevel(self, block):
-		""" gets the heading level
-		>>> p = Parser()
-		>>> p.subSubHeadingLevel("## aztex ##")
-		2
-
-		>>> p.subSubHeadingLevel("##### aztex #####")
-		5
-		"""
-		match = re.match(r"^#+", block)
-		return len(match.group())
-
-	def isOrderedList(self, block):
-		""" determines if the block is an ordered list
-		>>> p = Parser()
-		>>> p.isOrderedList("1. eggs\\n2. bread\\n3. rice")
-		True
-		"""
-		return ORDERED_LIST_PATTERN.match(block) != None
-
-	def orderedListItems(self, block):
-		""" gets the list of items
-		>>> p = Parser()
-		>>> p.orderedListItems("1. cats\\n2. dogs\\n3. mice")
-		['cats', 'dogs', 'mice']
-		"""
-		itemRegex = r"(?<=\d\. )(.+)(?=(?:\n|$))"
-		return re.findall(itemRegex, block)
-
-	def isUnorderedList(self, block):
-		""" determines if the block is an ordered list
-		>>> p = Parser()
-		>>> p.isUnorderedList("* eggs\\n* bread\\n* rice")
-		True
-		>>> p.isUnorderedList("- eggs\\n- bread\\n- rice")
-		True
-		"""
-		return UNORDERED_LIST_PATTERN.match(block) != None
-
-	def unorderedListItems(self, block):
-		""" gets the list of items
-		>>> p = Parser()
-		>>> p.unorderedListItems("* cats\\n* dogs\\n* mice")
-		['cats', 'dogs', 'mice']
-		>>> p.unorderedListItems("- apple\\n- orange\\n- banana")
-		['apple', 'orange', 'banana']
-		"""
-		itemRegex = r"(?<=(?:\*|\-) )(.+)(?=(?:\n|$))"
-		return re.findall(itemRegex, block)
-
-	def paragraphComponents(self, block):
+	def parseText(self, block):
 		""" gets the elements within a paragraph
 		"""
 		components = []
+		container = Container()
 		while block:
-			if self.startsWithBoldText(block):
-				match = START_BOLD_TEXT_PATTERN.match(block)
-				text = match.groups()[0]
-				end = match.end()
-				block = block[end:]
+			if container.set(self.matcher.matchBoldText(block)):
+				match = container.get()
+				em = BoldTextMatch(match)
+				subelement = self.parseText(em.text())
+				element = BoldElement(subelement)
 
-				components.append(BoldElement(text))
+			elif container.set(self.matcher.matchItalicText(block)):
+				match = container.get()
+				em = ItalicTextMatch(match)
+				subelement = self.parseText(em.text())
+				element = ItalicElement(subelement)
 
-			elif self.startsWithItalicText(block):
-				match = START_ITALIC_TEXT_PATTERN.match(block)
-				text = match.groups()[0]
-				end = match.end()
-				block = block[end:]
+			elif container.set(self.matcher.matchStrikethroughText(block)):
+				match = container.get()
+				em = StrikethroughTextMatch(match)
+				subelement = self.parseText(em.text())
+				element = StrikethroughElement(subelement)
 
-				components.append(ItalicElement(text))
+			elif container.set(self.matcher.matchUnderlineText(block)):
+				match = container.get()
+				em = UnderlineTextMatch(match)
+				subelement = self.parseText(em.text())
+				element = UnderlineElement(subelement)
 
-			elif self.startsWithStrikethroughText(block):
-				match = START_STRIKETHROUGH_TEXT_PATTERN.match(block)
-				text = match.groups()[0]
-				end = match.end()
-				block = block[end:]
+			elif container.set(self.matcher.matchQuoteText(block)):
+				match = container.get()
+				em = QuoteTextMatch(match)
+				subelement = self.parseText(em.text())
+				element = QuoteElement(subelement)
 
-				components.append(StrikethroughElement(text))
+			elif container.set(self.matcher.matchLinkText(block)):
+				match = container.get()
+				em = LinkTextMatch(match)
+				subelement = self.parseText(em.text())
+				element = LinkElement((element, em.url()))
 
-			elif self.startsWithUnderlineText(block):
-				match = START_UNDERLINE_TEXT_PATTERN.match(block)
-				text = match.groups()[0]
-				end = match.end()
-				block = block[end:]
+			elif container.set(self.matcher.matchImage(block)):
+				match = container.get()
+				em = ImageMatch(match)
+				subelement = self.parseText(em.text())
+				element = ImageElement((element, em.url()))
 
-				components.append(UnderlineElement(text))
+			elif container.set(self.matcher.matchPlainText(block)):
+				match = container.get()
+				em = PlainTextMatch(match)
+				element = TextElement(em.text())
 
-			elif self.startsWithQuoteText(block):
-				match = START_QUOTE_TEXT_PATTERN.match(block)
-				text = match.groups()[0]
-				end = match.end()
-				block = block[end:]
-
-				components.append(QuoteElement(text))
-
-			elif self.startsWithLinkText(block):
-				match = START_LINK_TEXT_PATTERN.match(block)
-				text = match.groups()[0]
-				url = match.groups()[1]
-				end = match.end()
-				block = block[end:]
-
-				components.append(LinkElement((text, url)))
-
-			else:
-				match = START_PLAIN_TEXT_PATTERN.match(block)
-				text = match.groups()[0]
-				end = len(text)
-				block = block[end:]
-				
-				components.append(TextElement(text))
-
+			components.append(element)
+			block = block[em.end():]
 
 		return components
-
-	def startsWithBoldText(self, block):
-		""" determines if a block starts with bold text
-		>>> p = Parser()
-		>>> p.startsWithBoldText("**yup, it does**")
-		True
-		>>> p.startsWithBoldText("*nope, this is italic*")
-		False
-		"""
-		return START_BOLD_TEXT_PATTERN.match(block) != None
-
-	def boldText(self, block):
-		""" gets the text in bold at the start of a block
-		>>> p = Parser()
-		>>> p.boldText("**aztex**")
-		'aztex'
-		"""
-		match = START_BOLD_TEXT_PATTERN.match(block)
-		return match.groups()[0]
-
-	def startsWithItalicText(self, block):
-		""" determines if a block starts with italic text
-		>>> p = Parser()
-		>>> p.startsWithItalicText("*yup, it does*")
-		True
-		>>> p.startsWithItalicText("**nope, this is bold**")
-		False
-		"""
-		return START_ITALIC_TEXT_PATTERN.match(block) != None
-
-	def italicText(self, block):
-		pass
-
-	def startsWithStrikethroughText(self, block):
-		""" determines if a block starts with strike through text
-		>>> p = Parser()
-		>>> p.startsWithStrikethroughText("--yup, it does--")
-		True
-		>>> p.startsWithStrikethroughText("**nope, this is bold**")
-		False
-		"""
-		return START_STRIKETHROUGH_TEXT_PATTERN.match(block) != None
-
-	def startsWithUnderlineText(self, block):
-		""" determines if a block starts with underlined text
-		>>> p = Parser()
-		>>> p.startsWithUnderlineText("_yup, it does_")
-		True
-		>>> p.startsWithUnderlineText("**nope, this is bold**")
-		False
-		"""
-		return START_UNDERLINE_TEXT_PATTERN.match(block) != None
-
-	def startsWithQuoteText(self, block):
-		""" determines if a block starts with quoted text
-		>>> p = Parser()
-		>>> p.startsWithQuoteText("``yup, it does\'\'")
-		True
-		>>> p.startsWithQuoteText("**nope, this is bold**")
-		False
-		"""
-		return START_QUOTE_TEXT_PATTERN.match(block) != None
-
-	def startsWithLinkText(self, block):
-		""" determines if a block starts with linked text
-		>>> p = Parser()
-		>>> p.startsWithLinkText("[yup](http://example.com)")
-		True
-		>>> p.startsWithLinkText("**nope, this is bold**")
-		False
-		"""
-		return START_LINK_TEXT_PATTERN.match(block) != None
-
-
 
 if __name__ == "__main__":
 	import doctest

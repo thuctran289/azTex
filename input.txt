@@ -1,9 +1,47 @@
-aztex
-=====
+aztex tutorial
+==============
 
-**Does** this _work_?
+## Lists ##
 
---nope--
-hello there
+This is an ordered list:
 
-## wooo ## 
+1. write tokenizer
+2. write parser
+3. write internal representation
+4. **???** asdf
+5. profit
+
+You can also use an *unordered list*:
+
+- milk
+- ~~one~~ _three_ eggs
+- *bread*
+- potatos
+
+## Text ##
+
+~~If~~ **when** you make mistakes you can ~~strike through~~ text.
+
+You can event link to your favorite sites, like [aztex](http://github.com/thuc289/azTex).
+
+Don't forget to ``quote your sources'' too.
+
+Here's a picture of a monkey ![monkey](http://www.animalspot.net/wp-content/uploads/2012/01/Monkey-Photos.jpg)
+
+## Tables ##
+
+| id | name |     email    |
+|----|------|--------------|
+| 1  | bob  | bob@mail.com |
+| 2  | tom  | tom@mail.com |
+| 3  | ron  | ron@mail.com |
+
+ id | name |     email    
+----|------|--------------
+ 1  | bob  | bob@mail.com 
+ 2  | tom  | tom@mail.com
+ 3  | ron  | ron@mail.com 
+
+## _Altogether_ ##
+
+We can ~~mix** it~~  _*all*_ together!

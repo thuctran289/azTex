@@ -12,11 +12,10 @@ class Element(object):
 		self.subelements = subelements
 
 	def __str__(self):
-		if not isinstance(self.subelements, str):
-			subs = ', '.join(map(lambda x: x.__str__(), self.subelements))
-		else:
-			subs = self.subelements
-		return '%s: %s' % (self.element_type, subs)
+		subs = ""
+		for element in self.subelements:
+			subs += str(element) 
+		return '(%s: %s)' % (self.element_type, subs)
 
 	def get_type(self):
 		""" Returns the element_type of self
@@ -67,6 +66,11 @@ class LinkElement(Element):
 	def __init__(self, subelements):
 		super(LinkElement, self).__init__("Link", subelements)
 
+class ImageElement(Element):
+	""" An Element object that represents an image """
+	def __init__(self, subelements):
+		super(ImageElement, self).__init__("Image", subelements)
+
 class EquationElement(Element):
 	""" An Element object that represents an equation """
 	def __init__(self, subelements):
@@ -102,6 +106,22 @@ class HeadingElement(Element):
 	def __init__(self, subelements, level):
 		super(HeadingElement, self).__init__("Heading", subelements)
 		self.level = level
+
+class TableElement(Element):
+	""" An Element object that represents a table """
+	def __init__(self, headers, items):
+		super(TableElement, self).__init__("Table", None)
+		self.headers = headers
+		self.items = items
+
+	def __str__(self):
+		headers = ', '.join(map(lambda x: str(x), self.headers))
+		items = ""
+		for row in self.items:
+			items += "\t"
+			items += ", ".join(map(lambda x: str(x), row))
+			items += '\n'
+		return '%s:\n\t%s\n%s' % (self.element_type, headers, items)
 
 if __name__ == "__main__":
 	import doctest

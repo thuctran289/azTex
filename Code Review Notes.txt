@@ -1,0 +1,21 @@
+- list with subelements (DONE)
+
+- list with sublists or indents
+
+- add argument for file name
+
+- one item list
+
+- nested elements (bold italicized things)
+
+- equations
+
+- tables (DONE)
+
+- check if library supports all things
+
+- if we write to a tex file people can learn latex
+
+- add test suite of example files
+
+- gui with equation buttons and side by side would be nice

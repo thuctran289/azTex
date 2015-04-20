@@ -1,5 +1,6 @@
 import sys
 from Element import Element
+from LatexOutput import *
 
 filename = "input.txt"
 f = open(filename, 'r')
@@ -23,13 +24,19 @@ while block:
     block = tokenizer.get_next_block()
 
 print "===== DOCUMENT ELEMENTS ====="
+A = LatexOutput()
+
 for element in elements:
-    print element
+	print A.to_code(element)
+	print ""
+
 print "==============================\n\n"
 
 
 print "==============="
 print "=== SUCCESS ==="
 print "==============="
+
+
 
 

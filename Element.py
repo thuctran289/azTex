@@ -126,7 +126,7 @@ class TableElement(Element):
 if __name__ == "__main__":
 	import doctest
 	doctest.testmod()
-	uolist = UnorderedListElement(['these are words', 'more words', 'omg even more!'])
+	uolist = LinkElement(['these are words', 'more words', 'omg even more!'])
 	print uolist
 	print type(uolist)
 	print uolist.get_type()

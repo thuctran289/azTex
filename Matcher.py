@@ -271,7 +271,8 @@ class TableMatch(Match):
 
 	def tableRowItems(self, row):
 		items = row.split("|")
-		return filter(lambda x: x.strip(), items)
+		items = filter(lambda x: x.strip(), items)
+		return map(lambda x: x.strip(), items)
 
 	def tableHeaders(self):
 		""" gets a list of heading elements """

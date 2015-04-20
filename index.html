@@ -284,6 +284,87 @@ Should we use markdown as our exact language?</p>
 
 <p>For our next presentation, we can change up our presentation style. For example, if we want our audience to help us generate ideas (such as design options), instead of just asking if the audience has any ideas, we could split the audience into smaller groups and have each group ideate for a few minutes and then bring all of the groups back together to look at all of the new ideas. We should also cover all of the background context that we provide in our pre-review readings in our presentation. We could frame our technical questions in a different way to give the audience more knowledge about the effects of different design options.</p>
 
+<h1>
+<a id="code-review" class="anchor" href="#code-review" aria-hidden="true"><span class="octicon octicon-link"></span></a>Code Review</h1>
+
+<h2>
+<a id="preparation-and-framing-document-1" class="anchor" href="#preparation-and-framing-document-1" aria-hidden="true"><span class="octicon octicon-link"></span></a>Preparation and Framing Document</h2>
+
+<h3>
+<a id="background-and-context" class="anchor" href="#background-and-context" aria-hidden="true"><span class="octicon octicon-link"></span></a>Background and context</h3>
+
+<p>We are still working towards creating aztex: an easier to use version of LaTeX. However, we have decided that although we have pivoted our user group to be general students (with a focus on high school students or students who are not familiar with LaTeX), we will not be too concerned with creating aztex specifically for our user group. </p>
+
+<p>aztex will work by compiling a txt file written using aztex language (similar to Markdown) into the analogous LaTeX code in order to output a pdf</p>
+
+<p>Compilers typically consist of a front, a middle, and a back end. </p>
+
+<p>The front end consists of syntactic and semantic processing and translation of the source code to an internal representation.</p>
+
+<p>In most compilers, the middle end optimizes the internal representation. However, due to the basicness that aztex has when compared to actual programming languages, we believe that a middle end is unnecessary for our aztex program.</p>
+
+<p>The back end takes the internal representation and outputs code that a particular processor and OS can understand.</p>
+
+<h4>
+<a id="our-architecture" class="anchor" href="#our-architecture" aria-hidden="true"><span class="octicon octicon-link"></span></a>Our architecture:</h4>
+
+<p>Our front end is consistent with standard compilers; it is made up of a parser and a tokenizer. We currently have finished most of the front end and classes that the front end implements, including:</p>
+
+<h5>
+<a id="tokenizer" class="anchor" href="#tokenizer" aria-hidden="true"><span class="octicon octicon-link"></span></a>Tokenizer</h5>
+
+<p>The tokenizer uses a regular expression to look for two new lines in a row to find each block of text. The tokenizer will return tokens, block by block. </p>
+
+<h5>
+<a id="parser" class="anchor" href="#parser" aria-hidden="true"><span class="octicon octicon-link"></span></a>Parser</h5>
+
+<p>The parser converts each token/block into a specific element object as defined below, depending on the type of token it is. The parser does this using via matching the string to the type of element via regular expression.</p>
+
+<h5>
+<a id="element" class="anchor" href="#element" aria-hidden="true"><span class="octicon octicon-link"></span></a>Element</h5>
+
+<p>Elements represent the individual parts of the document. Eac part will be defined as a subclass of element such as HeadingElement or StrikeThroughElement, . They both possess the type of element they are, and any subelements the element type may apply to (i.e. bolding, or heading)</p>
+
+<h5>
+<a id="internalrepresentation" class="anchor" href="#internalrepresentation" aria-hidden="true"><span class="octicon octicon-link"></span></a>InternalRepresentation</h5>
+
+<p>The InternalRepresentation class represents the structure of the document in terms of a list of Element objects. This will be program’s internal representation of the document. 
+Also consistent with standard compilers, our back end will include the classes:</p>
+
+<h5>
+<a id="genericoutput" class="anchor" href="#genericoutput" aria-hidden="true"><span class="octicon octicon-link"></span></a>GenericOutput:</h5>
+
+<p>This will be an abstract class that contains handles that children classes such as LatexOutput or other languages can use.</p>
+
+<h5>
+<a id="latexoutput" class="anchor" href="#latexoutput" aria-hidden="true"><span class="octicon octicon-link"></span></a>LatexOutput:</h5>
+
+<p>LatexOutput will be a subclass of GenericOutput. We are still deciding the exact implementation of this class. Currently we are debating having this be an interface to a library vs. writing our own library for our code. </p>
+
+<p>In order to possibly expand aztex beyond just a LaTeX document creator in the future, to assist in the ease of debugging, and to make parts of our code interchangeable, we have made sure to encapsulate our data and to practice modular programming. Basically, this means that, for example, the details of the Element class are “hidden” from the InternalRepresentation creator. </p>
+
+<h4>
+<a id="key-questions-1" class="anchor" href="#key-questions-1" aria-hidden="true"><span class="octicon octicon-link"></span></a>Key questions</h4>
+
+<ol>
+<li>Should we use a library or an interface?</li>
+<li>Any edge cases we may not have seen?</li>
+<li>Any concerns that y’all foresee?</li>
+<li>Should we try to implement a GUI for the input?</li>
+</ol>
+
+<h4>
+<a id="agenda-for-technical-review-section" class="anchor" href="#agenda-for-technical-review-section" aria-hidden="true"><span class="octicon octicon-link"></span></a>Agenda for technical review section</h4>
+
+<ul>
+<li>1 minute - Introduction and extremely high level description of aztex</li>
+<li>3 minutes - Provide background and context and explain what we have completed (front end).</li>
+<li>3 minutes - Code architecture description (UML diagram and explaining why we made sure to practice modular programming)</li>
+<li>5 minutes - Walk through code on a higher level.</li>
+<li>10 minutes - Have everyone clone our repository, run AztexRunner.py with an input of a text file written in our aztex language. This will help the audience gain a better understanding of our program and will also help us to see if our code does not work given any certain inputs. Since people will be inputting a text file that they create, they might create and test a certain input that we had not already tested. This will help us see possible edge cases that we may have overlooked. </li>
+<li>3 minutes - Key questions</li>
+</ul>
+
       <footer class="site-footer">
         <span class="site-footer-owner"><a href="https://github.com/thuctran289/aztex">aztex</a> is maintained by <a href="https://github.com/thuctran289">thuctran289</a>.</span>
 

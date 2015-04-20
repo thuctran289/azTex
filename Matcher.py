@@ -228,7 +228,7 @@ class ImageMatch(Match):
 	def text(self):
 		return self.match.groups()[0]
 
-	def url(self):
+	def path(self):
 		return self.match.groups()[1]
 		
 	def end(self):

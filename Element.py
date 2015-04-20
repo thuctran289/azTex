@@ -63,13 +63,17 @@ class ParagraphElement(Element):
 
 class LinkElement(Element):
 	""" An Element object that represents a link """
-	def __init__(self, subelements):
-		super(LinkElement, self).__init__("Link", subelements)
+	def __init__(self, url, element):
+		super(LinkElement, self).__init__("Link", (url, element))
+		self.url = url
+		self.element = element
 
 class ImageElement(Element):
 	""" An Element object that represents an image """
-	def __init__(self, subelements):
-		super(ImageElement, self).__init__("Image", subelements)
+	def __init__(self, path, element):
+		super(ImageElement, self).__init__("Image", (path, element))
+		self.path = path
+		self.element = element
 
 class EquationElement(Element):
 	""" An Element object that represents an equation """

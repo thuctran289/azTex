@@ -104,13 +104,13 @@ class Parser(object):
 				match = container.get()
 				em = LinkTextMatch(match)
 				subelement = self.parseText(em.text())
-				element = LinkElement((element, em.url()))
+				element = LinkElement(element, em.url())
 
 			elif container.set(self.matcher.matchImage(block)):
 				match = container.get()
 				em = ImageMatch(match)
 				subelement = self.parseText(em.text())
-				element = ImageElement((element, em.url()))
+				element = ImageElement(element, em.path())
 
 			elif container.set(self.matcher.matchPlainText(block)):
 				match = container.get()

@@ -167,6 +167,141 @@ class Matcher(object):
 		"""
 		return self.match(block, START_IMAGE_PATTERN)
 
+class Match(object):
+
+	def __init__(self, match):
+		self.match = match
+
+class BoldTextMatch(Match):
+
+	def text(self):
+		return self.match.groups()[0]
+		
+	def end(self):
+		return self.match.end()
+
+class ItalicTextMatch(Match):
+
+	def text(self):
+		return self.match.groups()[0]
+		
+	def end(self):
+		return self.match.end()
+
+class StrikethroughTextMatch(Match):
+
+	def text(self):
+		return self.match.groups()[0]
+		
+	def end(self):
+		return self.match.end()
+
+class UnderlineTextMatch(Match):
+
+	def text(self):
+		return self.match.groups()[0]
+		
+	def end(self):
+		return self.match.end()
+
+class QuoteTextMatch(Match):
+
+	def text(self):
+		return self.match.groups()[0]
+		
+	def end(self):
+		return self.match.end()
+
+class LinkTextMatch(Match):
+
+	def text(self):
+		return self.match.groups()[0]
+
+	def url(self):
+		return self.match.groups()[1]
+		
+	def end(self):
+		return self.match.end()
+
+class ImageMatch(Match):
+
+	def text(self):
+		return self.match.groups()[0]
+
+	def url(self):
+		return self.match.groups()[1]
+		
+	def end(self):
+		return self.match.end()
+
+class PlainTextMatch(Match):
+
+	def text(self):
+		return self.match.groups()[0]
+		
+	def end(self):
+		return len(self.text())
+
+class HeadingMatch(Match):
+
+	def text(self):
+		block = self.match.string
+		return str.split(block, "\n")[0]
+
+class SubHeadingMatch(Match):
+
+	def text(self):
+		block = self.match.string
+		return str.split(block, "\n")[0]
+
+class SubSubHeadingMatch(Match):
+
+	def text(self):
+		block = self.match.string
+		pat = re.compile(r"^(\#+) (.+) \1")
+		match = pat.search(block)
+		return match.groups()[1]
+
+	def level(self):
+		block = self.match.string
+		match = re.match(r"^#+", block)
+		return len(match.group())
+		
+class TableMatch(Match):
+
+	def tableRowItems(self, row):
+		items = row.split("|")
+		return filter(lambda x: x.strip(), items)
+
+	def tableHeaders(self):
+		""" gets a list of heading elements """
+		block = self.match.string
+		firstLine = block.split("\n")[0]	
+		return self.tableRowItems(firstLine)
+
+	def tableItems(self):
+		""" get a 2D list of items """
+		block = self.match.string
+		lines = block.split("\n")
+		lines = lines[2:] # remove first two rows (header and separator)
+		return map(self.tableRowItems, lines)
+
+class OrderedListMatch(Match):
+
+	def listItems(self):
+		""" gets the list of items """
+		block = self.match.string
+		itemRegex = r"(?<=\d\. )(.+)(?=(?:\n|$))"
+		return re.findall(itemRegex, block)
+
+class UnorderedListMatch(Match):
+
+	def listItems(self):
+		""" gets the list of items """
+		block = self.match.string
+		itemRegex = r"(?<=(?:\*|\-) )(.+)(?=(?:\n|$))"
+		return re.findall(itemRegex, block)
+
 if __name__ == "__main__":
 	import doctest
 	doctest.testmod()

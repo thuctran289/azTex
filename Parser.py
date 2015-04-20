@@ -1,7 +1,7 @@
 import re
 from Element import *
 from Regex import *
-from Matcher import Matcher
+from Matcher import *
 
 class Container(object):
 	""" simple class to hold data
@@ -23,180 +23,102 @@ class Parser(object):
 		self.matcher = Matcher()
 
 	def parseBlock(self, block):
-		if self.matcher.matchHeading(block):
-			return HeadingElement(self.headingText(block), 1)
-		elif self.matcher.matchSubHeading(block):
-			return HeadingElement(self.subHeadingText(block), 2) 
-		elif self.matcher.matchSubSubHeading(block):
-			return HeadingElement(self.subSubHeadingText(block), self.subSubHeadingLevel(block)) 
-		elif self.matcher.matchTable(block):
-			return TableElement(self.tableHeaders(block), self.tableItems(block))
-		elif self.matcher.matchOrderedList(block):
-			return OrderedListElement(self.orderedListItems(block))
-		elif self.matcher.matchUnorderedList(block):
-			return UnorderedListElement(self.unorderedListItems(block))
+		container = Container()
+		if container.set(self.matcher.matchHeading(block)):
+			match = container.get()
+			em = HeadingMatch(match)
+			element = self.parseText(em.text())
+			return HeadingElement(element, 1)
+
+		elif container.set(self.matcher.matchSubHeading(block)):
+			match = container.get()
+			em = SubHeadingMatch(match)
+			element = self.parseText(em.text())
+			return HeadingElement(element, 2) 
+
+		elif container.set(self.matcher.matchSubSubHeading(block)):
+			match = container.get()
+			em = SubSubHeadingMatch(match)
+			element = self.parseText(em.text())
+			return HeadingElement(element, em.level()) 
+
+		elif container.set(self.matcher.matchTable(block)):
+			match = container.get()
+			em = TableMatch(match)
+			tableHeaders = map(self.parseText, em.tableHeaders())
+			tableItems = map(lambda row: map(self.parseText, row), em.tableItems())
+			return TableElement(tableHeaders, tableItems)
+
+		elif container.set(self.matcher.matchOrderedList(block)):
+			match = container.get()
+			em = OrderedListMatch(match)
+			listItems = map(self.parseText, em.listItems())
+			return OrderedListElement(listItems)
+
+		elif container.set(self.matcher.matchUnorderedList(block)):
+			match = container.get()
+			em = UnorderedListMatch(match)
+			listItems = map(self.parseText, em.listItems())
+			return UnorderedListElement(listItems)
+
 		else:
 			return ParagraphElement(self.parseText(block))
-
-	def headingText(self, block):
-		""" gets the text out of a heading block
-		>>> p = Parser()
-		>>> res = p.headingText("aztex\\n====")
-		'aztex'
-
-		>>> p.headingText("Harry Potter\\n=====")
-		'Harry Potter'
-		"""
-		text = str.split(block, "\n")[0]
-		return self.parseText(text)
-
-	def subHeadingText(self, block):
-		""" gets the text out of a subheading block
-		>>> p = Parser()
-		>>> p.subHeadingText("aztex\\n-----")
-		'aztex'
-
-		>>> p.subHeadingText("Harry Potter\\n-----")
-		'Harry Potter'
-		"""
-		text = str.split(block, "\n")[0]
-		return self.parseText(text)
-
-	def subSubHeadingText(self, block):
-		""" gets the text out of a subsubheading block
-		>>> p = Parser()
-		>>> p.subSubHeadingText("## aztex ##")
-		'aztex'
-
-		>>> p.subSubHeadingText("### Harry Potter ###")
-		'Harry Potter'
-		"""
-		pat = re.compile(r"^(\#+) (.+) \1")
-		match = pat.search(block)
-		text = match.groups()[1]
-		return self.parseText(text)
-
-	def subSubHeadingLevel(self, block):
-		""" gets the heading level
-		>>> p = Parser()
-		>>> p.subSubHeadingLevel("## aztex ##")
-		2
-
-		>>> p.subSubHeadingLevel("##### aztex #####")
-		5
-		"""
-		match = re.match(r"^#+", block)
-		return len(match.group())
-
-		return TABLE_PATTERN.match(block) != None
-
-	def tableRowItems(self, row):
-		items = row.split("|")
-		items = filter(lambda x: x.strip(), items)
-		return map(self.parseBlock, items)
-		
-	def tableHeaders(self, block):
-		""" gets a list of heading elements """
-		firstLine = block.split("\n")[0]	
-		return self.tableRowItems(firstLine)
-
-	def tableItems(self, block):
-		""" get a 2D list of items """
-		lines = block.split("\n")
-		lines = lines[2:] # remove first two rows (header and separator)
-		return map(self.tableRowItems, lines)
-
-	def orderedListItems(self, block):
-		""" gets the list of items """
-		itemRegex = r"(?<=\d\. )(.+)(?=(?:\n|$))"
-		items = re.findall(itemRegex, block)
-		return map(self.parseBlock, items)
-
-	def unorderedListItems(self, block):
-		""" gets the list of items """
-		itemRegex = r"(?<=(?:\*|\-) )(.+)(?=(?:\n|$))"
-		items = re.findall(itemRegex, block)
-		return map(self.parseBlock, items)
 
 	def parseText(self, block):
 		""" gets the elements within a paragraph
 		"""
-		container = Container()
 		components = []
+		container = Container()
 		while block:
 			if container.set(self.matcher.matchBoldText(block)):
 				match = container.get()
-				text = match.groups()[0]
-				end = match.end()
-				block = block[end:]
-
-				element = self.parseText(text)
-				components.append(BoldElement(element))
+				em = BoldTextMatch(match)
+				subelement = self.parseText(em.text())
+				element = BoldElement(subelement)
 
 			elif container.set(self.matcher.matchItalicText(block)):
 				match = container.get()
-				text = match.groups()[0]
-				end = match.end()
-				block = block[end:]
-
-				element = self.parseText(text)
-				components.append(ItalicElement(element))
+				em = ItalicTextMatch(match)
+				subelement = self.parseText(em.text())
+				element = ItalicElement(subelement)
 
 			elif container.set(self.matcher.matchStrikethroughText(block)):
 				match = container.get()
-				text = match.groups()[0]
-				end = match.end()
-				block = block[end:]
-
-				element = self.parseText(text)
-				components.append(StrikethroughElement(element))
+				em = StrikethroughTextMatch(match)
+				subelement = self.parseText(em.text())
+				element = StrikethroughElement(subelement)
 
 			elif container.set(self.matcher.matchUnderlineText(block)):
 				match = container.get()
-				text = match.groups()[0]
-				end = match.end()
-				block = block[end:]
-
-				element = self.parseText(text)
-				components.append(UnderlineElement(element))
+				em = UnderlineTextMatch(match)
+				subelement = self.parseText(em.text())
+				element = UnderlineElement(subelement)
 
 			elif container.set(self.matcher.matchQuoteText(block)):
 				match = container.get()
-				text = match.groups()[0]
-				end = match.end()
-				block = block[end:]
-
-				element = self.parseText(text)
-				components.append(QuoteElement(element))
+				em = QuoteTextMatch(match)
+				subelement = self.parseText(em.text())
+				element = QuoteElement(subelement)
 
 			elif container.set(self.matcher.matchLinkText(block)):
 				match = container.get()
-				text = match.groups()[0]
-				url = match.groups()[1]
-				end = match.end()
-				block = block[end:]
-
-				element = self.parseText(text)
-				components.append(LinkElement((element, url)))
+				em = LinkTextMatch(match)
+				subelement = self.parseText(em.text())
+				element = LinkElement((element, em.url()))
 
 			elif container.set(self.matcher.matchImage(block)):
 				match = container.get()
-				text = match.groups()[0]
-				url = match.groups()[1]
-				end = match.end()
-				block = block[end:]
-
-				element = self.parseText(text)
-				components.append(ImageElement((element, url)))
+				em = ImageMatch(match)
+				subelement = self.parseText(em.text())
+				element = ImageElement((element, em.url()))
 
 			elif container.set(self.matcher.matchPlainText(block)):
 				match = container.get()
-				text = match.groups()[0]
-				end = len(text)
-				block = block[end:]
-				
-				components.append(TextElement(text))
+				em = PlainTextMatch(match)
+				element = TextElement(em.text())
 
+			components.append(element)
+			block = block[em.end():]
 
 		return components
 

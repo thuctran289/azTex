@@ -7,18 +7,26 @@ class LatexOutput(GenericOutput):
 		super(LatexOutput, self).__init__()
 
 	def to_doc(self, representation):
-		pass
-	
-	def to_code(self, elements):
+		doc = []
+		doc.append("\\documentclass{article}")
+		doc.append("\\usepackage[utf8]{inputenc}")
+		doc.append("\\usepackage[normalem]{ulem}")
+		doc.append("\\usepackage{hyperref}")
+		doc.append("\\begin{document}")
+		for element in representation:
+			doc.append(self.to_code(element))
+		doc.append("\\end{document}")
 
+		return doc
+	def to_code(self, elements):
 			if(not hasattr(elements, '__iter__')):				
 				element = elements
 				e_type = element.get_type()
 
 				if e_type == 'Unordered List':
-					pass
+					return self.unordered_list(element)
 				elif e_type == 'Ordered List':
-					pass
+					return self.ordered_list(element)
 				elif e_type == "Paragraph":
 					return self.paragraph(element)
 				elif e_type == "Image":
@@ -26,7 +34,7 @@ class LatexOutput(GenericOutput):
 				elif e_type == 'Text':
 					return self.text(element)
 				elif e_type == 'Link':
-					pass
+					return self.link(element)
 				elif e_type == 'Equation':
 					pass
 				elif e_type == 'Bold':
@@ -42,7 +50,7 @@ class LatexOutput(GenericOutput):
 				elif e_type == "Heading":
 					return self.heading(element)
 				elif e_type == "Table":
-					pass
+					return self.table(element)
 
 			else:
 				for element in elements:
@@ -52,14 +60,12 @@ class LatexOutput(GenericOutput):
 						pass
 					elif e_type == 'Ordered List':
 						pass
-					elif e_type == "Paragraph":
-						pass
 					elif e_type == "Image":
 						pass
 					elif e_type == 'Text':
 						return self.text(element)
 					elif e_type == 'Link':
-						pass
+						return self.linke(element)
 					elif e_type == 'Equation':
 						pass
 					elif e_type == 'Bold':
@@ -74,21 +80,39 @@ class LatexOutput(GenericOutput):
 						return self.quote(element)
 					elif e_type == "Heading":
 						return self.heading(element)
-					elif e_type == "Table":
-						pass
+					elif e_type == "Table":	
+						return self.table(element)
+
+
+
 
 
 	def unordered_list(self, element):
-		pass
+		doc = ['\\begin{itemize}\n']
+		elements = element.get_elements()
+		for obje in elements:
+			if hasattr(obje, 'str'):
+				doc.extend('\\item ' + obje + '\n')
+			else:
+				doc.append('\\item ' + self.to_code(obje) + '\n')
+
+		doc.extend('\\end{itemize}')
+		return ''.join(doc)
 	def ordered_list(self, element):
-		pass
+		doc = ['\\begin{enumerate}\n']
+		elements = element.get_elements()
+		for obje in elements:
+			if hasattr(obje, 'str'):
+				doc.extend('\\item ' + obje + '\n')
+			else:
+				doc.append('\\item ' + self.to_code(obje) + '\n')
+
+		doc.extend('\\end{enumerate}')
+		return ''.join(doc)
 	def text(self, element):
 		return element.get_elements()
 	def link(self, element):
-		"""
-		Need to clarify how this will work later on. 
-		"""
-		pass
+		return "\\href{" + element.url + "}{" + element.text + "}"
 	def equation(self, element):
 		pass
 	def bold(self, element):
@@ -102,7 +126,17 @@ class LatexOutput(GenericOutput):
 	def quote(self, element):
 		return "``" + self.to_code(element.get_elements()) + "''"
 	def heading(self, element): 
-		return "\\section{" + self.to_code(element.get_elements()) + "}"
+		if element.level == 1:
+			return "\\section{" + self.to_code(element.get_elements()) + "}"
+		elif element.level == 2:
+			return "\\subsection{" + self.to_code(element.get_elements()) + "}"
+		elif element.level == 3:
+			return "\\subsubsection{" + self.to_code(element.get_elements()) + "}"
+		elif element.level == 4:
+			return "\\paragraph{" + self.to_code(element.get_elements()) + "}"
+		elif element.level == 5:
+			return "\\subparagraph{" + self.to_code(element.get_elements()) + "}"
+			
 	def paragraph(self, element):
 		doc = []
 		elements = element.get_elements()
@@ -112,6 +146,35 @@ class LatexOutput(GenericOutput):
 			else:
 				doc.append(self.to_code(obje))
 		return ''.join(doc)
+	def table(self, element):
+		doc = []
+		doc.append("\\noindent\n")
+		headers = element.headers
+		items = element.items
+		texthead = []
+
+		initial_header = "{" + "| c " * len(headers) + "|}" + "\n"
+		doc.append("\\begin{tabular}" + initial_header)
+		doc.append("\\hline \n")
+		for subelement in headers:
+			if hasattr(subelement, 'str'):
+				texthead.extend(subelement)
+			else:
+				texthead.append(self.to_code(subelement))
+		doc.append("&".join(texthead) + "\\\\\n")
+		doc.append("\\hline \n")
+		for subline in items:
+			texthead = []
+			for subelement in subline:
+				if hasattr(subelement, 'str'):
+					texthead.extend(subelement)
+				else:
+					texthead.append(self.to_code(subelement))	
+			doc.append("&".join(texthead) + "\\\\\n")
+			doc.append("\\hline \n")
+		
+		doc.append("\\end{tabular}\n")
+		return "".join(doc)
 
 
 if __name__ == "__main__":

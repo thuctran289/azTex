@@ -26,9 +26,11 @@ while block:
 print "===== DOCUMENT ELEMENTS ====="
 A = LatexOutput()
 
-for element in elements:
-	print A.to_code(element)
-	print ""
+#for element in elements:
+#	print A.to_code(element)
+#	print ""
+for element in  A.to_doc( elements):
+	print element
 
 print "==============================\n\n"
 

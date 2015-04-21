@@ -65,7 +65,7 @@ class LatexOutput(GenericOutput):
 					elif e_type == 'Text':
 						return self.text(element)
 					elif e_type == 'Link':
-						return self.linke(element)
+						return self.link(element)
 					elif e_type == 'Equation':
 						pass
 					elif e_type == 'Bold':
@@ -112,7 +112,8 @@ class LatexOutput(GenericOutput):
 	def text(self, element):
 		return element.get_elements()
 	def link(self, element):
-		return "\\href{" + element.url + "}{" + element.text + "}"
+		print type(element.element)
+		return "\\href{" + self.to_code(element.url) + "}{"  +element.element+ "}"
 	def equation(self, element):
 		pass
 	def bold(self, element):

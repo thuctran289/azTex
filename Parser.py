@@ -110,7 +110,7 @@ class Parser(object):
 				match = container.get()
 				em = ImageMatch(match)
 				subelement = self.parseText(em.text())
-				element = ImageElement(element, em.path())
+				element = ImageElement(subelement, em.path())
 
 			elif container.set(self.matcher.matchPlainText(block)):
 				match = container.get()

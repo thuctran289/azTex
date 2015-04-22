@@ -26,8 +26,6 @@ You can event link to your favorite sites, like [aztex](http://github.com/thuc28
 
 Don't forget to ``quote your sources'' too.
 
-Here's a picture of a monkey ![monkey](http://www.animalspot.net/wp-content/uploads/2012/01/Monkey-Photos.jpg)
-
 ## Tables ##
 
 | id | name |     email    |

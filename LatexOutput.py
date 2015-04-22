@@ -8,84 +8,16 @@ class LatexOutput(GenericOutput):
 
 	def to_doc(self, representation):
 		doc = []
-		doc.append("\\documentclass{article}")
-		doc.append("\\usepackage[utf8]{inputenc}")
-		doc.append("\\usepackage[normalem]{ulem}")
-		doc.append("\\usepackage{hyperref}")
-		doc.append("\\begin{document}")
+		doc.append("\\documentclass{article}\n")
+		doc.append("\\usepackage[utf8]{inputenc}\n")
+		doc.append("\\usepackage[normalem]{ulem}\n")
+		doc.append("\\usepackage{hyperref}\n")
+		doc.append("\\begin{document}\n")
 		for element in representation:
 			doc.append(self.to_code(element))
-		doc.append("\\end{document}")
+		doc.append("\\end{document}\n")
 
 		return doc
-	def to_code(self, elements):
-			if(not hasattr(elements, '__iter__')):				
-				element = elements
-				e_type = element.get_type()
-
-				if e_type == 'Unordered List':
-					return self.unordered_list(element)
-				elif e_type == 'Ordered List':
-					return self.ordered_list(element)
-				elif e_type == "Paragraph":
-					return self.paragraph(element)
-				elif e_type == "Image":
-					pass
-				elif e_type == 'Text':
-					return self.text(element)
-				elif e_type == 'Link':
-					return self.link(element)
-				elif e_type == 'Equation':
-					pass
-				elif e_type == 'Bold':
-					return self.bold(element)
-				elif e_type == 'Italic':
-					return self.italic(element)
-				elif e_type == 'Underline':
-					return self.underline(element)
-				elif e_type == 'Strikethrough':
-					return self.strikethrough(element)
-				elif e_type == 'Quote':
-					return self.quote(element)
-				elif e_type == "Heading":
-					return self.heading(element)
-				elif e_type == "Table":
-					return self.table(element)
-
-			else:
-				for element in elements:
-					e_type = element.get_type()
-
-					if e_type == 'Unordered List':
-						pass
-					elif e_type == 'Ordered List':
-						pass
-					elif e_type == "Image":
-						pass
-					elif e_type == 'Text':
-						return self.text(element)
-					elif e_type == 'Link':
-						return self.link(element)
-					elif e_type == 'Equation':
-						pass
-					elif e_type == 'Bold':
-						return self.bold(element)
-					elif e_type == 'Italic':
-						return self.italic(element)
-					elif e_type == 'Underline':
-						return self.underline(element)
-					elif e_type == 'Strikethrough':
-						return self.strikethrough(element)
-					elif e_type == 'Quote':
-						return self.quote(element)
-					elif e_type == "Heading":
-						return self.heading(element)
-					elif e_type == "Table":	
-						return self.table(element)
-
-
-
-
 
 	def unordered_list(self, element):
 		doc = ['\\begin{itemize}\n']
@@ -96,7 +28,7 @@ class LatexOutput(GenericOutput):
 			else:
 				doc.append('\\item ' + self.to_code(obje) + '\n')
 
-		doc.extend('\\end{itemize}')
+		doc.extend('\\end{itemize}\n')
 		return ''.join(doc)
 	def ordered_list(self, element):
 		doc = ['\\begin{enumerate}\n']
@@ -107,13 +39,13 @@ class LatexOutput(GenericOutput):
 			else:
 				doc.append('\\item ' + self.to_code(obje) + '\n')
 
-		doc.extend('\\end{enumerate}')
+		doc.extend('\\end{enumerate}\n')
 		return ''.join(doc)
 	def text(self, element):
 		return element.get_elements()
 	def link(self, element):
 		print type(element.element)
-		return "\\href{" + self.to_code(element.url) + "}{"  +element.element+ "}"
+		return "\\href{" + element.element + "}{"  +self.to_code(element.url)+ "}"
 	def equation(self, element):
 		pass
 	def bold(self, element):
@@ -128,15 +60,15 @@ class LatexOutput(GenericOutput):
 		return "``" + self.to_code(element.get_elements()) + "''"
 	def heading(self, element): 
 		if element.level == 1:
-			return "\\section{" + self.to_code(element.get_elements()) + "}"
+			return "\\section{" + self.to_code(element.get_elements()) + "}\n"
 		elif element.level == 2:
-			return "\\subsection{" + self.to_code(element.get_elements()) + "}"
+			return "\\subsection{" + self.to_code(element.get_elements()) + "}\n"
 		elif element.level == 3:
-			return "\\subsubsection{" + self.to_code(element.get_elements()) + "}"
+			return "\\subsubsection{" + self.to_code(element.get_elements()) + "}\n"
 		elif element.level == 4:
-			return "\\paragraph{" + self.to_code(element.get_elements()) + "}"
+			return "\\paragraph{" + self.to_code(element.get_elements()) + "}\n"
 		elif element.level == 5:
-			return "\\subparagraph{" + self.to_code(element.get_elements()) + "}"
+			return "\\subparagraph{" + self.to_code(element.get_elements()) + "}\n"
 			
 	def paragraph(self, element):
 		doc = []
@@ -146,6 +78,7 @@ class LatexOutput(GenericOutput):
 				doc.extend(obje)
 			else:
 				doc.append(self.to_code(obje))
+		doc.append("\n")
 		return ''.join(doc)
 	def table(self, element):
 		doc = []

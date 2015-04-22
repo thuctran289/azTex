@@ -2,16 +2,19 @@ import sys
 from Element import Element
 from LatexOutput import *
 
+
 if len(sys.argv) > 1:
 	args = sys.argv[1:]
 	if '.txt' in args:
 		filename = args
+		w = open(filename[:-4:] + ".tex", 'w')
 		f = open(filename, 'r')
 		text = f.read()
 	else:
 		text = ' '.join(args)
 else:
 	filename = "input.txt"
+	w = open(filename[:-4:] + ".tex", 'w')
 	f = open(filename, 'r')
 	text = f.read()
 
@@ -38,8 +41,9 @@ A = LatexOutput()
 #for element in elements:
 #	print A.to_code(element)
 #	print ""
-for element in  A.to_doc( elements):
-	print element
+
+for element in  A.to_doc(elements):
+	w.write(str(element))
 
 print "==============================\n\n"
 

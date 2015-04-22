@@ -1,5 +1,4 @@
 Input:
 Heading
 =======
-
 Output:

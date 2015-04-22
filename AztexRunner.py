@@ -3,11 +3,17 @@ from Element import Element
 from LatexOutput import *
 
 if len(sys.argv) > 1:
-	filename = sys.argv[1]
+	args = sys.argv[1:]
+	if '.txt' in args:
+		filename = args
+		f = open(filename, 'r')
+		text = f.read()
+	else:
+		text = ' '.join(args)
 else:
 	filename = "input.txt"
-f = open(filename, 'r')
-text = f.read()
+	f = open(filename, 'r')
+	text = f.read()
 
 print "===== ORIGINAL FILE =====\n"
 print text

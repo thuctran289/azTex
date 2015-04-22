@@ -1,5 +1,4 @@
 Input:
 _underline text_
-
 Output:
 \underline{underline text}

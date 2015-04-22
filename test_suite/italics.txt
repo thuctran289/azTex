@@ -1,5 +1,4 @@
 Input:
 *italic text*
-
 Output:
 \textit{italic text}

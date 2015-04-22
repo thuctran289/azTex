@@ -2,7 +2,10 @@ import sys
 from Element import Element
 from LatexOutput import *
 
-filename = "input.txt"
+if len(sys.argv) > 1:
+	filename = sys.argv[1]
+else:
+	filename = "input.txt"
 f = open(filename, 'r')
 text = f.read()
 

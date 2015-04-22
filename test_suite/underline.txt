@@ -1,4 +1,10 @@
 Input:
 _underline text_
 Output:
+\documentclass{article}
+\usepackage[utf8]{inputenc}
+\usepackage[normalem]{ulem}
+\usepackage{hyperref}
+\begin{document}
 \underline{underline text}
+\end{document}

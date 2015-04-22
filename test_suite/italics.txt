@@ -1,4 +1,10 @@
 Input:
 *italic text*
 Output:
+\documentclass{article}
+\usepackage[utf8]{inputenc}
+\usepackage[normalem]{ulem}
+\usepackage{hyperref}
+\begin{document}
 \textit{italic text}
+\end{document}

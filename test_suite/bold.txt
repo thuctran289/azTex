@@ -1,4 +1,10 @@
 Input:
 **bold text**
 Output:
+\documentclass{article}
+\usepackage[utf8]{inputenc}
+\usepackage[normalem]{ulem}
+\usepackage{hyperref}
+\begin{document}
 \textbf{bold text}
+\end{document}

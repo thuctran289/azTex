@@ -2,6 +2,7 @@
 	Test suite runner for aztex.
 """
 import os
+from AztexRunner import run_test
 
 CWD = os.getcwd()
 tests = CWD + '/test_suites'
@@ -33,7 +34,8 @@ if __name__ == '__main__':
 	with open(tests+'/'+files[2]) as fp:
 		line_list = fp.readlines()
 		inpt = get_input(line_list)
-		print 'AztexRunner.py '+inpt
-		print os.system('python AztexRunner.py '+inpt)
+		# print 'AztexRunner.py '+inpt
+		result = run_test(input)
+		print result
 		print get_output(line_list)
 	

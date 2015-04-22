@@ -1,6 +1,22 @@
 import sys
 from Element import Element
 from LatexOutput import *
+from Tokenizer import Tokenizer
+from Parser import Parser
+
+def run_test(text):
+	tokenizer = Tokenizer(text)
+	parser = Parser()
+
+	elements = []
+	block = tokenizer.get_next_block()
+	while block:
+		element = parser.parseBlock(block)
+		elements.append(element)
+		block = tokenizer.get_next_block()
+
+	A = LatexOutput()
+	return '\n'.join(A.to_doc(elements))
 
 
 if len(sys.argv) > 1:
@@ -18,25 +34,25 @@ else:
 	f = open(filename, 'r')
 	text = f.read()
 
-print "===== ORIGINAL FILE =====\n"
-print text
-print "=========================\n\n"
+	print "===== ORIGINAL FILE =====\n"
+	print text
+	print "=========================\n\n"
 
-from Tokenizer import Tokenizer
-from Parser import Parser
+	from Tokenizer import Tokenizer
+	from Parser import Parser
 
-tokenizer = Tokenizer(text)
-parser = Parser()
+	tokenizer = Tokenizer(text)
+	parser = Parser()
 
-elements = []
-block = tokenizer.get_next_block()
-while block:
-    element = parser.parseBlock(block)
-    elements.append(element)
-    block = tokenizer.get_next_block()
+	elements = []
+	block = tokenizer.get_next_block()
+	while block:
+	    element = parser.parseBlock(block)
+	    elements.append(element)
+	    block = tokenizer.get_next_block()
 
-print "===== DOCUMENT ELEMENTS ====="
-A = LatexOutput()
+	print "===== DOCUMENT ELEMENTS ====="
+	A = LatexOutput()
 
 #for element in elements:
 #	print A.to_code(element)

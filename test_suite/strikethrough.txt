@@ -1,0 +1,5 @@
+Input:
+--strikethrough text--
+
+Output:
+\sout{strikethrough text}

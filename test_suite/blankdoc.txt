@@ -1,0 +1,10 @@
+Input:
+
+
+Output:
+\documentclass{article}
+\usepackage[utf8]{inputenc}
+\usepackage[normalem]{ulem}
+\usepackage{hyperref}
+\begin{document}
+\end{document}

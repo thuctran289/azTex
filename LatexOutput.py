@@ -115,7 +115,7 @@ class LatexOutput(GenericOutput):
 			doc.append("\\hline \n")
 		
 		doc.append("\\end{tabular}\n\n")
-		doc.append("\\noindent")
+		doc.append("\\noindent\n")
 		return "".join(doc)
 
 

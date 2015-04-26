@@ -1,5 +1,5 @@
 Input:
---strikethrough text--
+~~strikethrough text~~
 Output:
 \documentclass{article}
 \usepackage[utf8]{inputenc}

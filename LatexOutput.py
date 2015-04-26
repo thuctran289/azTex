@@ -44,7 +44,7 @@ class LatexOutput(GenericOutput):
 	def text(self, element):
 		return element.get_elements()
 	def link(self, element):
-		print type(element.element)
+		# print type(element.element)
 		return "\\href{" + element.element + "}{"  +self.to_code(element.url)+ "}"
 	def equation(self, element):
 		pass

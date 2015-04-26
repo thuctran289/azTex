@@ -1,3 +1,7 @@
+"""
+	@authors: idgetto, 
+"""
+
 import sys
 from Element import Element
 from LatexOutput import *
@@ -5,6 +9,10 @@ from Tokenizer import Tokenizer
 from Parser import Parser
 
 def run_test(text):
+	""" Function to run AztexRunner on some given text input 
+		text: string of input text that should be aztex code
+		returns: the analogous LaTeX output to text
+	"""
 	tokenizer = Tokenizer(text)
 	parser = Parser()
 

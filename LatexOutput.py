@@ -114,7 +114,7 @@ class LatexOutput(GenericOutput):
 			doc.append("&".join(texthead) + "\\\\\n")
 			doc.append("\\hline \n")
 		
-		doc.append("\\end{tabular}\n")
+		doc.append("\\end{tabular}\n\n")
 		return "".join(doc)
 
 

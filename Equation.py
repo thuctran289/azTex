@@ -196,6 +196,8 @@ class Equation(object):
 			   self.mid + \
 			   " (" + str(self.right) + ")"
 
+	def get_type(self):
+		return "Equation"
 class Expression(object):
 
 	def __init__(self, left, right, operator):

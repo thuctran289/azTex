@@ -43,3 +43,5 @@ Don't forget to ``quote your sources'' too.
 ## _Altogether_ ##
 
 We can ~~mix** it~~  _*all*_ together!
+
+\rho = x ^ 2 - 3 / y

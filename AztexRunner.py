@@ -1,5 +1,16 @@
 """
-	@authors: idgetto, 
+	@authors: idgetto, jovanduy, thuctran289
+
+	Main aztex program. Run this program to get the LaTeX 
+	output of given aztex code. Creates a .tex file with the
+	same name as the input file (if input is text rather than 
+	a file, creates a file named newfile.tex) with the analogous
+	LaTeX code.
+
+	To run:
+		with a certain file filename: python AztexRunner.py filename.txt
+		with a file input.txt: python AztexRunner.py
+		with "just a few words": python AztexRunner.py just a few words
 """
 
 import sys
@@ -35,6 +46,7 @@ if __name__ == "__main__":
 			f = open(filename, 'r')
 			text = f.read()
 		else:
+			w = open('newfile.tex', 'w')
 			text = ' '.join(args)
 	else:
 		filename = "input.txt"

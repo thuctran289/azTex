@@ -16,6 +16,8 @@ class EquationParser(object):
 		'(y) = (-5)'
 		>>> str(p.parseEquation("y = +5 - x"))
 		'(y) = ((+5) - (x))'
+		>>> str(p.parseEquation("F = (G * m1 * m2) / r^2"))
+		'(F) = (((G) * ((m1) * (m2))) / ((r) ^ (2)))'
 		"""
 		left, right, mid = self.splitEquation(equation)
 
@@ -108,6 +110,8 @@ class EquationParser(object):
 		6
 		>>> p.leastPrecedenceOperatorIndex("(a ^ 2 + b ^ 2) ^ (1 / 2)")
 		16
+		>>> p.leastPrecedenceOperatorIndex("G * m1 * m2")
+		2
 		"""
 		for operator in self.operators():
 			parensLevel = 0

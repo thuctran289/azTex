@@ -2,6 +2,7 @@ import re
 
 class EquationParser(object):
 	EQUALITY_PATTERN = re.compile(r"[=<>]+")
+	POS_NEG_VAL_PATTERN = re.compile(r"^[+-]\w+$")
 
 	def parseEquation(self, equation):
 		""" parses an equation
@@ -11,6 +12,10 @@ class EquationParser(object):
 		'(c) = ((((a) ^ (2)) + ((b) ^ (2))) ^ ((1) / (2)))'
 		>>> str(p.parseEquation("y - 3 >= b ^ 2 - 5"))
 		'((y) - (3)) >= (((b) ^ (2)) - (5))'
+		>>> str(p.parseEquation("y = -5"))
+		'(y) = (-5)'
+		>>> str(p.parseEquation("y = +5 - x"))
+		'(y) = ((+5) - (x))'
 		"""
 		left, right, mid = self.splitEquation(equation)
 
@@ -135,14 +140,18 @@ class EquationParser(object):
 		return (left, right, middle)
 
 	def isValue(self, expr):
-		""" does expr contain no mathematical operators?
+		""" is expr a single value
 		>>> p.isValue("3")
 		True
 		>>> p.isValue("3 + 5")
 		False
 		>>> p.isValue("-4")
-		False
+		True
+		>>> p.isValue("+4")
+		True
 		"""
+		if self.POS_NEG_VAL_PATTERN.match(expr):
+			return True
 		return not any(operator in expr for operator in self.operators()) 
 
 	def operators(self):

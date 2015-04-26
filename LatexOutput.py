@@ -7,6 +7,13 @@ class LatexOutput(GenericOutput):
 		super(LatexOutput, self).__init__()
 
 	def to_doc(self, representation):
+		""" Returns a list of the lines of the LaTeX code
+			analogous to representation.
+
+			representation: the internal representation to be
+							turned into LaTeX code
+			returns: list of lines of LaTeX code
+		"""
 		doc = []
 		doc.append("\\documentclass{article}\n")
 		doc.append("\\usepackage[utf8]{inputenc}\n")

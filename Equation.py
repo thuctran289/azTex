@@ -180,7 +180,6 @@ class Expression(object):
 		self.left = left
 		self.right = right
 		self.operator = operator
-		pass
 
 	def __str__(self):
 		return "(" + str(self.left) + ") " + \
@@ -190,3 +189,8 @@ class Expression(object):
 if __name__ == "__main__":
 	import doctest
 	doctest.testmod(extraglobs={'p': EquationParser()})
+
+	# p = EquationParser()
+	# equation = "\\rho = x ^ 2 - 3 / y"
+	# print equation
+	# print p.parseEquation(equation)

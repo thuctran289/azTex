@@ -15,7 +15,7 @@ class LatexOutput(GenericOutput):
 		doc.append("\\begin{document}\n")
 		for element in representation:
 			doc.append(self.to_code(element))
-		doc.append("\\end{document}\n")
+		doc.append("\\end{document}")
 
 		return doc
 

@@ -4,9 +4,6 @@
 import os
 from AztexRunner import run_test
 
-CWD = os.getcwd()
-tests = CWD + '/test_suites'
-# files = os.listdir(tests)
 
 def get_input(line_list):
 	input_lines = line_list[1:line_list.index('Output:\n')]
@@ -31,11 +28,20 @@ if __name__ == '__main__':
 	cwd = os.getcwd()
 	tests = cwd + '/test_suite'
 	files = os.listdir(tests)
-	with open(tests+'/'+files[2]) as fp:
+	if '.DS_Store' in files: files.remove('.DS_Store')
+	test_result = True
+	for f in files:
+		with open(tests+'/'+f) as fp:
+			line_list = fp.readlines()
+			result = run_test(get_input(line_list))
+			test_result = result == get_output(line_list)
+			if test_result == False:
+				print f + ': FAILED'
+				break
+
+	with open(tests+'/'+files[1]) as fp:
 		line_list = fp.readlines()
 		inpt = get_input(line_list)
 		# print 'AztexRunner.py '+inpt
-		result = run_test(input)
-		print result
-		print get_output(line_list)
-	
+		result = run_test(inpt)
+		print result == get_output(line_list)

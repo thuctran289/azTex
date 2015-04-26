@@ -2,7 +2,7 @@ import re
 
 class EquationParser(object):
 	EQUALITY_PATTERN = re.compile(r"[=<>]+")
-	POS_NEG_VAL_PATTERN = re.compile(r"^[+-]\w+$")
+	POS_NEG_VAL_PATTERN = re.compile(r"^[+-][\d\.]+$")
 
 	def parseEquation(self, equation):
 		""" parses an equation
@@ -18,6 +18,10 @@ class EquationParser(object):
 		'(y) = ((+5) - (x))'
 		>>> str(p.parseEquation("F = (G * m1 * m2) / r^2"))
 		'(F) = (((G) * ((m1) * (m2))) / ((r) ^ (2)))'
+		>>> str(p.parseEquation("+3.14 = -6.28 / -2.0"))
+		'(+3.14) = ((-6.28) / (-2.0))'
+		>>> str(p.parseEquation(".5 = +2.0 * .25"))
+		'(.5) = ((+2.0) * (.25))'
 		"""
 		left, right, mid = self.splitEquation(equation)
 
@@ -90,6 +94,8 @@ class EquationParser(object):
 		('3', '3', '+')
 		>>> p.splitExpression("3 * x - 5")
 		('3 * x', '5', '-')
+		>>> p.splitExpression("+5 - x")
+		('+5', 'x', '-')
 		"""
 		operatorIndex = self.leastPrecedenceOperatorIndex(expr)
 		left = expr[:operatorIndex]
@@ -112,16 +118,32 @@ class EquationParser(object):
 		16
 		>>> p.leastPrecedenceOperatorIndex("G * m1 * m2")
 		2
+		>>> p.leastPrecedenceOperatorIndex("+5 - x")
+		3
 		"""
 		for operator in self.operators():
 			parensLevel = 0
+			adjOpers = 0
+			prevChar = '-'
 			for index in range(len(expr)):
+				#print "char: ", expr[index], ", index :", index, ", opers: ", adjOpers, ", prevChar: ", prevChar
 				if expr[index] == '(':
 					parensLevel += 1
 				elif expr[index] == ')':
 					parensLevel -= 1
-				elif parensLevel == 0 and expr[index] == operator:
+				elif self.isOperator(expr[index]) and self.isOperator(prevChar):
+					adjOpers = True
+				elif expr[index] != " " and not self.isOperator(expr[index]):
+					adjOpers = False
+
+				if expr[index] != " ":
+					prevChar = expr[index]
+
+				if parensLevel == 0 and expr[index] == operator and not adjOpers:
 					return index
+
+	def isOperator(self, char):
+		return char in self.operators()
 
 	def splitEquation(self, equation):
 		""" splits the equation into its two sides

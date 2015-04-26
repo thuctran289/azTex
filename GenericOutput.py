@@ -31,7 +31,7 @@ class GenericOutput(object):
 				elif e_type == 'Link':
 					return self.link(element)
 				elif e_type == 'Equation':
-					pass
+					return self.equation(element)
 				elif e_type == 'Bold':
 					return self.bold(element)
 				elif e_type == 'Italic':
@@ -48,9 +48,9 @@ class GenericOutput(object):
 					return self.table(element)
 
 			else:
+				list_of_elements = []
 				for element in elements:
 					e_type = element.get_type()
-
 					if e_type == 'Unordered List':
 						pass
 					elif e_type == 'Ordered List':
@@ -58,25 +58,29 @@ class GenericOutput(object):
 					elif e_type == "Image":
 						pass
 					elif e_type == 'Text':
-						return self.text(element)
+						list_of_elements+=self.text(element)
 					elif e_type == 'Link':
-						return self.link(element)
+						list_of_elements+=self.link(element)
 					elif e_type == 'Equation':
 						pass
 					elif e_type == 'Bold':
-						return self.bold(element)
+					    list_of_elements+=self.bold(element)
 					elif e_type == 'Italic':
-						return self.italic(element)
+						list_of_elements+=self.italic(element)
 					elif e_type == 'Underline':
-						return self.underline(element)
+						list_of_elements+=self.underline(element)
 					elif e_type == 'Strikethrough':
-						return self.strikethrough(element)
+						list_of_elements+=self.strikethrough(element)
 					elif e_type == 'Quote':
-						return self.quote(element)
+						list_of_elements+=self.quote(element)
 					elif e_type == "Heading":
-						return self.heading(element)
+						list_of_elements+=self.heading(element)
 					elif e_type == "Table":	
-						return self.table(element)
+						list_of_elements+=self.table(element)
 
+				new_line = "";
+				for element in list_of_elements:
+					new_line +=element
+				return new_line
 
 

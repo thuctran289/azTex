@@ -212,7 +212,9 @@ if __name__ == "__main__":
 	import doctest
 	doctest.testmod(extraglobs={'p': EquationParser()})
 
-	# p = EquationParser()
-	# equation = "\\rho = x ^ 2 - 3 / y"
-	# print equation
-	# print p.parseEquation(equation)
+	p = EquationParser()
+	equation = "\\rho = x ^ 2 - 3 / y"
+	print p.parseEquation(equation).left
+	print p.parseEquation(equation).mid
+	print p.parseEquation(equation).right
+	print p.parseEquation(equation)

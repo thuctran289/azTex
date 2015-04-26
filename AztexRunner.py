@@ -71,11 +71,12 @@ if __name__ == "__main__":
 	    elements.append(element)
 	    block = tokenizer.get_next_block()
 
+
 	print "===== DOCUMENT ELEMENTS ====="
 	A = LatexOutput()
 
 	#for element in elements:
-	#	print A.to_code(element)
+	#	print element
 	#	print ""
 
 	for element in  A.to_doc(elements):

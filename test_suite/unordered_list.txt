@@ -1,0 +1,16 @@
+Input:
+- element 1
+- element 2
+- element 3
+Output:
+\documentclass{article}
+\usepackage[utf8]{inputenc}
+\usepackage[normalem]{ulem}
+\usepackage{hyperref}
+\begin{document}
+\begin{itemize}
+\item element 1
+\item element 2
+\item element 3
+\end{itemize}
+\end{document}

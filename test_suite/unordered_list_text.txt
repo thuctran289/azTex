@@ -1,0 +1,22 @@
+Input:
+- **bold text** more text
+- *italic text* more text 
+- _underline text_ more text
+- ~~strikethrough text~~ more text
+- ***bold and italic*** more text
+- [Rick Roll Link](https://www.youtube.com/watch?v=dQw4w9WgXcQ) more text
+Output:
+\documentclass{article}
+\usepackage[utf8]{inputenc}
+\usepackage[normalem]{ulem}
+\usepackage{hyperref}
+\begin{document}
+\begin{itemize}
+\item \textbf{bold text} more text
+\item \textit{italic text} more text
+\item \underline{underline text} more text
+\item \sout{strikethrough text} more text
+\item \textbf{textit{bold and italic}} more text
+\item \href{https://www.youtube.com/watch?v=dQw4w9WgXcQ}{Rick Roll Link} more text
+\end{itemize}
+\end{document}

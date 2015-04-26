@@ -40,7 +40,7 @@ def run_test(text):
 if __name__ == "__main__":
 	if len(sys.argv) > 1:
 		args = sys.argv[1:]
-		if '.txt' in args:
+		if '.txt' in args[0]:
 			filename = args
 			w = open(filename[:-4:] + ".tex", 'w')
 			f = open(filename, 'r')
@@ -54,25 +54,25 @@ if __name__ == "__main__":
 		f = open(filename, 'r')
 		text = f.read()
 
-		print "===== ORIGINAL FILE =====\n"
-		print text
-		print "=========================\n\n"
+	print "===== ORIGINAL FILE =====\n"
+	print text
+	print "=========================\n\n"
 
-		from Tokenizer import Tokenizer
-		from Parser import Parser
+	from Tokenizer import Tokenizer
+	from Parser import Parser
 
-		tokenizer = Tokenizer(text)
-		parser = Parser()
+	tokenizer = Tokenizer(text)
+	parser = Parser()
 
-		elements = []
-		block = tokenizer.get_next_block()
-		while block:
-		    element = parser.parseBlock(block)
-		    elements.append(element)
-		    block = tokenizer.get_next_block()
+	elements = []
+	block = tokenizer.get_next_block()
+	while block:
+	    element = parser.parseBlock(block)
+	    elements.append(element)
+	    block = tokenizer.get_next_block()
 
-		print "===== DOCUMENT ELEMENTS ====="
-		A = LatexOutput()
+	print "===== DOCUMENT ELEMENTS ====="
+	A = LatexOutput()
 
 	#for element in elements:
 	#	print A.to_code(element)
@@ -87,7 +87,3 @@ if __name__ == "__main__":
 	print "==============="
 	print "=== SUCCESS ==="
 	print "==============="
-
-
-
-

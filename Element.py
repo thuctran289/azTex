@@ -13,8 +13,12 @@ class Element(object):
 
 	def __str__(self):
 		subs = ""
-		for element in self.subelements:
-			subs += str(element) 
+		if isinstance(self.subelements, list):
+			for element in self.subelements:
+				subs += str(element) 
+		else:
+			subs = self.subelements
+
 		return '(%s: %s)' % (self.element_type, subs)
 
 	def get_type(self):
@@ -75,10 +79,11 @@ class ImageElement(Element):
 		self.path = path
 		self.element = element
 
-class EquationElement(Element):
+class InlineEquationElement(Element):
 	""" An Element object that represents an equation """
-	def __init__(self, subelements):
-		super(EquationElement, self).__init__("Equation", subelements)
+	def __init__(self, equation):
+		super(InlineEquationElement, self).__init__("InlineEquation", equation)
+		self.equation = equation
 
 class BoldElement(Element):
 	""" An Element object that represents bolded text """
@@ -126,6 +131,12 @@ class TableElement(Element):
 			items += ", ".join(map(lambda x: str(x), row))
 			items += '\n'
 		return '%s:\n\t%s\n%s' % (self.element_type, headers, items)
+
+class BlockEquationElement(Element):
+	""" An Element object that represents an equation """
+	def __init__(self, equation):
+		super(BlockEquationElement, self).__init__("BlockEquation", equation)
+		self.equation = equation
 
 if __name__ == "__main__":
 	import doctest

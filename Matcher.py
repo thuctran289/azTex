@@ -92,6 +92,16 @@ class Matcher(object):
 		"""
 		return self.match(block, UNORDERED_LIST_PATTERN)
 
+	def matchBlockEquation(self, block):
+		""" determines if the block is a block equation
+		>>> m = Matcher()
+		>>> bool(m.matchBlockEquation("y = 3 * x"))
+		True
+		>>> bool(m.matchBlockEquation("Einstein: e = m * c ^ 2"))
+		False
+		"""
+		return self.match(block, EQUATION_BLOCK_PATTERN)
+
 	def matchBoldText(self, block):
 		""" determines if a block starts with bold text
 		>>> m = Matcher()
@@ -324,6 +334,14 @@ class UnorderedListMatch(Match):
 		block = self.match.string
 		itemRegex = r"(?<=(?:\*|\-) )(.+)(?=(?:\n|$))"
 		return re.findall(itemRegex, block)
+
+class BlockEquationMatch(Match):
+
+	def equation(self):
+		block = self.match.string
+		equationStart = self.match.start()
+		equationEnd = self.match.end()
+		return block[equationStart:equationEnd]
 
 if __name__ == "__main__":
 	import doctest

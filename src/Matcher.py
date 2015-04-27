@@ -112,6 +112,16 @@ class Matcher(object):
 		"""
 		return self.match(block, START_BOLD_TEXT_PATTERN)
 
+	def matchBoldItalicText(self, block):
+		""" determines if a block starts with bold text
+		>>> m = Matcher()
+		>>> bool(m.matchBoldItalicText("***yup, it does***"))
+		True
+		>>> bool(m.matchBoldItalicText("*nope, this is italic*"))
+		False
+		"""
+		return self.match(block, START_BOLD_ITALIC_TEXT_PATTERN)
+
 	def matchItalicText(self, block):
 		""" determines if a block starts with italic text
 		>>> m = Matcher()
@@ -191,6 +201,14 @@ class Match(object):
 
 	def __init__(self, match):
 		self.match = match
+
+class BoldItalicTextMatch(Match):
+
+	def text(self):
+		return self.match.groups()[0]
+		
+	def end(self):
+		return self.match.end()
 
 class BoldTextMatch(Match):
 

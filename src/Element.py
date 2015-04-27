@@ -85,6 +85,11 @@ class InlineEquationElement(Element):
 		super(InlineEquationElement, self).__init__("InlineEquation", equation)
 		self.equation = equation
 
+class BoldItalicElement(Element):
+	""" An Element object that represents bolded text """
+	def __init__(self, subelements):
+		super(BoldItalicElement, self).__init__("BoldItalic", subelements)
+
 class BoldElement(Element):
 	""" An Element object that represents bolded text """
 	def __init__(self, subelements):

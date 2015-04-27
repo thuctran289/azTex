@@ -79,7 +79,14 @@ class Parser(object):
 		components = []
 		container = Container()
 		while block:
-			if container.set(self.matcher.matchBoldText(block)):
+
+			if container.set(self.matcher.matchBoldItalicText(block)):
+				match = container.get()
+				em = BoldItalicTextMatch(match)
+				subelement = self.parseText(em.text())
+				element = BoldItalicElement(subelement)
+
+			elif container.set(self.matcher.matchBoldText(block)):
 				match = container.get()
 				em = BoldTextMatch(match)
 				subelement = self.parseText(em.text())

@@ -44,7 +44,9 @@ What happens **now**?
 
 ## _Altogether_ ##
 
-We can ~~mix** it~~  _*all*_ together!
+We can ~~**mix** it~~  _*all*_ together!
+
+***bold and italic***
 
 ## Equations!!! ##
 

@@ -46,7 +46,7 @@ IMAGE_REGEX = r"\!\[(.+?)\]\((.+?)\)"
 START_IMAGE_REGEX = r"^" + IMAGE_REGEX
 START_IMAGE_PATTERN = re.compile(START_IMAGE_REGEX)
 
-VALUE_REGEX = r"(?:[+-]?[\w\(\)\{\}\\]+)"
+VALUE_REGEX = r"(?:[+-]?[\w\.\(\)\{\}\\]+)"
 OPERATOR_REGEX = r"[-+/*^]"
 EQUALITY_REGEX = r"[=<>]+"
 EXPRESSION_REGEX = VALUE_REGEX + "(?:(?:\s)*" + OPERATOR_REGEX + "(?:\s)*" + VALUE_REGEX + ")*"

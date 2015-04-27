@@ -46,6 +46,15 @@ IMAGE_REGEX = r"\!\[(.+?)\]\((.+?)\)"
 START_IMAGE_REGEX = r"^" + IMAGE_REGEX
 START_IMAGE_PATTERN = re.compile(START_IMAGE_REGEX)
 
+VALUE_REGEX = r"[\w\(\)\{\}\\]+"
+OPERATOR_REGEX = r"[-+/*^]"
+EQUALITY_REGEX = r"[=<>]+"
+EXPRESSION_REGEX = VALUE_REGEX + "(?:(?:\s)*" + OPERATOR_REGEX + "(?:\s)*" + VALUE_REGEX + ")*"
+EQUATION_REGEX = EXPRESSION_REGEX + "(?:\s)*"  + EQUALITY_REGEX + "(?:\s)*" + EXPRESSION_REGEX
+START_EQUATION_REGEX = r"^" + EQUATION_REGEX
+START_EQUATION_PATTERN = re.compile(START_EQUATION_REGEX)
+
+
 START_PLAIN_TEXT_REGEX = r"((?:.|\n)+?)(?:" + \
 									BOLD_TEXT_REGEX + "|" +\
 									ITALIC_TEXT_REGEX + "|" +\
@@ -54,6 +63,7 @@ START_PLAIN_TEXT_REGEX = r"((?:.|\n)+?)(?:" + \
 									QUOTE_TEXT_REGEX + "|" +\
 									LINK_TEXT_REGEX + "|" +\
 									IMAGE_REGEX + "|" +\
+									EQUATION_REGEX + "|" +\
 							   "$)"
 
 START_PLAIN_TEXT_PATTERN = re.compile(START_PLAIN_TEXT_REGEX)

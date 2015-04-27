@@ -62,7 +62,7 @@ class GenericOutput(object):
 					elif e_type == 'Link':
 						list_of_elements+=self.link(element)
 					elif e_type == 'Equation':
-						pass
+						list_of_elements+=self.equation(element)
 					elif e_type == 'Bold':
 					    list_of_elements+=self.bold(element)
 					elif e_type == 'Italic':

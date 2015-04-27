@@ -53,3 +53,5 @@ Pythagoras once said, c^2 = a^2 + b^2, he was a smart dude
 This should work in latex: \rho = x ^ 2 - 3 / y
 
 Unfortunately you must use parenthesis for expressions that start with signs, like, (-4) = 3 - 7
+
+\rho = x ^ 2 - 3 / y

@@ -18,6 +18,7 @@ class LatexOutput(GenericOutput):
 		doc.append("\\documentclass{article}\n")
 		doc.append("\\usepackage[utf8]{inputenc}\n")
 		doc.append("\\usepackage[normalem]{ulem}\n")
+		doc.append("\\usepackage{amsmath}\n")
 		doc.append("\\usepackage{hyperref}\n")
 		doc.append("\\begin{document}\n")
 		for element in representation:
@@ -53,8 +54,7 @@ class LatexOutput(GenericOutput):
 	def link(self, element):
 		# print type(element.element)
 		return "\\href{" + element.element + "}{"  +self.to_code(element.url)+ "}"
-	def equation(self, element):
-		pass
+
 	def bold(self, element):
 		return "\\textbf{" + self.to_code(element.get_elements()) + "}"
 	def italic(self, element):
@@ -117,7 +117,24 @@ class LatexOutput(GenericOutput):
 		doc.append("\\end{tabular}\n\n")
 
 		return "".join(doc)
+	
 
+	def equation(self, element):
+		doc = []
+		doc.append("\\begin{equation}\n")
+		eqn = self.equationhelper(element.left) + element.mid + self.equationhelper(element.right)
+		doc.append(eqn + "\n")
+		doc.append("\\end{equation}\n")
+		return "".join(doc)
+
+	def equationhelper(self, expression):
+		if type(expression) == str:
+			return expression
+		else:
+			if expression.operator == "/":
+				return "\\frac{" + self.equationhelper(expression.left) + "}{" + self.equationhelper(expression.right) + "}"
+			else:
+				return self.equationhelper(expression.left) + expression.operator + self.equationhelper(expression.right)
 
 if __name__ == "__main__":
 	uolist = UnorderedListElement(['these are words', 'more words', 'omg even more!'])

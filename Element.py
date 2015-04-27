@@ -1,8 +1,5 @@
 """
-	@author: jovanduy
-	Contains the Element class. An Element is a single component of
-	a document. Element has subclasses corresponding to different types
-	of Elements.
+@author: jovanduy
 """
 
 class Element(object):
@@ -16,8 +13,12 @@ class Element(object):
 
 	def __str__(self):
 		subs = ""
-		for element in self.subelements:
-			subs += str(element) 
+		if isinstance(self.subelements, list):
+			for element in self.subelements:
+				subs += str(element) 
+		else:
+			subs = self.subelements
+
 		return '(%s: %s)' % (self.element_type, subs)
 
 	def get_type(self):
@@ -78,10 +79,11 @@ class ImageElement(Element):
 		self.path = path
 		self.element = element
 
-class EquationElement(Element):
+class InlineEquationElement(Element):
 	""" An Element object that represents an equation """
-	def __init__(self, subelements):
-		super(EquationElement, self).__init__("Equation", subelements)
+	def __init__(self, equation):
+		super(InlineEquationElement, self).__init__("InlineEquation", equation)
+		self.equation = equation
 
 class BoldElement(Element):
 	""" An Element object that represents bolded text """
@@ -130,6 +132,23 @@ class TableElement(Element):
 			items += '\n'
 		return '%s:\n\t%s\n%s' % (self.element_type, headers, items)
 
+class BlockEquationElement(Element):
+	""" An Element object that represents an equation """
+	def __init__(self, equation):
+		super(BlockEquationElement, self).__init__("BlockEquation", equation)
+		self.equation = equation
+
 if __name__ == "__main__":
 	import doctest
 	doctest.testmod()
+	uolist = LinkElement(['these are words', 'more words', 'omg even more!'])
+	print uolist
+	print type(uolist)
+	print uolist.get_type()
+	print uolist.get_elements()
+	# text = TextElement('these are words yay')
+	# print text
+	# print type(text)
+
+	# print text.get_type()
+	# print text.get_elements()

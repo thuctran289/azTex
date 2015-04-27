@@ -25,6 +25,7 @@ class Parser(object):
 
 	def parseBlock(self, block):
 		container = Container()
+		print block
 		if container.set(self.matcher.matchHeading(block)):
 			match = container.get()
 			em = HeadingMatch(match)
@@ -62,12 +63,12 @@ class Parser(object):
 			listItems = map(self.parseText, em.listItems())
 			return UnorderedListElement(listItems)
 
-		
-	#	elif container.set(self.matcher.matchEquation(block)):
-	#		match = container.get()
-	#		em = EquationMatcher(match)
-	#		listItems = map(self.parseText, em.listItems())
-	#		return EquationParser().parseEquation(block)
+		elif container.set(self.matcher.matchBlockEquation(block)):
+			match = container.get()
+			em = BlockEquationMatch(match)
+			equationStr = em.equation()
+			equation = EquationParser().parseEquation(equationStr)
+			return BlockEquationElement(equation)
 
 		else:
 			return ParagraphElement(self.parseText(block))
@@ -124,7 +125,8 @@ class Parser(object):
 				match = container.get()
 				em = InlineEquationMatch(match)
 				equationStr = em.equation()
-				element = EquationParser().parseEquation(equationStr)
+				equation = EquationParser().parseEquation(equationStr)
+				element = InlineEquationElement(equation)
 
 			elif container.set(self.matcher.matchPlainText(block)):
 				match = container.get()

@@ -158,7 +158,7 @@ class Matcher(object):
 		return self.match(block, START_PLAIN_TEXT_PATTERN)
 
 	def matchImage(self, block):
-		""" determines if a block starts with and image
+		""" determines if a block starts with an image
 		>>> m = Matcher()
 		>>> bool(m.matchImage("![cats](http://imgur.com/cat.jpg)"))
 		True
@@ -166,6 +166,16 @@ class Matcher(object):
 		False
 		"""
 		return self.match(block, START_IMAGE_PATTERN)
+
+	def matchInlineEquation(self, block):
+		""" determines if a block starts with an equation
+		>>> m = Matcher()
+		>>> bool(m.matchImage("y = m * x + b"))
+		True
+		>>> bool(m.matchImage("It's as simple as 2 + 2 = 4"))
+		False
+		"""
+		return self.match(block, START_EQUATION_PATTERN)
 
 class Match(object):
 
@@ -231,6 +241,18 @@ class ImageMatch(Match):
 	def path(self):
 		return self.match.groups()[1]
 		
+	def end(self):
+		return self.match.end()
+
+class InlineEquationMatch(Match):
+
+	def equation(self):
+		""" gets the equation string """
+		block = self.match.string
+		equationStart = self.match.start()
+		equationEnd = self.match.end()
+		return block[equationStart:equationEnd]
+
 	def end(self):
 		return self.match.end()
 

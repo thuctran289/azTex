@@ -40,6 +40,12 @@ Don't forget to ``quote your sources'' too.
  2  | tom  | tom@mail.com
  3  | ron  | ron@mail.com 
 
+What happens **now**?
+
 ## _Altogether_ ##
 
 We can ~~mix** it~~  _*all*_ together!
+
+## Equations!!! ##
+
+Pythagoras once said, c^2 = a^2 + b^2, he was a smart dude

@@ -2,6 +2,7 @@ import re
 from Element import *
 from Regex import *
 from Matcher import *
+from Equation import EquationParser
 
 class Container(object):
 	""" simple class to hold data
@@ -61,6 +62,13 @@ class Parser(object):
 			listItems = map(self.parseText, em.listItems())
 			return UnorderedListElement(listItems)
 
+		
+	#	elif container.set(self.matcher.matchEquation(block)):
+	#		match = container.get()
+	#		em = EquationMatcher(match)
+	#		listItems = map(self.parseText, em.listItems())
+	#		return EquationParser().parseEquation(block)
+
 		else:
 			return ParagraphElement(self.parseText(block))
 
@@ -111,6 +119,12 @@ class Parser(object):
 				em = ImageMatch(match)
 				subelement = self.parseText(em.text())
 				element = ImageElement(subelement, em.path())
+
+			elif container.set(self.matcher.matchInlineEquation(block)):
+				match = container.get()
+				em = InlineEquationMatch(match)
+				equationStr = em.equation()
+				element = EquationParser().parseEquation(equationStr)
 
 			elif container.set(self.matcher.matchPlainText(block)):
 				match = container.get()

@@ -50,7 +50,7 @@ We can ~~mix** it~~  _*all*_ together!
 
 Pythagoras once said, c^2 = a^2 + b^2, he was a smart dude
 
-This should work in latex: \rho = x ^ 2 - 3 / y
+This should work in latex: \rho = x ^ 2.34 - .01010 / y
 
 Unfortunately you must use parenthesis for expressions that start with signs, like, (-4) = 3 - 7
 

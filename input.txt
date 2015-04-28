@@ -55,3 +55,7 @@ This should work in latex: \rho = x ^ 2.34 - .01010 / y
 Unfortunately you must use parenthesis for expressions that start with signs, like, (-4) = 3 - 7
 
 F = G * (m1 * m2) / r ^ 2
+
+sin(x) = pi
+
+you know that sin(x + 2) = 3 * pi is False

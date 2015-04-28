@@ -180,9 +180,9 @@ class Matcher(object):
 	def matchInlineEquation(self, block):
 		""" determines if a block starts with an equation
 		>>> m = Matcher()
-		>>> bool(m.matchImage("y = m * x + b"))
+		>>> bool(m.matchInlineEquation("y = m * x + b"))
 		True
-		>>> bool(m.matchImage("It's as simple as 2 + 2 = 4"))
+		>>> bool(m.matchInlineEquation("It's as simple as 2 + 2 = 4"))
 		False
 		"""
 		return self.match(block, START_EQUATION_PATTERN)

@@ -19,6 +19,14 @@ class LatexOutput(GenericOutput):
 		doc.append("\\usepackage[utf8]{inputenc}\n")
 		doc.append("\\usepackage[normalem]{ulem}\n")
 		doc.append("\\usepackage{amsmath}\n")
+		doc.append("\\usepackage{graphicx}\n")
+		directories = [element.path for element in representation if element.get_type() == "Image"]
+		print directories
+		if len(directories) > 0:
+			doc.append("\\graphicspath{ ")
+			for path in directories:
+				doc[-1] += "{" + path + "}"
+			doc[-1] += " }"
 		doc.append("\\usepackage{hyperref}\n")
 		doc.append("\\begin{document}\n")
 		for element in representation:
@@ -54,7 +62,8 @@ class LatexOutput(GenericOutput):
 	def link(self, element):
 		# print type(element.element)
 		return "\\href{" + element.element + "}{"  +self.to_code(element.url)+ "}"
-
+	def image(self, element):
+		return "\\includegraphics{" + element.element + "}"
 	def bold(self, element):
 		return "\\textbf{" + self.to_code(element.get_elements()) + "}"
 	def italic(self, element):

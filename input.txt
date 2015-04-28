@@ -24,6 +24,10 @@ You can also use an *unordered list*:
 
 You can event link to your favorite sites, like [aztex](http://github.com/thuc289/azTex).
 
+Images work too here is a cat ![cat][images/]
+
+But we all know dogs are better ![dog][/Users/Jordan/Documents/]
+
 Don't forget to ``quote your sources'' too.
 
 ## Tables ##
@@ -46,14 +50,8 @@ What happens **now**?
 
 We can ~~**mix** it~~  _*all*_ together!
 
-***bold and italic***
+
 
 ## Equations!!! ##
 
-Pythagoras once said, c^2 = a^2 + b^2, he was a smart dude
 
-This should work in latex: \rho = x ^ 2.34 - .01010 / y
-
-Unfortunately you must use parenthesis for expressions that start with signs, like, (-4) = 3 - 7
-
-F = G * (m1 * m2) / r ^ 2

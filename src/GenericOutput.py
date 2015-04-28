@@ -25,7 +25,7 @@ class GenericOutput(object):
 				elif e_type == "Paragraph":
 					return self.paragraph(element)
 				elif e_type == "Image":
-					pass
+					return self.image(element)
 				elif e_type == 'Text':
 					return self.text(element)
 				elif e_type == 'Link':
@@ -56,7 +56,7 @@ class GenericOutput(object):
 					elif e_type == 'Ordered List':
 						pass
 					elif e_type == "Image":
-						pass
+						list_of_elements+=self.image(element)
 					elif e_type == 'Text':
 						list_of_elements+=self.text(element)
 					elif e_type == 'Link':

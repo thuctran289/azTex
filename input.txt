@@ -54,4 +54,8 @@ We can ~~**mix** it~~  _*all*_ together!
 
 ## Equations!!! ##
 
+F = G * (m1 * m2) / r ^ 2
 
+sin(x) = pi
+
+you know that sin(x + 2) = 3 * pi is False

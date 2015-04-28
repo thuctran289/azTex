@@ -3,6 +3,7 @@ import re
 class EquationParser(object):
 	EQUALITY_PATTERN = re.compile(r"[=<>]+")
 	POS_NEG_VAL_PATTERN = re.compile(r"^[+-][\d\.]+$")
+	FUNCTION_PATTERN = re.compile(r"^\s*([\w\\]+)\((.*)\)\s*$")
 
 	def parseEquation(self, equation):
 		""" parses an equation
@@ -40,6 +41,14 @@ class EquationParser(object):
 		"""
 		# remove outer parens if there are any
 		expr = self.removeOuterParentheses(expr)
+
+		if self.isFunction(expr):
+			match = self.FUNCTION_PATTERN.match(expr)
+			func = match.groups()[0]
+			param = match.groups()[1]
+
+			subexpr = self.parseExpression(param)
+			return Function(func, subexpr)
 
 		# base case
 		# expr is a single value
@@ -180,6 +189,17 @@ class EquationParser(object):
 			return True
 		return not any(operator in expr for operator in self.operators()) 
 
+	def isFunction(self, expr):
+		""" is expr a function
+		>>> p.isFunction("cos(2 * pi)")
+		True
+		>>> p.isFunction("sin( 2 * pi )")
+		True
+		>>> p.isFunction("3 + 3")
+		False
+		"""
+		return self.FUNCTION_PATTERN.match(expr) != None
+
 	def operators(self):
 		""" reverse pemdas operators """
 		return ['-', '+', '/', '*', '^']
@@ -198,6 +218,7 @@ class Equation(object):
 
 	def get_type(self):
 		return "Equation"
+
 class Expression(object):
 
 	def __init__(self, left, right, operator):
@@ -209,6 +230,15 @@ class Expression(object):
 		return "(" + str(self.left) + ") " + \
 			   self.operator + \
 			   " (" + str(self.right) + ")"
+
+class Function(object):
+
+	def __init__(self, func, param):
+		self.func = func
+		self.param = param
+
+	def __str__(self):
+		return self.func + "(" + str(self.param) + ")"
 
 if __name__ == "__main__":
 	import doctest

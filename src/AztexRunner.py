@@ -49,7 +49,7 @@ if __name__ == "__main__":
 			w = open('newfile.tex', 'w')
 			text = ' '.join(args)
 	else:
-		filename = "/Users/Jordan/Documents/SoftDes/azTex/input.txt"
+		filename = "input.txt"
 		w = open(filename[:-4:] + ".tex", 'w')
 		f = open(filename, 'r')
 		text = f.read()

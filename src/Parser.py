@@ -25,53 +25,54 @@ class Parser(object):
 
 	def parseBlock(self, block):
 		container = Container()
-		print block
 		if container.set(self.matcher.matchHeading(block)):
 			match = container.get()
 			em = HeadingMatch(match)
-			element = self.parseText(em.text())
-			return HeadingElement(element, 1)
+			subelement = self.parseText(em.text())
+			element = HeadingElement(subelement, 1)
 
 		elif container.set(self.matcher.matchSubHeading(block)):
 			match = container.get()
 			em = SubHeadingMatch(match)
-			element = self.parseText(em.text())
-			return HeadingElement(element, 2) 
+			subelement = self.parseText(em.text())
+			element = HeadingElement(subelement, 2) 
 
 		elif container.set(self.matcher.matchSubSubHeading(block)):
 			match = container.get()
 			em = SubSubHeadingMatch(match)
-			element = self.parseText(em.text())
-			return HeadingElement(element, em.level()) 
+			subelement = self.parseText(em.text())
+			element = HeadingElement(subelement, em.level()) 
 
 		elif container.set(self.matcher.matchTable(block)):
 			match = container.get()
 			em = TableMatch(match)
-			tableHeaders = map(self.parseText, em.tableHeaders())
-			tableItems = map(lambda row: map(self.parseText, row), em.tableItems())
-			return TableElement(tableHeaders, tableItems)
+			tableHeaders = map(self.parseBlock, em.tableHeaders())
+			tableItems = map(lambda row: map(self.parseBlock, row), em.tableItems())
+			element = TableElement(tableHeaders, tableItems)
 
 		elif container.set(self.matcher.matchOrderedList(block)):
 			match = container.get()
 			em = OrderedListMatch(match)
-			listItems = map(self.parseText, em.listItems())
-			return OrderedListElement(listItems)
+			listItems = map(self.parseBlock, em.listItems())
+			element = OrderedListElement(listItems)
 
 		elif container.set(self.matcher.matchUnorderedList(block)):
 			match = container.get()
 			em = UnorderedListMatch(match)
-			listItems = map(self.parseText, em.listItems())
-			return UnorderedListElement(listItems)
+			listItems = map(self.parseBlock, em.listItems())
+			element = UnorderedListElement(listItems)
 
 		elif container.set(self.matcher.matchBlockEquation(block)):
 			match = container.get()
 			em = BlockEquationMatch(match)
 			equationStr = em.equation()
 			equation = EquationParser().parseEquation(equationStr)
-			return BlockEquationElement(equation)
+			element = BlockEquationElement(equation)
 
 		else:
-			return ParagraphElement(self.parseText(block))
+			element = ParagraphElement(self.parseText(block))
+
+		return element
 
 	def parseText(self, block):
 		""" gets the elements within a paragraph

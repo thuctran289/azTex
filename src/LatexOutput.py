@@ -20,18 +20,6 @@ class LatexOutput(GenericOutput):
 		doc.append("\\usepackage[normalem]{ulem}\n")
 		doc.append("\\usepackage{amsmath}\n")
 		doc.append("\\usepackage{graphicx}\n")
-		# directories = [element.path for element in representation if element.get_type() == "Image"]
-		directories = []
-		for element in representation:
-			if element.get_type == "Image":
-				print element
-				directories.append(element.path)
-		print directories
-		if len(directories) > 0:
-			doc.append("\\graphicspath{ ")
-			for path in directories:
-				doc[-1] += "{" + path + "}"
-			doc[-1] += " }"
 		doc.append("\\usepackage{hyperref}\n")
 		doc.append("\\begin{document}\n")
 		for element in representation:

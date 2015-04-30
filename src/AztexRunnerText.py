@@ -1,7 +1,7 @@
 import sys
 from Element import Element
 
-filename = "/Users/Jordan/Documents/SoftDes/azTex/input.txt"
+filename = "input.txt"
 f = open(filename, 'r')
 text = f.read()
 

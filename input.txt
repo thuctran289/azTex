@@ -24,11 +24,11 @@ You can also use an *unordered list*:
 
 You can event link to your favorite sites, like [aztex](http://github.com/thuc289/azTex).
 
-Images work too here is a cat ![cat](images/)
+Images work too here is a cat ![cat](cat.jpg)
 
 But we all know dogs are better
 
-![dog](/Users/Jordan/Documents/)
+![dog](dog)
 
 Don't forget to ``quote your sources'' too.
 

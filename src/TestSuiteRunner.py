@@ -32,6 +32,7 @@ if __name__ == '__main__':
 	# the ones that failed the test
 	print '====== FAILURES ======'
 	for f in files:
+		print f
 		with open(tests+'/'+f) as fp:
 			line_list = fp.readlines()
 			result = run_test(get_input(line_list))

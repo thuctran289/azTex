@@ -1,4 +1,5 @@
 from Element import *
+from Equation import *
 from pylatex import *
 from GenericOutput import *
 
@@ -28,8 +29,9 @@ class LatexOutput(GenericOutput):
 
 		return doc
 
+
 	def unordered_list(self, element):
-		doc = ['\\begin{itemize}\n']
+		doc = ['\n' , '\\begin{itemize}\n']
 		elements = element.get_elements()
 		for obje in elements:
 			if hasattr(obje, 'str'):
@@ -40,7 +42,7 @@ class LatexOutput(GenericOutput):
 		doc.extend('\\end{itemize}\n')
 		return ''.join(doc)
 	def ordered_list(self, element):
-		doc = ['\\begin{enumerate}\n']
+		doc = ['\n', '\\begin{enumerate}\n']
 		elements = element.get_elements()
 		for obje in elements:
 			if hasattr(obje, 'str'):
@@ -69,18 +71,19 @@ class LatexOutput(GenericOutput):
 		return "``" + self.to_code(element.get_elements()) + "''"
 	def heading(self, element): 
 		if element.level == 1:
-			return "\\section{" + self.to_code(element.get_elements()) + "}\n"
+			return "\n\\section{" + self.to_code(element.get_elements()) + "}\n"
 		elif element.level == 2:
-			return "\\subsection{" + self.to_code(element.get_elements()) + "}\n"
+			return "\n\\subsection{" + self.to_code(element.get_elements()) + "}\n"
 		elif element.level == 3:
-			return "\\subsubsection{" + self.to_code(element.get_elements()) + "}\n"
+			return "\n\\subsubsection{" + self.to_code(element.get_elements()) + "}\n"
 		elif element.level == 4:
-			return "\\paragraph{" + self.to_code(element.get_elements()) + "}\n"
+			return "\n\\paragraph{" + self.to_code(element.get_elements()) + "}\n"
 		elif element.level == 5:
-			return "\\subparagraph{" + self.to_code(element.get_elements()) + "}\n"
+			return "\n\\subparagraph{" + self.to_code(element.get_elements()) + "}\n"
 			
 	def paragraph(self, element):
 		doc = []
+		doc.append("\n")
 		elements = element.get_elements()
 		for obje in elements:
 			if hasattr(obje, 'str'):
@@ -89,8 +92,10 @@ class LatexOutput(GenericOutput):
 				doc.append(self.to_code(obje))
 		doc.append("\n")
 		return ''.join(doc)
+
 	def table(self, element):
 		doc = []
+		doc.append("\n")
 		doc.append("\\noindent\n")
 		headers = element.headers
 		items = element.items
@@ -121,10 +126,10 @@ class LatexOutput(GenericOutput):
 		return "".join(doc)
 	
 
-	def equation(self, element):
+	def block_equation(self, element):
 		doc = []
-		doc.append("\\begin{equation}\n")
-		eqn = self.equationhelper(element.left) + element.mid + self.equationhelper(element.right)
+		doc.append("\n\\begin{equation}\n")
+		eqn = self.equationhelper(element.equation.left) + element.equation.mid + self.equationhelper(element.equation.right)
 		doc.append(eqn + "\n")
 		doc.append("\\end{equation}\n")
 		return "".join(doc)
@@ -132,11 +137,25 @@ class LatexOutput(GenericOutput):
 	def equationhelper(self, expression):
 		if type(expression) == str:
 			return expression
+		elif isinstance(expression, Function):
+			return "{\\" + expression.func + "(" + self.equationhelper(expression.param) + ")}"
 		else:
 			if expression.operator == "/":
-				return "\\frac{" + self.equationhelper(expression.left) + "}{" + self.equationhelper(expression.right) + "}"
+				return "{\\frac{" + self.equationhelper(expression.left) + "}{" + self.equationhelper(expression.right) + "}}"
+			elif expression.operator == '*':
+				return "{"+ self.equationhelper(expression.left) +" "+ self.equationhelper(expression.right)+ "}"
 			else:
-				return self.equationhelper(expression.left) + expression.operator + self.equationhelper(expression.right)
+				return "{"+ self.equationhelper(expression.left) + expression.operator + self.equationhelper(expression.right)+ "}"
+	def inline_equation(self, element):
+		doc = []
+		doc.append("$")
+		eqn = self.equationhelper(element.equation.left) + element.equation.mid + self.equationhelper(element.equation.right)
+		doc.append(eqn)
+		doc.append("$")
+		return "".join(doc)
+
+	def bold_italic(self, element):
+		return "\\textit{\\textbf{" + self.to_code(element.get_elements()) + "}}"
 
 if __name__ == "__main__":
 	uolist = UnorderedListElement(['these are words', 'more words', 'omg even more!'])

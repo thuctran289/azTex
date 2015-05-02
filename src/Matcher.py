@@ -263,7 +263,7 @@ class LinkTextMatch(Match):
 
 class ImageMatch(Match):
 
-	def text(self):
+	def caption(self):
 		return self.match.groups()[0]
 
 	def path(self):

@@ -56,7 +56,7 @@ class LatexOutput(GenericOutput):
 		# print type(element.element)
 		return "\\href{" + element.element + "}{"  +self.to_code(element.url)+ "}"
 	def image(self, element):
-		return "\\begin{figure}[h]\n\\includegraphics{" + element.element + "}\n\\end{figure}"
+		return "\\begin{figure}[h]\n\\caption{" + element.caption + "}\n\\centering\n\\includegraphics{" + element.path + "}\n\\end{figure}"
 	def bold(self, element):
 		return "\\textbf{" + self.to_code(element.get_elements()) + "}"
 	def italic(self, element):

@@ -30,12 +30,16 @@ class GenericOutput(object):
 					return self.text(element)
 				elif e_type == 'Link':
 					return self.link(element)
-				elif e_type == 'Equation':
-					return self.equation(element)
+				elif e_type == 'BlockEquation':
+					return self.block_equation(element)
+				elif e_type == 'InlineEquation':
+					return self.inline_equation(element)
 				elif e_type == 'Bold':
 					return self.bold(element)
 				elif e_type == 'Italic':
 					return self.italic(element)
+				elif e_type == 'BoldItalic':
+					return self.bold_italic(element)
 				elif e_type == 'Underline':
 					return self.underline(element)
 				elif e_type == 'Strikethrough':
@@ -77,6 +81,8 @@ class GenericOutput(object):
 						list_of_elements+=self.heading(element)
 					elif e_type == "Table":	
 						list_of_elements+=self.table(element)
+					elif e_type == 'BoldItalic':
+						pass
 
 				new_line = "";
 				for element in list_of_elements:

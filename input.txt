@@ -55,7 +55,9 @@ What happens **now**?
 We can ~~**mix** it~~  _*all*_ together!
 
 
+***a;lskfdjd;alsk***
 
 ## Equations!!! ##
 
+x^(2 + 5*x) + 3*sin(25*\pi*z) = l_{x}*sin(\theta)
 

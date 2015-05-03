@@ -1,0 +1,60 @@
+ztex tutorial
+==============
+
+## Lists ##
+
+This is an ordered list:
+
+1. write tokenizer
+2. write parser
+3. write internal representation
+4. **???** asdf
+5. profit
+
+You can also use an *unordered list*:
+
+- milk
+- ~~one~~ _three_ eggs
+- *bread*
+- potatos
+
+## Text ##
+
+~~If~~ **when** you make mistakes you can ~~strike through~~ text.
+
+You can event link to your favorite sites, like [aztex](http://github.com/thuc289/azTex).
+
+Images work too here is a cat ![cat](cat.jpg)
+
+But we all know dogs are better
+
+![dog](dog)
+
+Don't forget to ``quote your sources'' too.
+
+## Tables ##
+
+| id | name |     email    |
+|----|------|--------------|
+| 1  | bob  | bob@mail.com |
+| 2  | tom  | tom@mail.com |
+| 3  | ron  | ron@mail.com |
+
+ id | name |     email    
+----|------|--------------
+ 1  | bob  | bob@mail.com 
+ 2  | tom  | tom@mail.com
+ 3  | ron  | ron@mail.com 
+
+What happens **now**?
+
+## _Altogether_ ##
+
+We can ~~**mix** it~~  _*all*_ together!
+
+
+***a;lskfdjd;alsk***
+
+## Equations!!! ##
+
+x^(2 + 5*x) + 3*sin(25*\pi*z) = l_{x}*sin(\theta)

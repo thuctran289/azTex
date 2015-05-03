@@ -1,9 +1,11 @@
 *.pyc
 dist
 build
-input.*
+input.tex
+input.pdf
 *~
 *.swp
 *.log
 aztex.egg-info/
 *.spec
+*.swo

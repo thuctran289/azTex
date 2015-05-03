@@ -1,4 +1,4 @@
-ztex tutorial
+aztex tutorial
 ==============
 
 ## Lists ##

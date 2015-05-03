@@ -1,38 +1,32 @@
 import sys
 from Element import Element
+import Aztex
+
+def is_text_file(filename):
+	return filename.endswith('.txt')
+
+def input_text(argv):
+	inputf = input_file(argv)
+
+	if inputf:
+		f = open(inputf, 'r')
+		return f.read()
+	else:
+		text = ''.join(argv[1:])
+		return text
+
+def input_file(argv):
+	# no input given
+	if len(argv) == 1:
+		return "input.txt"
+
+	# input file given
+	elif is_text_file(argv[1]):
+		return argv[1]
 
 def main():
+	md_text = input_text(sys.argv)
+	print '\n'.join(map(lambda x: str(x), Aztex.get_elements(md_text)))
 
-	filename = "input.txt"
-	f = open(filename, 'r')
-	text = f.read()
-
-	print "===== ORIGINAL FILE =====\n"
-	print text
-	print "=========================\n\n"
-
-	from Tokenizer import Tokenizer
-	from Parser import Parser
-
-	tokenizer = Tokenizer(text)
-	parser = Parser()
-
-	elements = []
-	block = tokenizer.get_next_block()
-	while block:
-		element = parser.parseBlock(block)
-		elements.append(element)
-		block = tokenizer.get_next_block()
-
-	print "===== DOCUMENT ELEMENTS ====="
-
-	for element in elements:
-		print element
-
-	print "==============================\n\n"
-
-
-	print "==============="
-	print "=== SUCCESS ==="
-	print "==============="
-
+if __name__ == "__main__":
+	main()

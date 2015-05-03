@@ -3,6 +3,8 @@ dist
 build
 input.tex
 input.pdf
+input.aux
+input.out
 *~
 *.swp
 *.log

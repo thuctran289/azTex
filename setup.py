@@ -12,8 +12,6 @@ from os import path
 import sys
 
 here = path.abspath(path.dirname(__file__))
-sys.path.append(here + "/src/") 
-print here + "/src"
 
 # Get the long description from the relevant file
 # with open(path.join(here, 'DESCRIPTION.rst'), encoding='utf-8') as f:
@@ -27,14 +25,14 @@ setup(
     # https://packaging.python.org/en/latest/single_source_version.html
     version='0.0.1',
 
-    description='A sample Python project',
+    description='A zippy markdown to latex compiler',
 
     # The project's main homepage.
-    url='https://github.com/pypa/sampleproject',
+    url='https://github.com/thuctran289/aztex',
 
     # Author details
-    author='The Python Packaging Authority',
-    author_email='pypa-dev@googlegroups.com',
+    author='Thuc Tran, Jordan Van Duyne, Isaac Getto',
+    author_email='isaac.getto@gmail.com',
 
     # Choose your license
     license='MIT',
@@ -48,8 +46,17 @@ setup(
         'Development Status :: 3 - Alpha',
 
         # Indicate who your project is intended for
-        'Intended Audience :: Developers',
-        'Topic :: Software Development :: Build Tools',
+        'Intended Audience :: End Users/Desktop',
+        'Intended Audience :: Education',
+        'Topic :: Education',
+        'Topic :: Office/Business',
+        'Topic :: Printing',
+		'Topic :: Software Development :: Compilers',
+		'Topic :: Text Editors',
+		'Topic :: Text Editors :: Text Processing',
+		'Topic :: Text Editors :: Word Processors',
+		'Topic :: Text Processing :: Markup',
+		'Topic :: Text Processing :: Markup :: LaTeX',
 
         # Pick your license as you wish (should match "license" above)
         'License :: OSI Approved :: MIT License',
@@ -66,7 +73,7 @@ setup(
     ],
 
     # What does your project relate to?
-    keywords='sample setuptools development',
+    keywords='aztex markdown latex pdf document',
 
     # You can just specify the packages manually here if your project is
     # simple. Or you can use find_packages().
@@ -76,16 +83,16 @@ setup(
     # your project is installed. For an analysis of "install_requires" vs pip's
     # requirements files see:
     # https://packaging.python.org/en/latest/requirements.html
-    install_requires=['peppercorn'],
+    # install_requires=['peppercorn'],
 
     # List additional groups of dependencies here (e.g. development
     # dependencies). You can install these using the following syntax,
     # for example:
     # $ pip install -e .[dev,test]
-    extras_require={
-        'dev': ['check-manifest'],
-        'test': ['coverage'],
-    },
+    # extras_require={
+    #     'dev': ['check-manifest'],
+    #     'test': ['coverage'],
+    # },
 
     # If there are data files included in your packages that need to be
     # installed, specify them here.  If using Python 2.6 or less, then these

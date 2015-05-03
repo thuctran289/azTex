@@ -20,9 +20,12 @@ You can also use an *unordered list*:
 
 ## Text ##
 
-~~If~~ **when** you make mistakes you can ~~strike through~~ text.
+~~If~~ **when** you make mistakes you can ~~strike through~~ text. asdkfjaskl. skajflkasdlkf ljksadklf jljas. lkasjdfljas ldfk. lkasdjflj saldf. askldjflasdj fldsaf .asldfkj lasdjf asdlkfj laskdf. lkjflksa.j dmf.ma sljkdflkj asd.f asljkdfa.s d.fljlk sajdlf.
+
+~~If~~ **when** you make mistakes you can ~~strike through~~ text. asdkfjaskl. skajflkasdlkf ljksadklf jljas. lkasjdfljas ldfk. lkasdjflj saldf. askldjflasdj fldsaf .asldfkj lasdjf asdlkfj laskdf. lkjflksa.j dmf.ma sljkdflkj asd.f asljkdfa.s d.fljlk sajdlf.
 
 You can event link to your favorite sites, like [aztex](http://github.com/thuc289/azTex).
+
 
 Images work too here is a cat ![cat](cat.jpg)
 

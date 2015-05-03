@@ -1,47 +1,20 @@
-"""
-	@authors: idgetto, jovanduy, thuctran289
-
-	Main aztex program. Run this program to get the LaTeX 
-	output of given aztex code. Creates a .tex file with the
-	same name as the input file (if input is text rather than 
-	a file, creates a file named newfile.tex) with the analogous
-	LaTeX code.
-
-	To run:
-		with a certain file filename: python AztexRunner.py filename.txt
-		with a file input.txt: python AztexRunner.py
-		with "just a few words": python AztexRunner.py just a few words
-"""
-
+import sys
+from os import path
+here = path.abspath(path.dirname(__file__))
+sys.path.append(here + "/src/") 
+from Element import Element
 import sys
 from Element import Element
 from LatexOutput import *
 from Tokenizer import Tokenizer
 from Parser import Parser
 
-def run_test(text):
-	""" Function to run AztexRunner on some given text input 
-		text: string of input text that should be aztex code
-		returns: the analogous LaTeX output to text
-	"""
-	tokenizer = Tokenizer(text)
-	parser = Parser()
-
-	elements = []
-	block = tokenizer.get_next_block()
-	while block:
-		element = parser.parseBlock(block)
-		elements.append(element)
-		block = tokenizer.get_next_block()
-
-	A = LatexOutput()
-	return ''.join(A.to_doc(elements))
-
 def main():
+
 	if len(sys.argv) > 1:
 		args = sys.argv[1:]
 		if '.txt' in args[0]:
-			filename = args
+			filename = args[0]
 			w = open(filename[:-4:] + ".tex", 'w')
 			f = open(filename, 'r')
 			text = f.read()

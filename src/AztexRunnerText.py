@@ -1,36 +1,38 @@
 import sys
 from Element import Element
 
-filename = "input.txt"
-f = open(filename, 'r')
-text = f.read()
+def main():
 
-print "===== ORIGINAL FILE =====\n"
-print text
-print "=========================\n\n"
+	filename = "input.txt"
+	f = open(filename, 'r')
+	text = f.read()
 
-from Tokenizer import Tokenizer
-from Parser import Parser
+	print "===== ORIGINAL FILE =====\n"
+	print text
+	print "=========================\n\n"
 
-tokenizer = Tokenizer(text)
-parser = Parser()
+	from Tokenizer import Tokenizer
+	from Parser import Parser
 
-elements = []
-block = tokenizer.get_next_block()
-while block:
-    element = parser.parseBlock(block)
-    elements.append(element)
-    block = tokenizer.get_next_block()
+	tokenizer = Tokenizer(text)
+	parser = Parser()
 
-print "===== DOCUMENT ELEMENTS ====="
+	elements = []
+	block = tokenizer.get_next_block()
+	while block:
+		element = parser.parseBlock(block)
+		elements.append(element)
+		block = tokenizer.get_next_block()
 
-for element in elements:
-	print element
+	print "===== DOCUMENT ELEMENTS ====="
 
-print "==============================\n\n"
+	for element in elements:
+		print element
+
+	print "==============================\n\n"
 
 
-print "==============="
-print "=== SUCCESS ==="
-print "==============="
+	print "==============="
+	print "=== SUCCESS ==="
+	print "==============="
 

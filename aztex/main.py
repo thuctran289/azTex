@@ -17,7 +17,7 @@ import sys
 from os import path
 
 here = path.abspath(path.dirname(__file__))
-sys.path.append(here + "/src") 
+sys.path.append(here + "/aztex") 
 
 from Element import Element
 from LatexOutput import LatexOutput

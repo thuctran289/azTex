@@ -1,6 +1,7 @@
 *.pyc
 dist
 build
+*.tex
 input.tex
 input.pdf
 input.aux

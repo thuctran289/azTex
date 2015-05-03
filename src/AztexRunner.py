@@ -14,81 +14,51 @@
 """
 
 import sys
-from Element import Element
-from LatexOutput import *
-from Tokenizer import Tokenizer
-from Parser import Parser
+import Aztex
 
-def run_test(text):
-	""" Function to run AztexRunner on some given text input 
-		text: string of input text that should be aztex code
-		returns: the analogous LaTeX output to text
-	"""
-	tokenizer = Tokenizer(text)
-	parser = Parser()
+def is_text_file(filename):
+	return filename.endswith('.txt')
 
-	elements = []
-	block = tokenizer.get_next_block()
-	while block:
-		element = parser.parseBlock(block)
-		elements.append(element)
-		block = tokenizer.get_next_block()
+def tex_file_name(txt_file):
+	name = txt_file.split('.')[0]
+	tex_file = name + '.tex'
+	return tex_file
 
-	A = LatexOutput()
-	return ''.join(A.to_doc(elements))
+def input_text(argv):
+	inputf = input_file(argv)
+
+	if inputf:
+		f = open(inputf, 'r')
+		return f.read()
+	else:
+		text = ''.join(argv[1:])
+		return text
+
+def input_file(argv):
+	# no input given
+	if len(argv) == 1:
+		return "input.txt"
+
+	# input file given
+	elif is_text_file(argv[1]):
+		return argv[1]
+
+def output_file(argv):
+	inputf = input_file(argv)
+
+	if inputf:
+		return tex_file_name(inputf)
+	else:
+		return 'out.tex'
 
 def main():
-	if len(sys.argv) > 1:
-		args = sys.argv[1:]
-		if '.txt' in args[0]:
-			filename = args
-			w = open(filename[:-4:] + ".tex", 'w')
-			f = open(filename, 'r')
-			text = f.read()
-		else:
-			w = open('newfile.tex', 'w')
-			text = ' '.join(args)
-	else:
-		filename = "input.txt"
-		w = open(filename[:-4:] + ".tex", 'w')
-		f = open(filename, 'r')
-		text = f.read()
+	md_text = input_text(sys.argv)
+	latex_str = Aztex.latex_text(md_text)
 
-	print "===== ORIGINAL FILE =====\n"
-	print text
-	print "=========================\n\n"
+	out_file = output_file(sys.argv)
+	w = open(out_file, 'w')
 
-	from Tokenizer import Tokenizer
-	from Parser import Parser
-
-	tokenizer = Tokenizer(text)
-	parser = Parser()
-
-	elements = []
-	block = tokenizer.get_next_block()
-	while block:
-	    element = parser.parseBlock(block)
-	    elements.append(element)
-	    block = tokenizer.get_next_block()
-
-
-	print "===== DOCUMENT ELEMENTS ====="
-	A = LatexOutput()
-
-	#for element in elements:
-	#	print element
-	#	print ""
-
-	for element in  A.to_doc(elements):
-		w.write(str(element))
-		w.write('\n')
-
-	print "==============================\n\n"
-
-
-	print "==============="
-	print "=== SUCCESS ==="
-	print "==============="
+	w.write(latex_str)
 
 if __name__ == "__main__":
 	main()

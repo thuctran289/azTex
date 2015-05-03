@@ -29,6 +29,17 @@ class LatexOutput(GenericOutput):
 
 		return doc
 
+	def to_str(self, representation):
+		""" Returns a string of the LaTeX code
+			analogous to representation.
+
+			representation: the internal representation to be
+							turned into LaTeX code
+			returns: string of LaTeX code
+		"""
+		doc = self.to_doc(representation)
+		doc_str = ''.join(doc)
+		return doc_str
 
 	def unordered_list(self, element):
 		doc = ['\n' , '\\begin{itemize}\n']

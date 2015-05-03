@@ -1,6 +1,6 @@
 import sys
 from Element import Element
-import Aztex
+from AztexCompiler import AztexCompiler
 
 def is_text_file(filename):
 	return filename.endswith('.txt')
@@ -26,7 +26,8 @@ def input_file(argv):
 
 def main():
 	md_text = input_text(sys.argv)
-	print '\n'.join(map(lambda x: str(x), Aztex.get_elements(md_text)))
+	compiler = AztexCompiler()
+	print '\n'.join(map(lambda x: str(x), compiler.get_representation(md_text)))
 
 if __name__ == "__main__":
 	main()

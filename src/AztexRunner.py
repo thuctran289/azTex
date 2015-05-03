@@ -14,7 +14,7 @@
 """
 
 import sys
-import Aztex
+from AztexCompiler import AztexCompiler
 
 def is_text_file(filename):
 	return filename.endswith('.txt')
@@ -53,7 +53,8 @@ def output_file(argv):
 
 def main():
 	md_text = input_text(sys.argv)
-	latex_str = Aztex.latex_text(md_text)
+	compiler = AztexCompiler()
+	latex_str = compiler.compile(md_text)
 
 	out_file = output_file(sys.argv)
 	w = open(out_file, 'w')

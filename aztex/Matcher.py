@@ -5,6 +5,7 @@ class Matcher(object):
 	""" determines what element an input block is """
 
 	def match(self, block, pattern):
+		""" matches a block to a pattern """
 		return pattern.match(block)
 
 	def matchHeading(self, block):
@@ -58,6 +59,7 @@ class Matcher(object):
 		return self.match(block, SUB_SUB_HEADING_PATTERN)
 
 	def tableString(self):
+		""" helper method to create a table as a string """
 		return "| id | name |     email    |\n\
 				|----|------|--------------|\n\
 				| 1  | bob  | bob@mail.com |\n\
@@ -198,81 +200,110 @@ class Matcher(object):
 		return self.match(block, START_EQUATION_PATTERN)
 
 class Match(object):
+	""" represents a matched element """
 
 	def __init__(self, match):
+		""" constructs a matched element """
 		self.match = match
 
 class BoldItalicTextMatch(Match):
+	""" represents a matched bold italic element """
 
 	def text(self):
+		""" gets the text within a bold italic element """
 		return self.match.groups()[0]
 		
 	def end(self):
+		""" finds the index where a bold italic element ends """
 		return self.match.end()
 
 class BoldTextMatch(Match):
+	""" represents a matched bold element """
 
 	def text(self):
+		""" gets the text within a bold element """
 		return self.match.groups()[0]
 		
 	def end(self):
+		""" finds the index where a bold element ends """
 		return self.match.end()
 
 class ItalicTextMatch(Match):
+	""" represents a matched italic element """
 
 	def text(self):
+		""" gets the text within an italic element """
 		return self.match.groups()[0]
 		
 	def end(self):
+		""" finds the index where an italic element ends """
 		return self.match.end()
 
 class StrikethroughTextMatch(Match):
+	""" represents a matched strike through element """
 
 	def text(self):
+		""" gets the text within a strike through element """
 		return self.match.groups()[0]
 		
 	def end(self):
+		""" finds the index where a strike through element ends """
 		return self.match.end()
 
 class UnderlineTextMatch(Match):
+	""" represents a matched underline element """
 
 	def text(self):
+		""" gets the text within an underline element """
 		return self.match.groups()[0]
 		
 	def end(self):
+		""" finds the index where an underline element ends """
 		return self.match.end()
 
 class QuoteTextMatch(Match):
+	""" represents a matched quote element """
 
 	def text(self):
+		""" gets the text within a quote element """
 		return self.match.groups()[0]
 		
 	def end(self):
+		""" finds the index where a quote element ends """
 		return self.match.end()
 
 class LinkTextMatch(Match):
+	""" represents a matched link element """
 
 	def text(self):
+		""" gets the text within a link element """
 		return self.match.groups()[0]
 
 	def url(self):
+		""" gets the url within a link element """
 		return self.match.groups()[1]
 		
 	def end(self):
+		""" finds the index where a link element ends """
 		return self.match.end()
 
 class ImageMatch(Match):
+	""" represents a matched image element """
 
 	def text(self):
+		""" gets the text within an image element """
 		return self.match.groups()[0]
 
 	def path(self):
+		""" gets the path within an image element """
 		return self.match.groups()[1]
 		
 	def end(self):
+		""" finds the index where an image element ends """
 		return self.match.end()
 
 class InlineEquationMatch(Match):
+	""" represents a matched inline equation element """
 
 	def equation(self):
 		""" gets the equation string """
@@ -282,44 +313,57 @@ class InlineEquationMatch(Match):
 		return block[equationStart:equationEnd]
 
 	def end(self):
+		""" finds the index where an inline equation element ends """
 		return self.match.end()
 
 class PlainTextMatch(Match):
+	""" represents a matched plain text element """
 
 	def text(self):
+		""" gets the text within a plain text element """
 		return self.match.groups()[0]
 		
 	def end(self):
+		""" finds the index where an plain text element ends """
 		return len(self.text())
 
 class HeadingMatch(Match):
+	""" represents a matched heading element """
 
 	def text(self):
+		""" gets the text within a heading element """
 		block = self.match.string
 		return str.split(block, "\n")[0]
 
 class SubHeadingMatch(Match):
+	""" represents a matched subheading element """
 
 	def text(self):
+		""" gets the text within a subheading element """
 		block = self.match.string
 		return str.split(block, "\n")[0]
 
 class SubSubHeadingMatch(Match):
+	""" represents a matched subsubheading element """
 
 	def text(self):
+		""" gets the text within a subsubheading element """
 		block = self.match.string
 		pat = re.compile(r"^(\#+) (.+) \1")
 		match = pat.search(block)
 		return match.groups()[1]
 
 	def level(self):
+		""" gets the level of a subsubheading """
 		block = self.match.string
 		match = re.match(r"^#+", block)
 		return len(match.group())
 		
 class TableMatch(Match):
+	""" represents a matched table element """
 
 	def tableRowItems(self, row):
+		""" gets the items in a row of a table """
 		items = row.split("|")
 		items = filter(lambda x: x.strip(), items)
 		return map(lambda x: x.strip(), items)
@@ -338,6 +382,7 @@ class TableMatch(Match):
 		return map(self.tableRowItems, lines)
 
 class OrderedListMatch(Match):
+	""" represents a matched ordered list element """
 
 	def listItems(self):
 		""" gets the list of items """
@@ -346,6 +391,7 @@ class OrderedListMatch(Match):
 		return re.findall(itemRegex, block)
 
 class UnorderedListMatch(Match):
+	""" represents a matched unordered list element """
 
 	def listItems(self):
 		""" gets the list of items """
@@ -354,8 +400,10 @@ class UnorderedListMatch(Match):
 		return re.findall(itemRegex, block)
 
 class BlockEquationMatch(Match):
+	""" represents a matched block equation element """
 
 	def equation(self):
+		""" gets the equation string within a block equation """
 		block = self.match.string
 		equationStart = self.match.start()
 		equationEnd = self.match.end()

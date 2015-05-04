@@ -152,6 +152,7 @@ class EquationParser(object):
 					return index
 
 	def isOperator(self, char):
+		""" determines if char is a mathematical operator """
 		return char in self.operators()
 
 	def splitEquation(self, equation):
@@ -205,8 +206,10 @@ class EquationParser(object):
 		return ['-', '+', '/', '*', '^']
 	
 class Equation(object):
+	""" represents a mathematical equation """
 
 	def __init__(self, left, right, mid):
+		""" constructs a mathematical equation """
 		self.left = left
 		self.right = right
 		self.mid = mid
@@ -220,8 +223,10 @@ class Equation(object):
 		return "Equation"
 
 class Expression(object):
+	""" represents a mathematical expression """
 
 	def __init__(self, left, right, operator):
+		""" constructs a mathematical expression """
 		self.left = left
 		self.right = right
 		self.operator = operator
@@ -232,8 +237,10 @@ class Expression(object):
 			   " (" + str(self.right) + ")"
 
 class Function(object):
+	""" represents a mathematical function """
 
 	def __init__(self, func, param):
+		""" constructs a mathematical function """
 		self.func = func
 		self.param = param
 
@@ -243,10 +250,3 @@ class Function(object):
 if __name__ == "__main__":
 	import doctest
 	doctest.testmod(extraglobs={'p': EquationParser()})
-
-	p = EquationParser()
-	equation = "\\rho = x ^ 2 - 3 / y"
-	print p.parseEquation(equation).left
-	print p.parseEquation(equation).mid
-	print p.parseEquation(equation).right
-	print p.parseEquation(equation)

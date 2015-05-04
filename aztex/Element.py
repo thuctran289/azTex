@@ -146,14 +146,3 @@ class BlockEquationElement(Element):
 if __name__ == "__main__":
 	import doctest
 	doctest.testmod()
-	uolist = LinkElement(['these are words', 'more words', 'omg even more!'])
-	print uolist
-	print type(uolist)
-	print uolist.get_type()
-	print uolist.get_elements()
-	# text = TextElement('these are words yay')
-	# print text
-	# print type(text)
-
-	# print text.get_type()
-	# print text.get_elements()

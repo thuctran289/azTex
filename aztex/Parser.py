@@ -12,18 +12,23 @@ class Container(object):
 		self.data = data
 
 	def set(self, data):
+		""" set data and allow for evaluation """
 		self.data = data
 		return data
 	
 	def get(self):
+		""" get the data """
 		return self.data
 
 class Parser(object):
+	""" parses blocks of input and returns Elements """
 
 	def __init__(self):
 		self.matcher = Matcher()
+		self.equationParser = EquationParser()
 
 	def parseBlock(self, block):
+		""" parse a block of input and return the corresponding Element """
 		container = Container()
 		if container.set(self.matcher.matchHeading(block)):
 			match = container.get()
@@ -66,7 +71,7 @@ class Parser(object):
 			match = container.get()
 			em = BlockEquationMatch(match)
 			equationStr = em.equation()
-			equation = EquationParser().parseEquation(equationStr)
+			equation = self.equationParser.parseEquation(equationStr)
 			element = BlockEquationElement(equation)
 
 		else:
@@ -75,8 +80,7 @@ class Parser(object):
 		return element
 
 	def parseText(self, block):
-		""" gets the elements within a paragraph
-		"""
+		""" gets the elements within a paragraph """
 		components = []
 		container = Container()
 		while block:
@@ -132,7 +136,7 @@ class Parser(object):
 				match = container.get()
 				em = InlineEquationMatch(match)
 				equationStr = em.equation()
-				equation = EquationParser().parseEquation(equationStr)
+				equation = self.equationParser.parseEquation(equationStr)
 				element = InlineEquationElement(equation)
 
 			elif container.set(self.matcher.matchPlainText(block)):

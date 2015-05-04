@@ -1,5 +1,5 @@
 """
-	Puts all the aztex classes together
+	Puts all the aztex classes together to compile markdown into latex
 """	
 
 from Element import Element
@@ -10,6 +10,7 @@ from Parser import Parser
 class AztexCompiler:
 
 	def compile(self, md_text):
+		""" compiles the markdown text into a latex string """
 		elements = self.get_representation(md_text)
 
 		latexOutput = LatexOutput()
@@ -17,6 +18,8 @@ class AztexCompiler:
 		return latex_str
 
 	def get_representation(self, md_text):
+		""" creates the internal representation 
+			of the markdown input text """
 		tokenizer = Tokenizer(md_text)
 		parser = Parser()
 

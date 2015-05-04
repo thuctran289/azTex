@@ -74,10 +74,10 @@ class LinkElement(Element):
 
 class ImageElement(Element):
 	""" An Element object that represents an image """
-	def __init__(self, path, element):
-		super(ImageElement, self).__init__("Image", (path, element))
+	def __init__(self, path, caption):
+		super(ImageElement, self).__init__("Image", (path, caption))
 		self.path = path
-		self.element = element
+		self.caption = caption
 
 class InlineEquationElement(Element):
 	""" An Element object that represents an equation """

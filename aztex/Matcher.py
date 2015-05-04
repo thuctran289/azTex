@@ -290,8 +290,8 @@ class LinkTextMatch(Match):
 class ImageMatch(Match):
 	""" represents a matched image element """
 
-	def text(self):
-		""" gets the text within an image element """
+	def caption(self):
+		""" gets the caption within an image element """
 		return self.match.groups()[0]
 
 	def path(self):

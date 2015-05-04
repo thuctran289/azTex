@@ -130,8 +130,7 @@ class Parser(object):
 			elif container.set(self.matcher.matchImage(block)):
 				match = container.get()
 				em = ImageMatch(match)
-				subelement = self.parseText(em.text())
-				element = ImageElement(subelement, em.path())
+				element = ImageElement(em.path(), em.caption())
 
 			elif container.set(self.matcher.matchInlineEquation(block)):
 				match = container.get()

@@ -29,7 +29,7 @@ def run_test(line_list):
 	test_result = (actual == expected)
 	if not test_result:
 		print f + ':\n'
-		print 'expected:\n' + expected + '\n'
+		print 'expected:\n' + expected
 		print 'got:\n' + actual
 		print '----------------------\n'
 

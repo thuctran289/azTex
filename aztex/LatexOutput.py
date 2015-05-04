@@ -7,39 +7,19 @@ class LatexOutput(GenericOutput):
 	def __init__(self):
 		super(LatexOutput, self).__init__()
 
-	def to_doc(self, representation):
-		""" Returns a list of the lines of the LaTeX code
-			analogous to representation.
-
-			representation: the internal representation to be
-							turned into LaTeX code
-			returns: list of lines of LaTeX code
-		"""
-		doc = []
-		doc.append("\\documentclass{article}\n")
-		doc.append("\\usepackage[utf8]{inputenc}\n")
-		doc.append("\\usepackage[normalem]{ulem}\n")
-		doc.append("\\usepackage{amsmath}\n")
-		doc.append("\\usepackage{graphicx}\n")
-		doc.append("\\usepackage{hyperref}\n")
-		doc.append("\\begin{document}\n")
-		for element in representation:
-			doc.append(self.to_code(element))
-		doc.append("\\end{document}")
-
+	def doc_header(self):
+		doc = "\\documentclass{article}\n"
+		doc += "\\usepackage[utf8]{inputenc}\n"
+		doc += "\\usepackage[normalem]{ulem}\n"
+		doc += "\\usepackage{amsmath}\n"
+		doc += "\\usepackage{graphicx}\n"
+		doc += "\\usepackage{hyperref}\n"
+		doc += "\\begin{document}\n"
 		return doc
-
-	def to_str(self, representation):
-		""" Returns a string of the LaTeX code
-			analogous to representation.
-
-			representation: the internal representation to be
-							turned into LaTeX code
-			returns: string of LaTeX code
-		"""
-		doc = self.to_doc(representation)
-		doc_str = ''.join(doc)
-		return doc_str
+		
+	def doc_footer(self):
+		doc = "\\end{document}"
+		return doc
 
 	def unordered_list(self, element):
 		doc = ['\n' , '\\begin{itemize}\n']
@@ -52,6 +32,7 @@ class LatexOutput(GenericOutput):
 
 		doc.extend('\\end{itemize}\n')
 		return ''.join(doc)
+
 	def ordered_list(self, element):
 		doc = ['\n', '\\begin{enumerate}\n']
 		elements = element.get_elements()
@@ -63,23 +44,32 @@ class LatexOutput(GenericOutput):
 
 		doc.extend('\\end{enumerate}\n')
 		return ''.join(doc)
+
 	def text(self, element):
 		return element.get_elements()
+
 	def link(self, element):
 		# print type(element.element)
 		return "\\href{" + element.element + "}{"  +self.to_code(element.url)+ "}"
+
 	def image(self, element):
 		return "\\begin{figure}[h]\n\\caption{" + element.caption + "}\n\\centering\n\\includegraphics{" + element.path + "}\n\\end{figure}"
+
 	def bold(self, element):
 		return "\\textbf{" + self.to_code(element.get_elements()) + "}"
+
 	def italic(self, element):
 		return "\\textit{" + self.to_code(element.get_elements()) + "}"
+
 	def underline(self, element):
 		return "\\underline{" + self.to_code(element.get_elements()) + "}"
+
 	def strikethrough(self, element):
 		return "\\sout{" + self.to_code(element.get_elements()) + "}"
+
 	def quote(self, element):
 		return "``" + self.to_code(element.get_elements()) + "''"
+
 	def heading(self, element): 
 		if element.level == 1:
 			return "\n\\section{" + self.to_code(element.get_elements()) + "}\n"
@@ -135,7 +125,6 @@ class LatexOutput(GenericOutput):
 		doc.append("\\end{tabular}\n\n")
 
 		return "".join(doc)
-	
 
 	def block_equation(self, element):
 		doc = []
@@ -160,7 +149,11 @@ class LatexOutput(GenericOutput):
 	def inline_equation(self, element):
 		doc = []
 		doc.append("$")
-		eqn = self.equationhelper(element.equation.left) + element.equation.mid + self.equationhelper(element.equation.right)
+
+		eqn = self.equationhelper(element.equation.left) + \
+			  element.equation.mid + \
+			  self.equationhelper(element.equation.right)
+
 		doc.append(eqn)
 		doc.append("$")
 		return "".join(doc)
@@ -169,17 +162,5 @@ class LatexOutput(GenericOutput):
 		return "\\textit{\\textbf{" + self.to_code(element.get_elements()) + "}}"
 
 if __name__ == "__main__":
-	uolist = UnorderedListElement(['these are words', 'more words', 'omg even more!'])
-	text = TextElement("Hello")
-	bolded = BoldElement(text)
-	italics = ItalicElement(bolded)
-	head = HeadingElement(TextElement("HELLO"),4)
-	print text
-	print head.get_elements().get_elements()
-	print uolist
-	print type(uolist)
-	print uolist.get_type()
-	print uolist.get_elements()
-	A = LatexOutput()
-	print type(A)
-	print A.to_code(italics)
+	import doctest
+	doctest.testmod()

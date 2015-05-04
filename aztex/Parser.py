@@ -58,13 +58,13 @@ class Parser(object):
 		elif container.set(self.matcher.matchOrderedList(block)):
 			match = container.get()
 			em = OrderedListMatch(match)
-			listItems = map(self.parseBlock, em.listItems())
+			listItems = map(self.parseText, em.listItems())
 			element = OrderedListElement(listItems)
 
 		elif container.set(self.matcher.matchUnorderedList(block)):
 			match = container.get()
 			em = UnorderedListMatch(match)
-			listItems = map(self.parseBlock, em.listItems())
+			listItems = map(self.parseText, em.listItems())
 			element = UnorderedListElement(listItems)
 
 		elif container.set(self.matcher.matchBlockEquation(block)):

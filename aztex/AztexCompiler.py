@@ -14,7 +14,7 @@ class AztexCompiler:
 		elements = self.get_representation(md_text)
 
 		latexOutput = LatexOutput()
-		latex_str = latexOutput.to_str(elements)
+		latex_str = latexOutput.generate_doc(elements)
 		return latex_str
 
 	def get_representation(self, md_text):

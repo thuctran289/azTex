@@ -7,7 +7,7 @@
 	uses wxPython library
 """
 
-import wx, os, 
+import wx, os 
 
 class TextEditor(wx.Frame):
 	""" Making a window """
@@ -56,7 +56,7 @@ class TextEditor(wx.Frame):
 
 	def OnAbout(self, event):
 		""" A message dialog box with an OK button """
-		dlg = wx.MessageDialog(self, "A small text editor \n in wxPython", "About Sample Editor", wx.OK)
+		dlg = wx.MessageDialog(self, "aztex editor\naztex is a program that converts Markdown-like text into\nthe analogous LaTeX code to help in writing a pdf document", "About Sample Editor", wx.OK)
 		dlg.ShowModal()
 		dlg.Destroy()
 
@@ -96,11 +96,28 @@ class TextEditor(wx.Frame):
 
 class LatexViewer(wx.Frame):
 	def __init__(self, parent, title, editor):
+		self.editor = editor
+		wx.Frame.__init__(self, parent, title=title, size=(700,750))
+		# self.control = wx.TextCtrl(self, style=wx.TE_MULTILINE)
+		# self.CreateStatusBar() #status bar at bottom of window
+		self.panel = wx.Panel(self, -1)
+		self.text = "LaTeX code will appear here once the aztex code has been modified"
+		self.font = wx.Font(10, wx.NORMAL, wx.NORMAL, wx.NORMAL)
+		self.words = wx.StaticText(self.panel, -1, self.text, (30, 15))
+		self.words.SetFont(self.font)
+		self.Center()
+		self.Show()
+
+
+	def update(self):
+		if self.editor.IsModified:
+			pass
 
 
 
 
 if __name__ == "__main__":
 	app = wx.App(False)
-	frame = TextEditor(None, 'Untitled Document')
+	frame = TextEditor(None, 'Untitled aztex Document')
+	frameLatex = LatexViewer(None, 'Untitled .tex Document', frame)
 	app.MainLoop()

@@ -1,1 +1,14 @@
 *.pyc
+dist
+build
+*.tex
+input.tex
+input.pdf
+input.aux
+input.out
+*~
+*.swp
+*.log
+aztex.egg-info/
+*.spec
+*.swo

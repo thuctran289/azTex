@@ -9,14 +9,29 @@ Output:
 \documentclass{article}
 \usepackage[utf8]{inputenc}
 \usepackage[normalem]{ulem}
+\usepackage{amsmath}
+\usepackage{graphicx}
 \usepackage{hyperref}
 \begin{document}
+
 \begin{itemize}
-\item \textbf{bold text} more text
-\item \textit{italic text} more text
-\item \underline{underline text} more text
-\item \sout{strikethrough text} more text
-\item \textbf{textit{bold and italic}} more text
-\item \href{https://www.youtube.com/watch?v=dQw4w9WgXcQ}{Rick Roll Link} more text
+\item 
+\textbf{bold text} more text
+
+\item 
+\textit{italic text} more text 
+
+\item 
+\underline{underline text} more text
+
+\item 
+\sout{strikethrough text} more text
+
+\item 
+\textit{\textbf{bold and italic}} more text
+
+\item 
+\href{https://www.youtube.com/watch?v=dQw4w9WgXcQ}{Rick Roll Link} more text
+
 \end{itemize}
 \end{document}

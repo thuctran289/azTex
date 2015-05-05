@@ -6,7 +6,8 @@ who do not know how to write fluently in LaTeX, would like a tool that can act a
 or do not want to waste time worrying about some of the small intricacies of LaTeX.
 
 ## Installation
-Simply type "sudo pip install aztex" into your terminal (for Linux and OSX users).
+Simply type "sudo pip install aztex" into your terminal (for Linux and OSX users). Alternatively, if Python is installed,
+clone this repository on GitHub.
 
 ## The Story Behind aztex
 aztex was born as a an idea for the final project for the Software Design course at Franklin W. Olin College of Engineering by us: three 

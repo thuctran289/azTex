@@ -141,6 +141,7 @@ class LatexViewer(wx.Frame):
 		self.font = wx.Font(10, wx.NORMAL, wx.NORMAL, wx.NORMAL)
 		self.words = wx.StaticText(self.panel, -1, self.text, (30, 15))
 		self.words.SetFont(self.font)
+		print 'OMG IT IS DOING SOMETHING RIGHT!!!'
 
 
 

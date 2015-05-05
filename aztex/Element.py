@@ -1,5 +1,8 @@
 """
-@author: jovanduy
+	@author: jovanduy
+
+	Class representing the different Elements (a single component of the document)
+	in an aztex document.
 """
 
 class Element(object):

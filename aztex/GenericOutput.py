@@ -21,16 +21,19 @@ class GenericOutput(object):
 		return doc
 
 	def to_code(self, elements):
-			if(not hasattr(elements, '__iter__')):				
-				element = elements
-				e_type = type(element)
+		"""Recursive function that takes in an element, figures out what kind of element it is, than passes the element along to the corresponding function to generate the appropriate 
+		output. 
+		"""
+		if(not hasattr(elements, '__iter__')):				
+			element = elements
+			e_type = type(element)
 
-				func = self.element_dict().get(e_type)
-				return func(element)
+			func = self.element_dict().get(e_type)
+			return func(element)
 
-			else:
-				els = map(self.to_code, elements)
-				return ''.join(els)
+		else:
+			els = map(self.to_code, elements)
+			return ''.join(els)
 
 	def element_dict(self):
 		return { UnorderedListElement: 		self.unordered_list,

@@ -13,7 +13,7 @@ def get_input(line_list):
 	if len(input_lines) >= 1:
 		if '\n' in input_lines[-1]:
 			input_lines[-1] = input_lines[-1].replace('\n', '')
-	return ''.join(input_lines)
+	return ''.join(input_lines) 
 
 def get_output(line_list):
 	""" Returns what the output of the test should be. """
@@ -23,7 +23,7 @@ def get_output(line_list):
 def run_test(line_list):
 	md_text = get_input(line_list)
 
-	actual = compiler.compile(md_text)
+	actual = compiler.compile(md_text) 
 	expected = get_output(line_list)
 
 	test_result = (actual == expected)

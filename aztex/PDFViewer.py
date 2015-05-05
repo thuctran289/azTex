@@ -67,6 +67,7 @@ class TextEditor(wx.Frame):
 		text = ''
 		for line in range(self.GetNumberOfLines):
 			text += self.GetLineText(line) + '\n'
+		print 'HAPPINESSSSSSS'
 		return text
 
 	def OnAbout(self, event):

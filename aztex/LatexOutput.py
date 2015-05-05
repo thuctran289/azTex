@@ -218,17 +218,6 @@ class LatexOutput(GenericOutput):
 			else:
 				return "{"+ self.equationhelper(expression.left) + expression.operator + self.equationhelper(expression.right)+ "}"
 
-	def inline_equation(self, element):
-		doc = []
-		doc.append("$")
-
-		eqn = self.equationhelper(element.equation.left) + \
-			  element.equation.mid + \
-			  self.equationhelper(element.equation.right)
-
-		doc.append(eqn)
-		doc.append("$")
-		return "".join(doc)
 
 if __name__ == "__main__":
 	import doctest

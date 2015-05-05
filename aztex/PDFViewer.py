@@ -7,13 +7,21 @@
 	uses wxPython library
 """
 
-import wx, os 
+import wx, wx.lib.newevent, os
+from main import main
+from AztexCompiler import AztexCompiler
+
+SaveEvent, EVT_SAVE = wx.lib.newevent.NewEvent()
 
 class TextEditor(wx.Frame):
-	""" Making a window """
+	""" Class for aztex text editor window """
 	def __init__(self, parent, title):
+		# Directory and file name of the document that is being edited
 		self.dirname=''
 		self.filename=''
+
+		# Boolean value representing if the document has ever been saved before or not
+		self.saved = False
 
 		wx.Frame.__init__(self, parent, title=title, size=(700,750))
 		self.control = wx.TextCtrl(self, style=wx.TE_MULTILINE)
@@ -39,20 +47,26 @@ class TextEditor(wx.Frame):
 		self.Bind(wx.EVT_MENU, self.OnAbout, menuAbout)
 		self.Bind(wx.EVT_MENU, self.OnExit, menuExit)
 
-		self.sizer2 = wx.BoxSizer(wx.HORIZONTAL)
-		self.buttons = []
-		for i in range(0,6):
-			self.buttons.append(wx.Button(self, -1, "Button &"+str(i)))
-			self.sizer2.Add(self.buttons[i], 1, wx.EXPAND)
+		# self.sizer2 = wx.BoxSizer(wx.HORIZONTAL)
+		# self.buttons = []
+		# for i in range(0,6):
+		# 	self.buttons.append(wx.Button(self, -1, "Button &"+str(i)))
+		# 	self.sizer2.Add(self.buttons[i], 1, wx.EXPAND)
 
 		self.sizer = wx.BoxSizer(wx.VERTICAL)
 		self.sizer.Add(self.control, 1, wx.EXPAND)
-		self.sizer.Add(self.sizer2, 0, wx.EXPAND)
+		# self.sizer.Add(self.sizer2, 0, wx.EXPAND)
 
 		self.SetSizer(self.sizer)
 		self.SetAutoLayout(1)
-		self.sizer.Fit(self)
+		# self.sizer.Fit(self)
 		self.Show()
+
+	def get_text(self):
+		text = ''
+		for line in range(self.GetNumberOfLines):
+			text += self.GetLineText(line) + '\n'
+		return text
 
 	def OnAbout(self, event):
 		""" A message dialog box with an OK button """
@@ -67,6 +81,7 @@ class TextEditor(wx.Frame):
 		else:
 			with open(os.path.join(self.dirname, self.filename), 'w') as f:
 				f.write(self.control.GetValue())
+		return EVT_SAVE
 
 	def OnSaveAs(self, event):
 		dlg = wx.FileDialog(self, "", self.dirname, "", "*.*", wx.SAVE)
@@ -75,6 +90,7 @@ class TextEditor(wx.Frame):
 			self.dirname = dlg.GetDirectory()
 			self.OnSave(event)
 			self.SetTitle(self.filename)
+			self.saved = True
 		dlg.Destroy()
 
 	def OnExit(self, event):
@@ -92,6 +108,7 @@ class TextEditor(wx.Frame):
 			self.control.SetValue(f.read())
 			f.close()
 			self.SetTitle(self.filename)
+			self.saved = True
 		dlg.Destroy()
 
 class LatexViewer(wx.Frame):
@@ -101,17 +118,30 @@ class LatexViewer(wx.Frame):
 		# self.control = wx.TextCtrl(self, style=wx.TE_MULTILINE)
 		# self.CreateStatusBar() #status bar at bottom of window
 		self.panel = wx.Panel(self, -1)
-		self.text = "LaTeX code will appear here once the aztex code has been modified"
+		self.text = "LaTeX code will appear here once the aztex code has been saved"
 		self.font = wx.Font(10, wx.NORMAL, wx.NORMAL, wx.NORMAL)
 		self.words = wx.StaticText(self.panel, -1, self.text, (30, 15))
 		self.words.SetFont(self.font)
+
+		self.aztexCompiler = AztexCompiler()
+		self.Bind(wx.EVT_TEXT, self.update, self.editor.control)
+
+		self.sizer = wx.BoxSizer(wx.VERTICAL)
+		self.sizer.Add(self.panel, 1, wx.EXPAND)
+		self.SetSizer(self.sizer)
+		self.SetAutoLayout(1)
 		self.Center()
 		self.Show()
 
+	def get_Latex_code(self):
+		return self.aztexCompiler.compile(self.editor.control.GetValue)
 
-	def update(self):
-		if self.editor.IsModified:
-			pass
+	def update(self, event):
+		self.text = self.get_Latex_code
+		self.font = wx.Font(10, wx.NORMAL, wx.NORMAL, wx.NORMAL)
+		self.words = wx.StaticText(self.panel, -1, self.text, (30, 15))
+		self.words.SetFont(self.font)
+
 
 
 

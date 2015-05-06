@@ -18,7 +18,7 @@ to expand our knowledge.
 ## FAQ
 #### Why is aztex always written in lower case?
 The creators of aztex decided on this as a stylistic choice.
-### In what language is aztex written?
+#### In what language is aztex written?
 aztex is written almost completely in pure Python. The only external library is wxPython, which is used in the framework of
 the GUI.
 #### Who is the target audience for aztex?

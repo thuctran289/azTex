@@ -30,8 +30,8 @@ class AztexGUI(wx.Frame):
 		menuOpen = filemenu.Append(wx.ID_OPEN, "&Open", " Open a file to edit")
 		menuSaveAztex = filemenu.Append(wx.ID_SAVE, "&Save aztex", "Save the aztex .txt document")
 		menuSaveAsAztex = filemenu.Append(wx.ID_SAVEAS, "&Save As aztex...", "Save the aztex .txt document under a new name")
-		menuSaveLatex = filemenu.Append(wx.ID_SAVE, "&Save LaTeX", "Save the .tex document")
-		menuSaveAsLatex = filemenu.Append(wx.ID_SAVEAS, "&Save As LaTeX...", "Save the .tex document under a new name")
+		# menuSaveLatex = filemenu.Append(wx.ID_SAVE, "&Save LaTeX", "Save the .tex document")
+		# menuSaveAsLatex = filemenu.Append(wx.ID_SAVEAS, "&Save As LaTeX...", "Save the .tex document under a new name")
 		menuAbout = filemenu.Append(wx.ID_ABOUT, "&About", "Informaiton about this program")
 		menuExit = filemenu.Append(wx.ID_EXIT, "&Exit", "Terminate the program")
 
@@ -44,8 +44,8 @@ class AztexGUI(wx.Frame):
 		self.Bind(wx.EVT_MENU, self.OnOpen, menuOpen)
 		self.Bind(wx.EVT_MENU, self.OnSaveAztex, menuSaveAztex)
 		self.Bind(wx.EVT_MENU, self.OnSaveAsAztex, menuSaveAsAztex)
-		self.Bind(wx.EVT_MENU, self.OnSaveLatex, menuSaveLatex)
-		self.Bind(wx.EVT_MENU, self.OnSaveAsLatex, menuSaveAsLatex)
+		# self.Bind(wx.EVT_MENU, self.OnSaveLatex, menuSaveLatex)
+		# self.Bind(wx.EVT_MENU, self.OnSaveAsLatex, menuSaveAsLatex)
 		self.Bind(wx.EVT_MENU, self.OnAbout, menuAbout)
 		self.Bind(wx.EVT_MENU, self.OnExit, menuExit)
 		self.Bind(wx.EVT_TEXT, self.update_latex_viewer, self.aztexEditor)
@@ -87,22 +87,22 @@ class AztexGUI(wx.Frame):
 		print self.aztexEditor.filename
 		dlg.Destroy()
 
-	def OnSaveLatex(self, event):
-		""" Save LaTeX file """
-		if self.latexViewer.filename == '': # if document is currently unsaved
-			self.OnSaveAsLatex(event)
-		else: # if document has previously been saved
-			with open(os.path.join(self.latexViewer.dirname, self.latexViewer.filename), 'w') as f:
-				f.write(self.latexViewer.GetValue())
+	# def OnSaveLatex(self, event):
+	# 	""" Save LaTeX file """
+	# 	if self.latexViewer.filename == '': # if document is currently unsaved
+	# 		self.OnSaveAsLatex(event)
+	# 	else: # if document has previously been saved
+	# 		with open(os.path.join(self.latexViewer.dirname, self.latexViewer.filename), 'w') as f:
+	# 			f.write(self.latexViewer.GetValue())
 
-	def OnSaveAsLatex(self, event):
-		""" Save As LaTeX file """
-		dlg = wx.FileDialog(self, "", self.latexViewer.dirname, "", "*.*", wx.SAVE)
-		if dlg.ShowModal() == wx.ID_OK: # if user clicks OK (if user wants to save the document)
-			self.latexViewer.filename = dlg.GetFilename()
-			self.latexViewer.dirname = dlg.GetDirectory()
-			self.OnSaveLatex(event)
-		dlg.Destroy()
+	# def OnSaveAsLatex(self, event):
+	# 	""" Save As LaTeX file """
+	# 	dlg = wx.FileDialog(self, "", self.latexViewer.dirname, "", "*.*", wx.SAVE)
+	# 	if dlg.ShowModal() == wx.ID_OK: # if user clicks OK (if user wants to save the document)
+	# 		self.latexViewer.filename = dlg.GetFilename()
+	# 		self.latexViewer.dirname = dlg.GetDirectory()
+	# 		self.OnSaveLatex(event)
+	# 	dlg.Destroy()
 
 	def OnExit(self, event):
 		""" Close the frame when exiting """

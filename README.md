@@ -1,5 +1,7 @@
 # aztex
 ## About
+[aztex website](https://sites.google.com/site/aztexeditor/)
+
 aztex is a program written in Python that provides a quick, simple way to create a professional-looking .pdf document.
 aztex is a compiler that compiles aztex language (very similar to Markdown) into LaTeX code. aztex can be used by people
 who do not know how to write fluently in LaTeX, would like a tool that can act as an introduction to the LaTeX syntax,

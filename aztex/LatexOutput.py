@@ -212,10 +212,18 @@ class LatexOutput(GenericOutput):
 			if expression.operator == "/":
 				return "{\\frac{" + self.equationhelper(expression.left) + "}{" + self.equationhelper(expression.right) + "}}"
 			elif expression.operator == '*':
-				return "{"+ self.equationhelper(expression.left) +" "+ self.equationhelper(expression.right)+ "}"
+				if self.isValue(expression.left) and self.isValue(expression.right):
+					times = " \cdot "
+				else:
+					times = " "
+				return "{"+ self.equationhelper(expression.left) + times + self.equationhelper(expression.right)+ "}"
 			else:
 				return "{"+ self.equationhelper(expression.left) + expression.operator + self.equationhelper(expression.right)+ "}"
 
+	def isValue(self, expr):
+		if not isinstance(expr, str):
+			return False
+		return re.match(r"\d+(\.\d+)?", expr)
 
 if __name__ == "__main__":
 	import doctest

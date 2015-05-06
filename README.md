@@ -11,13 +11,18 @@ Simply type "sudo pip install aztex" into your terminal (for Linux and OSX users
 ## Use
 
 To compile a text file written in markdown run:
+```
 $ aztex input.txt or $ python aztex/main.py input.txt
+```
 
 To compile some text run:
+```
 $ aztex "some text" or $ python aztex/main.py "some text"
-
+```
 To use our GUI run:
+```
 $ python aztex/AztexRunnerGUI.py
+```
 
 ## The Story Behind aztex
 aztex was born as a an idea for the final project for the Software Design course at Franklin W. Olin College of Engineering by us: three 

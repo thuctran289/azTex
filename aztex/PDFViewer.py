@@ -70,7 +70,7 @@ class AztexGUI(wx.Frame):
 	def OnSaveAztex(self, event):
 		""" Save aztex file """
 		if self.aztexEditor.filename == '': # if document is currently unsaved
-			self.OnSaveAs(event)
+			self.OnSaveAsAztex(event)
 		else: # if document has previously been saved
 			with open(os.path.join(self.aztexEditor.dirname, self.aztexEditor.filename), 'w') as f:
 				f.write(self.aztexEditor.GetValue())
@@ -82,7 +82,9 @@ class AztexGUI(wx.Frame):
 			self.aztexEditor.filename = dlg.GetFilename()
 			self.aztexEditor.dirname = dlg.GetDirectory()
 			self.OnSaveAztex(event)
+			print self.aztexEditor.filename
 			self.SetTitle(self.aztexEditor.filename)
+		print self.aztexEditor.filename
 		dlg.Destroy()
 
 	def OnSaveLatex(self, event):

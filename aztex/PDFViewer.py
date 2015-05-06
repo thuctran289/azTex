@@ -15,7 +15,7 @@ class AztexGUI(wx.Frame):
 	""" Class for editing aztex code and viewing analogous LaTeX code """
 	def __init__(self, parent, title):
 		wx.Frame.__init__(self, parent, title=title, size=(800, 750))
-		self.panel = wx.Panel(self, -1)
+		self.panel = wx.Panel(self)
 		self.aztexEditor = AztexEditor(self.panel)
 		self.latexViewer = LatexViewer(self.panel)
 
@@ -34,7 +34,6 @@ class AztexGUI(wx.Frame):
 		menuSaveAsLatex = filemenu.Append(wx.ID_SAVEAS, "&Save As LaTeX...", "Save the .tex document under a new name")
 		menuAbout = filemenu.Append(wx.ID_ABOUT, "&About", "Informaiton about this program")
 		menuExit = filemenu.Append(wx.ID_EXIT, "&Exit", "Terminate the program")
-		menuCompile = filemenu.Append(wx.ID_ANY, "&Compile", "Compile LaTeX")
 
 		# Making menubar
 		menuBar = wx.MenuBar()
@@ -51,11 +50,12 @@ class AztexGUI(wx.Frame):
 		self.Bind(wx.EVT_MENU, self.OnExit, menuExit)
 		self.Bind(wx.EVT_TEXT, self.update_latex_viewer, self.aztexEditor)
 
-		self.sizer = wx.BoxSizer(wx.HORIZONTAL)
+		self.sizer = wx.GridSizer(1, 2, 0, 0)
 		self.sizer.Add(self.aztexEditor, 1, wx.EXPAND)
 		self.sizer.Add(self.latexViewer, 1, wx.EXPAND)
 
 		self.SetSizer(self.sizer)
+		self.Centre()
 		self.SetAutoLayout(1)
 		# self.sizer.Fit(self)
 		self.Show()
@@ -69,7 +69,7 @@ class AztexGUI(wx.Frame):
 
 	def OnSaveAztex(self, event):
 		""" Save a file """
-		if self.filename == '': # if document is currently unsaved
+		if self.aztexEditor.filename == '': # if document is currently unsaved
 			self.OnSaveAs(event)
 		else: # if document has previously been saved
 			with open(os.path.join(self.aztexEditor.dirname, self.aztexEditor.filename), 'w') as f:
@@ -86,7 +86,7 @@ class AztexGUI(wx.Frame):
 
 	def OnSaveLatex(self, event):
 		""" Save a file """
-		if self.filename == '': # if document is currently unsaved
+		if self.latexViewer.filename == '': # if document is currently unsaved
 			self.OnSaveAsLatex(event)
 		else: # if document has previously been saved
 			with open(os.path.join(self.latexViewer.dirname, self.latexViewer.filename), 'w') as f:
@@ -118,7 +118,12 @@ class AztexGUI(wx.Frame):
 
 	def update_latex_viewer(self, event):
 		""" get the analogous LaTeX code from the aztex code  """
-		self.latexViewer.SetValue(self.aztexCompiler.compile(self.aztexEditor.get_text()))
+		try:
+			self.latexViewer.SetValue(self.aztexCompiler.compile(self.aztexEditor.get_text()))
+			self.SetStatusText('')
+		except: #TypeError, AttributeError
+			self.SetStatusText("there's an error compiling :(")
+
 
 class AztexEditor(wx.TextCtrl):
 	""" Class for aztex text editor window """
@@ -132,7 +137,7 @@ class AztexEditor(wx.TextCtrl):
 		text = ''
 		for line in range(self.GetNumberOfLines()):
 			text += self.GetLineText(line) + '\n'
-		return text
+		return str(text)
 
 class LatexViewer(wx.TextCtrl):
 	"""
@@ -142,6 +147,8 @@ class LatexViewer(wx.TextCtrl):
 	"""
 	def __init__(self, panel):
 		wx.TextCtrl.__init__(self, panel, value="LaTeX code will appear here once the aztex code has been edited", style = wx.TE_MULTILINE)
+		self.dirname = ''
+		self.filename = ''
 		
 
 

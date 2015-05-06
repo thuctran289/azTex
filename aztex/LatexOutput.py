@@ -1,6 +1,5 @@
 from Element import *
 from Equation import *
-from pylatex import *
 from GenericOutput import *
 
 class LatexOutput(GenericOutput):

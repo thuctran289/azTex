@@ -51,7 +51,7 @@ class AztexGUI(wx.Frame):
 		self.Bind(wx.EVT_TEXT, self.update_latex_viewer, self.aztexEditor)
 
 		# Add sizer
-		self.sizer = wx.GridSizer(1, 2, 0, 0)
+		self.sizer = wx.BoxSizer(wx.HORIZONTAL)
 		self.sizer.Add(self.aztexEditor, 1, wx.EXPAND)
 		self.sizer.Add(self.latexViewer, 1, wx.EXPAND)
 
@@ -66,7 +66,6 @@ class AztexGUI(wx.Frame):
 		dlg = wx.MessageDialog(self, "aztex editor\naztex is a program that converts Markdown-like text into\nthe analogous LaTeX code to help in writing a pdf document", "About Sample Editor", wx.OK)
 		dlg.ShowModal()
 		dlg.Destroy()
-		print "about"
 
 	def OnSaveAztex(self, event):
 		""" Save aztex file """

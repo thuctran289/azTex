@@ -55,10 +55,10 @@ class AztexGUI(wx.Frame):
 		self.sizer.Add(self.aztexEditor, 1, wx.EXPAND)
 		self.sizer.Add(self.latexViewer, 1, wx.EXPAND)
 
+		# Show the frame
 		self.SetSizer(self.sizer)
 		self.Centre()
 		self.SetAutoLayout(1)
-		# self.sizer.Fit(self)
 		self.Show()
 
 	def OnAbout(self, event):
@@ -126,7 +126,8 @@ class AztexGUI(wx.Frame):
 		# write in the aztex compiler and have new, non-erronous code be
 		# compiled into LaTeX code
 		try:
-			self.latexViewer.SetValue(self.aztexCompiler.compile(str(self.aztexEditor.GetValue())))
+			self.latexViewer.SetValue(self.aztexCompiler.compile(str(self.aztexEditor.GetValue()))) 	# way 1 of getting text
+			# self.latexViewer.SetValue(self.aztexCompiler.compile(str(self.aztexEditor.get_text())))	# way 2 of getting text
 			self.SetStatusText('')
 		except: #TypeError, AttributeError
 			self.SetStatusText("there's an error compiling :(")

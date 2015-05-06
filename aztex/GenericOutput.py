@@ -5,12 +5,15 @@ class GenericOutput(object):
 	"""generates an output document given some internal respresentation"""
 
 	def doc_header(self):
+		""" returns the string that should precede the document """
 		pass
 
 	def doc_footer(self):
+		""" returns the string that should follow the document """
 		pass
 
 	def generate_doc(self, representation):
+		""" generates a string out of the representation """
 		doc = ""
 		doc += self.doc_header()
 
@@ -36,6 +39,7 @@ class GenericOutput(object):
 			return ''.join(els)
 
 	def element_dict(self):
+		""" returns the dictionary of elements and functions """
 		return { UnorderedListElement: 		self.unordered_list,
 				 OrderedListElement: 		self.ordered_list,
 				 TextElement: 				self.text,

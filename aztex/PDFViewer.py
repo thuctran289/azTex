@@ -11,30 +11,27 @@ import wx, wx.lib.newevent, os
 from main import main
 from AztexCompiler import AztexCompiler
 
-# create an event for when the text in an instance of TextEditor is saved
-SaveEvent, EVT_SAVE = wx.lib.newevent.NewEvent()
+class AztexGUI(wx.Frame):
+	""" Class for editing aztex code and viewing analogous LaTeX code """
+	def __init__(self, parent, title):
+		wx.Frame.__init__(self, parent, title=title, size=(800, 750))
+		self.panel = wx.Panel(self, -1)
+		self.aztexEditor = AztexEditor(self.panel)
+		self.latexViewer = LatexViewer(self.panel)
 
-class TextEditor(wx.Frame):
-	""" Class for aztex text editor window """
-	def __init__(self, parent, title, latexViewer):
-		# Directory and file name of the document that is being edited
-		self.dirname=''
-		self.filename=''
+		# initialize an AztexCompiler to compile the aztex
+		# code from self.editor into analogous LaTeX code
+		self.aztexCompiler = AztexCompiler()
 
-		# Boolean value representing if the document has ever been saved before or not
-		self.saved = False
-
-		wx.Frame.__init__(self, parent, title=title, size=(700,750))
-		self.control = wx.TextCtrl(self, style=wx.TE_MULTILINE)
 		self.CreateStatusBar() #status bar at bottom of window
-
-		self.latexViewer = latexViewer
 
 		# Setting up menu
 		filemenu = wx.Menu()
 		menuOpen = filemenu.Append(wx.ID_OPEN, "&Open", " Open a file to edit")
-		menuSave = filemenu.Append(wx.ID_SAVE, "&Save", "Save the document")
-		menuSaveAs = filemenu.Append(wx.ID_SAVEAS, "&Save As...", "Save the document under a new name")
+		menuSaveAztex = filemenu.Append(wx.ID_SAVE, "&Save aztex", "Save the aztex .txt document")
+		menuSaveAsAztex = filemenu.Append(wx.ID_SAVEAS, "&Save As aztex...", "Save the aztex .txt document under a new name")
+		menuSaveLatex = filemenu.Append(wx.ID_SAVE, "&Save LaTeX", "Save the .tex document")
+		menuSaveAsLatex = filemenu.Append(wx.ID_SAVEAS, "&Save As LaTeX...", "Save the .tex document under a new name")
 		menuAbout = filemenu.Append(wx.ID_ABOUT, "&About", "Informaiton about this program")
 		menuExit = filemenu.Append(wx.ID_EXIT, "&Exit", "Terminate the program")
 		menuCompile = filemenu.Append(wx.ID_ANY, "&Compile", "Compile LaTeX")
@@ -46,39 +43,22 @@ class TextEditor(wx.Frame):
 
 		# Events
 		self.Bind(wx.EVT_MENU, self.OnOpen, menuOpen)
-		self.Bind(wx.EVT_MENU, self.OnSave, menuSave)
-		self.Bind(wx.EVT_MENU, self.OnSaveAs, menuSaveAs)
+		self.Bind(wx.EVT_MENU, self.OnSaveAztex, menuSaveAztex)
+		self.Bind(wx.EVT_MENU, self.OnSaveAsAztex, menuSaveAsAztex)
+		self.Bind(wx.EVT_MENU, self.OnSaveLatex, menuSaveLatex)
+		self.Bind(wx.EVT_MENU, self.OnSaveAsLatex, menuSaveAsLatex)
 		self.Bind(wx.EVT_MENU, self.OnAbout, menuAbout)
 		self.Bind(wx.EVT_MENU, self.OnExit, menuExit)
-		self.Bind(wx.EVT_TEXT, self.update_latex_viewer, self.control)
+		self.Bind(wx.EVT_TEXT, self.update_latex_viewer, self.aztexEditor)
 
-		# self.sizer2 = wx.BoxSizer(wx.HORIZONTAL)
-		# self.buttons = []
-		# for i in range(0,6):
-		# 	self.buttons.append(wx.Button(self, -1, "Button &"+str(i)))
-		# 	self.sizer2.Add(self.buttons[i], 1, wx.EXPAND)
-
-		self.sizer = wx.BoxSizer(wx.VERTICAL)
-		self.sizer.Add(self.control, 1, wx.EXPAND)
-		# self.sizer.Add(self.sizer2, 0, wx.EXPAND)
+		self.sizer = wx.BoxSizer(wx.HORIZONTAL)
+		self.sizer.Add(self.aztexEditor, 1, wx.EXPAND)
+		self.sizer.Add(self.latexViewer, 1, wx.EXPAND)
 
 		self.SetSizer(self.sizer)
 		self.SetAutoLayout(1)
 		# self.sizer.Fit(self)
 		self.Show()
-
-	def get_text(self):
-		text = ''
-		for line in range(self.control.GetNumberOfLines()):
-			text += self.control.GetLineText(line) + '\n'
-		print 'HAPPINESSSSSSS'
-		return text
-
-	def update_latex_viewer(self, event):
-		""" get the analogous LaTeX code from the aztex code  """
-		self.latexViewer.text = self.latexViewer.aztexCompiler.compile(self.get_text())
-		self.latexViewer.update()
-		print self.get_text()
 
 	def OnAbout(self, event):
 		""" A message dialog box with an OK button """
@@ -87,23 +67,37 @@ class TextEditor(wx.Frame):
 		dlg.Destroy()
 		print "about"
 
-	def OnSave(self, event):
+	def OnSaveAztex(self, event):
 		""" Save a file """
 		if self.filename == '': # if document is currently unsaved
 			self.OnSaveAs(event)
 		else: # if document has previously been saved
-			with open(os.path.join(self.dirname, self.filename), 'w') as f:
-				f.write(self.control.GetValue())
-		return EVT_SAVE
+			with open(os.path.join(self.aztexEditor.dirname, self.aztexEditor.filename), 'w') as f:
+				f.write(self.aztexEditor.GetValue())
 
-	def OnSaveAs(self, event):
-		dlg = wx.FileDialog(self, "", self.dirname, "", "*.*", wx.SAVE)
+	def OnSaveAsAztex(self, event):
+		dlg = wx.FileDialog(self, "", self.aztexEditor.dirname, "", "*.*", wx.SAVE)
 		if dlg.ShowModal() == wx.ID_OK: # if user clicks OK (if user wants to save the document)
-			self.filename = dlg.GetFilename()
-			self.dirname = dlg.GetDirectory()
-			self.OnSave(event)
-			self.SetTitle(self.filename)
-			self.saved = True
+			self.aztexEditor.filename = dlg.GetFilename()
+			self.aztexEditor.dirname = dlg.GetDirectory()
+			self.OnSaveAztex(event)
+			self.SetTitle(self.aztexEditor.filename)
+		dlg.Destroy()
+
+	def OnSaveLatex(self, event):
+		""" Save a file """
+		if self.filename == '': # if document is currently unsaved
+			self.OnSaveAsLatex(event)
+		else: # if document has previously been saved
+			with open(os.path.join(self.latexViewer.dirname, self.latexViewer.filename), 'w') as f:
+				f.write(self.latexViewer.GetValue())
+
+	def OnSaveAsLatex(self, event):
+		dlg = wx.FileDialog(self, "", self.latexViewer.dirname, "", "*.*", wx.SAVE)
+		if dlg.ShowModal() == wx.ID_OK: # if user clicks OK (if user wants to save the document)
+			self.latexViewer.filename = dlg.GetFilename()
+			self.latexViewer.dirname = dlg.GetDirectory()
+			self.OnSaveLatex(event)
 		dlg.Destroy()
 
 	def OnExit(self, event):
@@ -112,56 +106,46 @@ class TextEditor(wx.Frame):
 
 	def OnOpen(self, event):
 		""" Open a file """
-		dlg = wx.FileDialog(self, "", self.dirname, "", "*.*", wx.OPEN)
+		dlg = wx.FileDialog(self, "", self.aztexEditor.dirname, "", "*.*", wx.OPEN)
 		if dlg.ShowModal() == wx.ID_OK: # if user clicks OK (if user wants to open a document)
-			self.filename = dlg.GetFilename()
-			self.dirname = dlg.GetDirectory()
-			f = open(os.path.join(self.dirname, self.filename), 'r')
-			self.control.SetValue(f.read())
+			self.aztexEditor.filename = dlg.GetFilename()
+			self.aztexEditor.dirname = dlg.GetDirectory()
+			f = open(os.path.join(self.aztexEditor.dirname, self.aztexEditor.filename), 'r')
+			self.aztexEditor.SetValue(f.read())
 			f.close()
-			self.SetTitle(self.filename)
-			self.saved = True
+			self.SetTitle(self.aztexEditor.filename)
 		dlg.Destroy()
 
-class LatexViewer(wx.Frame):
+	def update_latex_viewer(self, event):
+		""" get the analogous LaTeX code from the aztex code  """
+		self.latexViewer.SetValue(self.aztexCompiler.compile(self.aztexEditor.get_text()))
+
+class AztexEditor(wx.TextCtrl):
+	""" Class for aztex text editor window """
+	def __init__(self, panel):
+		wx.TextCtrl.__init__(self, panel, style=wx.TE_MULTILINE)
+		# Directory and file name of the document that is being edited
+		self.dirname=''
+		self.filename=''
+
+	def get_text(self):
+		text = ''
+		for line in range(self.GetNumberOfLines()):
+			text += self.GetLineText(line) + '\n'
+		return text
+
+class LatexViewer(wx.TextCtrl):
 	"""
-		Class representing the window that displays the LaTeX code analogous to
-		the aztex code being entered in a given instance of TextEditor
+		Class representing the TextCtrl that displays the LaTeX code analogous to
+		the aztex code being entered in an AztexGUI's AztexEditor that contains 
+		the LatexViewer
 	"""
-	def __init__(self, parent, title):
-		wx.Frame.__init__(self, parent, title=title, size=(700,750))
-		# self.control = wx.TextCtrl(self, style=wx.TE_MULTILINE)
-		# self.CreateStatusBar() #status bar at bottom of window
+	def __init__(self, panel):
+		wx.TextCtrl.__init__(self, panel, value="LaTeX code will appear here once the aztex code has been edited", style = wx.TE_MULTILINE)
 		
-		# initialize the text being displayed
-		self.panel = wx.Panel(self, -1)
-		self.text = "LaTeX code will appear here once the aztex code has been saved"
-		self.font = wx.Font(10, wx.NORMAL, wx.NORMAL, wx.NORMAL)
-		self.words = wx.StaticText(self.panel, -1, self.text, (30, 15))
-		self.words.SetFont(self.font)
-
-		# initialize an AztexCompiler to compile the aztex
-		# code from self.editor into analogous LaTeX code
-		self.aztexCompiler = AztexCompiler()
-
-		self.sizer = wx.BoxSizer(wx.VERTICAL)
-		self.sizer.Add(self.panel, 1, wx.EXPAND)
-		self.SetSizer(self.sizer)
-		self.SetAutoLayout(1)
-		self.Center()
-		self.Show()
-
-
-	def update(self):
-		""" update the text displayed by self """
-		self.font = wx.Font(10, wx.NORMAL, wx.NORMAL, wx.NORMAL)
-		self.words = wx.StaticText(self.panel, -1, self.text, (30, 15))
-		self.words.SetFont(self.font)
-		print 'OMG IT IS DOING SOMETHING RIGHT!!!'
 
 
 if __name__ == "__main__":
 	app = wx.App(False)
-	frameLatex = LatexViewer(None, 'Untitled .tex Document')
-	frame = TextEditor(None, 'Untitled aztex Document', frameLatex)
+	frame = AztexGUI(None, 'Untitled aztex Document')
 	app.MainLoop()

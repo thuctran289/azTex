@@ -4,10 +4,7 @@ Output:
 \documentclass{article}
 \usepackage[utf8]{inputenc}
 \usepackage[normalem]{ulem}
-\usepackage{amsmath}
-\usepackage{graphicx}
 \usepackage{hyperref}
 \begin{document}
-
 \sout{strikethrough text}
 \end{document}

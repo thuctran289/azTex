@@ -1,5 +1,5 @@
 """
-	Displays the analogous .pdf document.
+	Displays the analogous LaTeX code.
 
 	code adapted from examples at:
 		http://wiki.wxpython.org/Getting%20Started
@@ -50,6 +50,7 @@ class AztexGUI(wx.Frame):
 		self.Bind(wx.EVT_MENU, self.OnExit, menuExit)
 		self.Bind(wx.EVT_TEXT, self.update_latex_viewer, self.aztexEditor)
 
+		# Add sizer
 		self.sizer = wx.GridSizer(1, 2, 0, 0)
 		self.sizer.Add(self.aztexEditor, 1, wx.EXPAND)
 		self.sizer.Add(self.latexViewer, 1, wx.EXPAND)
@@ -68,7 +69,7 @@ class AztexGUI(wx.Frame):
 		print "about"
 
 	def OnSaveAztex(self, event):
-		""" Save a file """
+		""" Save aztex file """
 		if self.aztexEditor.filename == '': # if document is currently unsaved
 			self.OnSaveAs(event)
 		else: # if document has previously been saved
@@ -76,6 +77,7 @@ class AztexGUI(wx.Frame):
 				f.write(self.aztexEditor.GetValue())
 
 	def OnSaveAsAztex(self, event):
+		""" Save As the aztex file """
 		dlg = wx.FileDialog(self, "", self.aztexEditor.dirname, "", "*.*", wx.SAVE)
 		if dlg.ShowModal() == wx.ID_OK: # if user clicks OK (if user wants to save the document)
 			self.aztexEditor.filename = dlg.GetFilename()
@@ -85,7 +87,7 @@ class AztexGUI(wx.Frame):
 		dlg.Destroy()
 
 	def OnSaveLatex(self, event):
-		""" Save a file """
+		""" Save LaTeX file """
 		if self.latexViewer.filename == '': # if document is currently unsaved
 			self.OnSaveAsLatex(event)
 		else: # if document has previously been saved
@@ -93,6 +95,7 @@ class AztexGUI(wx.Frame):
 				f.write(self.latexViewer.GetValue())
 
 	def OnSaveAsLatex(self, event):
+		""" Save As LaTeX file """
 		dlg = wx.FileDialog(self, "", self.latexViewer.dirname, "", "*.*", wx.SAVE)
 		if dlg.ShowModal() == wx.ID_OK: # if user clicks OK (if user wants to save the document)
 			self.latexViewer.filename = dlg.GetFilename()
@@ -105,7 +108,7 @@ class AztexGUI(wx.Frame):
 		self.Close(True)
 
 	def OnOpen(self, event):
-		""" Open a file """
+		""" Open a file to the AztexEditor """
 		dlg = wx.FileDialog(self, "", self.aztexEditor.dirname, "", "*.*", wx.OPEN)
 		if dlg.ShowModal() == wx.ID_OK: # if user clicks OK (if user wants to open a document)
 			self.aztexEditor.filename = dlg.GetFilename()
@@ -118,15 +121,19 @@ class AztexGUI(wx.Frame):
 
 	def update_latex_viewer(self, event):
 		""" get the analogous LaTeX code from the aztex code  """
+		# use try/except so that even if there is an error compiling, after
+		# after removing the problematic aztex code, the user can continue to
+		# write in the aztex compiler and have new, non-erronous code be
+		# compiled into LaTeX code
 		try:
-			self.latexViewer.SetValue(self.aztexCompiler.compile(self.aztexEditor.get_text()))
+			self.latexViewer.SetValue(self.aztexCompiler.compile(str(self.aztexEditor.GetValue())))
 			self.SetStatusText('')
 		except: #TypeError, AttributeError
 			self.SetStatusText("there's an error compiling :(")
 
 
 class AztexEditor(wx.TextCtrl):
-	""" Class for aztex text editor window """
+	""" Class for aztex text editor TextCtrl """
 	def __init__(self, panel):
 		wx.TextCtrl.__init__(self, panel, style=wx.TE_MULTILINE)
 		# Directory and file name of the document that is being edited
@@ -134,9 +141,10 @@ class AztexEditor(wx.TextCtrl):
 		self.filename=''
 
 	def get_text(self):
+		""" Returns the text in the AztexEditor """
 		text = ''
 		for line in range(self.GetNumberOfLines()):
-			text += self.GetLineText(line) + '\n'
+			text += str(self.GetLineText(line)) + '\n'
 		return str(text)
 
 class LatexViewer(wx.TextCtrl):
@@ -149,8 +157,6 @@ class LatexViewer(wx.TextCtrl):
 		wx.TextCtrl.__init__(self, panel, value="LaTeX code will appear here once the aztex code has been edited", style = wx.TE_MULTILINE)
 		self.dirname = ''
 		self.filename = ''
-		
-
 
 if __name__ == "__main__":
 	app = wx.App(False)

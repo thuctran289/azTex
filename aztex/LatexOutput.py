@@ -26,7 +26,7 @@ class LatexOutput(GenericOutput):
 			to get the proper latex output. 
 
 		"""
-		doc = ['\n' , '\\begin{itemize}\n']
+		doc = ['\\begin{itemize}\n']
 		elements = element.get_elements()
 		for obje in elements:
 			#Prints strings or objects with string attribute directly.
@@ -43,7 +43,7 @@ class LatexOutput(GenericOutput):
 		"""Returns a sting that represents the latex output that corresponds to an ordered list. This will call to_code on each item of the list in order 
 			to get the proper latex output. 
 		"""
-		doc = ['\n', '\\begin{enumerate}\n']
+		doc = ['\\begin{enumerate}\n']
 		elements = element.get_elements()
 		for obje in elements:
 			if hasattr(obje, 'str'):
@@ -108,21 +108,20 @@ class LatexOutput(GenericOutput):
 		implement chapter and part headers.
 		"""
 		if element.level == 1:
-			return "\n\\section{" + self.to_code(element.get_elements()) + "}\n"
+			return "\\section{" + self.to_code(element.get_elements()) + "}\n"
 		elif element.level == 2:
-			return "\n\\subsection{" + self.to_code(element.get_elements()) + "}\n"
+			return "\\subsection{" + self.to_code(element.get_elements()) + "}\n"
 		elif element.level == 3:
-			return "\n\\subsubsection{" + self.to_code(element.get_elements()) + "}\n"
+			return "\\subsubsection{" + self.to_code(element.get_elements()) + "}\n"
 		elif element.level == 4:
-			return "\n\\paragraph{" + self.to_code(element.get_elements()) + "}\n"
+			return "\\paragraph{" + self.to_code(element.get_elements()) + "}\n"
 		elif element.level == 5:
-			return "\n\\subparagraph{" + self.to_code(element.get_elements()) + "}\n"
+			return "\\subparagraph{" + self.to_code(element.get_elements()) + "}\n"
 			
 	def paragraph(self, element):
 		""" Contains the structure of a paragraph, which can contain various text elements, link elements, etc.
 		"""
 		doc = []
-		doc.append("\n")
 		elements = element.get_elements()
 		for obje in elements:
 			#Adds a str if no other formatting there
@@ -140,7 +139,6 @@ class LatexOutput(GenericOutput):
 		"""
 		doc = []
 		#creates some initial text needed to setup . 
-		doc.append("\n")
 		doc.append("\\noindent\n")
 		headers = element.headers
 		items = element.items
@@ -169,7 +167,7 @@ class LatexOutput(GenericOutput):
 			doc.append("&".join(texthead) + "\\\\\n")
 			doc.append("\\hline \n")
 		#ends the table structure. 
-		doc.append("\\end{tabular}\n\n")
+		doc.append("\\end{tabular}\n")
 
 		return "".join(doc)
 
@@ -178,7 +176,7 @@ class LatexOutput(GenericOutput):
 		"""
 		doc = []
 		#initial formatting to begin equation block.
-		doc.append("\n\\begin{equation}\n")
+		doc.append("\\begin{equation}\n")
 		#uses equation helper to generate the text of an equation. 
 		eqn = self.equationhelper(element.equation.left) + element.equation.mid + self.equationhelper(element.equation.right)
 		doc.append(eqn + "\n")

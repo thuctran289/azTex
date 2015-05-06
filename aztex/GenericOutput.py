@@ -17,8 +17,8 @@ class GenericOutput(object):
 		doc = ""
 		doc += self.doc_header()
 
-		for element in representation:
-			doc += self.to_code(element)
+		elements = map(lambda x: self.to_code(x), representation)
+		doc += '\n'.join(elements)
 
 		doc += self.doc_footer()
 		return doc

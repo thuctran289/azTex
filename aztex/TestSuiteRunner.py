@@ -8,19 +8,19 @@ from AztexCompiler import AztexCompiler
 
 def get_input(line_list):
 	""" Returns the input that is being tested. """
-	input_lines = line_list[1:line_list.index('Output:\n')]
+	output_index = line_list.index('Output:\n')
+	input_lines = line_list[1:output_index]
+
 	#blankdoc.txt test has no input lines
-	if len(input_lines) >= 1:
-		if '\n' in input_lines[-1]:
-			input_lines[-1] = input_lines[-1].replace('\n', '')
-	return ''.join(input_lines) 
+	return ''.join(input_lines).rstrip('\n')
 
 def get_output(line_list):
 	""" Returns what the output of the test should be. """
-	output_lines = line_list[line_list.index('Output:\n')+1:]
-	return ''.join(output_lines)
+	output_index = line_list.index('Output:\n')
+	output_lines = line_list[output_index+1:]
+	return ''.join(output_lines).rstrip('\n')
 
-def run_test(line_list):
+def run_test(filename, line_list):
 	md_text = get_input(line_list)
 
 	actual = compiler.compile(md_text) 
@@ -28,7 +28,7 @@ def run_test(line_list):
 
 	test_result = (actual == expected)
 	if not test_result:
-		print f + ':\n'
+		print filename + '\n'
 		print 'expected:\n' + expected
 		print 'got:\n' + actual
 		print '----------------------\n'
@@ -37,6 +37,7 @@ if __name__ == '__main__':
 	cwd = os.getcwd()
 	tests = cwd + '/test_suite'
 	files = os.listdir(tests)
+	files = filter(lambda x: x.endswith('.txt'), files)
 
 	# OSX creates a .DS_Store in directories, this is 
 	# not part of the test suite
@@ -48,4 +49,4 @@ if __name__ == '__main__':
 	for f in files:
 		with open(tests+'/'+f) as fp:
 			line_list = fp.readlines()
-			run_test(line_list)
+			run_test(f, line_list)

@@ -4,6 +4,8 @@ Output:
 \documentclass{article}
 \usepackage[utf8]{inputenc}
 \usepackage[normalem]{ulem}
+\usepackage{amsmath}
+\usepackage{graphicx}
 \usepackage{hyperref}
 \begin{document}
 \href{https://www.youtube.com/watch?v=dQw4w9WgXcQ}{Rick Roll Link}

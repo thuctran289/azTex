@@ -16,7 +16,7 @@ SaveEvent, EVT_SAVE = wx.lib.newevent.NewEvent()
 
 class TextEditor(wx.Frame):
 	""" Class for aztex text editor window """
-	def __init__(self, parent, title):
+	def __init__(self, parent, title, latexViewer):
 		# Directory and file name of the document that is being edited
 		self.dirname=''
 		self.filename=''
@@ -28,6 +28,8 @@ class TextEditor(wx.Frame):
 		self.control = wx.TextCtrl(self, style=wx.TE_MULTILINE)
 		self.CreateStatusBar() #status bar at bottom of window
 
+		self.latexViewer = latexViewer
+
 		# Setting up menu
 		filemenu = wx.Menu()
 		menuOpen = filemenu.Append(wx.ID_OPEN, "&Open", " Open a file to edit")
@@ -35,6 +37,7 @@ class TextEditor(wx.Frame):
 		menuSaveAs = filemenu.Append(wx.ID_SAVEAS, "&Save As...", "Save the document under a new name")
 		menuAbout = filemenu.Append(wx.ID_ABOUT, "&About", "Informaiton about this program")
 		menuExit = filemenu.Append(wx.ID_EXIT, "&Exit", "Terminate the program")
+		menuCompile = filemenu.Append(wx.ID_ANY, "&Compile", "Compile LaTeX")
 
 		# Making menubar
 		menuBar = wx.MenuBar()
@@ -47,6 +50,7 @@ class TextEditor(wx.Frame):
 		self.Bind(wx.EVT_MENU, self.OnSaveAs, menuSaveAs)
 		self.Bind(wx.EVT_MENU, self.OnAbout, menuAbout)
 		self.Bind(wx.EVT_MENU, self.OnExit, menuExit)
+		self.Bind(wx.EVT_TEXT, self.update_latex_viewer, self.control)
 
 		# self.sizer2 = wx.BoxSizer(wx.HORIZONTAL)
 		# self.buttons = []
@@ -65,16 +69,23 @@ class TextEditor(wx.Frame):
 
 	def get_text(self):
 		text = ''
-		for line in range(self.GetNumberOfLines):
-			text += self.GetLineText(line) + '\n'
+		for line in range(self.control.GetNumberOfLines()):
+			text += self.control.GetLineText(line) + '\n'
 		print 'HAPPINESSSSSSS'
 		return text
+
+	def update_latex_viewer(self, event):
+		""" get the analogous LaTeX code from the aztex code  """
+		self.latexViewer.text = self.latexViewer.aztexCompiler.compile(self.get_text())
+		self.latexViewer.update()
+		print self.get_text()
 
 	def OnAbout(self, event):
 		""" A message dialog box with an OK button """
 		dlg = wx.MessageDialog(self, "aztex editor\naztex is a program that converts Markdown-like text into\nthe analogous LaTeX code to help in writing a pdf document", "About Sample Editor", wx.OK)
 		dlg.ShowModal()
 		dlg.Destroy()
+		print "about"
 
 	def OnSave(self, event):
 		""" Save a file """
@@ -117,8 +128,7 @@ class LatexViewer(wx.Frame):
 		Class representing the window that displays the LaTeX code analogous to
 		the aztex code being entered in a given instance of TextEditor
 	"""
-	def __init__(self, parent, title, editor):
-		self.editor = editor
+	def __init__(self, parent, title):
 		wx.Frame.__init__(self, parent, title=title, size=(700,750))
 		# self.control = wx.TextCtrl(self, style=wx.TE_MULTILINE)
 		# self.CreateStatusBar() #status bar at bottom of window
@@ -133,7 +143,6 @@ class LatexViewer(wx.Frame):
 		# initialize an AztexCompiler to compile the aztex
 		# code from self.editor into analogous LaTeX code
 		self.aztexCompiler = AztexCompiler()
-		self.Bind(wx.EVT_TEXT, self.update, self.editor.control)
 
 		self.sizer = wx.BoxSizer(wx.VERTICAL)
 		self.sizer.Add(self.panel, 1, wx.EXPAND)
@@ -142,13 +151,9 @@ class LatexViewer(wx.Frame):
 		self.Center()
 		self.Show()
 
-	def get_Latex_code(self):
-		""" get the analogous LaTeX code from the aztex code in self.editor """
-		return self.aztexCompiler.compile(self.editor.control.GetValue)
 
-	def update(self, event):
+	def update(self):
 		""" update the text displayed by self """
-		self.text = self.get_Latex_code
 		self.font = wx.Font(10, wx.NORMAL, wx.NORMAL, wx.NORMAL)
 		self.words = wx.StaticText(self.panel, -1, self.text, (30, 15))
 		self.words.SetFont(self.font)
@@ -157,6 +162,6 @@ class LatexViewer(wx.Frame):
 
 if __name__ == "__main__":
 	app = wx.App(False)
-	frame = TextEditor(None, 'Untitled aztex Document')
-	frameLatex = LatexViewer(None, 'Untitled .tex Document', frame)
+	frameLatex = LatexViewer(None, 'Untitled .tex Document')
+	frame = TextEditor(None, 'Untitled aztex Document', frameLatex)
 	app.MainLoop()

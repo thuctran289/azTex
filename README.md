@@ -1,13 +1,39 @@
 # aztex
 ## About
+[aztex website](https://sites.google.com/site/aztexeditor/)
+
 aztex is a program written in Python that provides a quick, simple way to create a professional-looking .pdf document.
 aztex is a compiler that compiles aztex language (very similar to Markdown) into LaTeX code. aztex can be used by people
 who do not know how to write fluently in LaTeX, would like a tool that can act as an introduction to the LaTeX syntax,
 or do not want to waste time worrying about some of the small intricacies of LaTeX.
 
 ## Installation
-Simply type "sudo pip install aztex" into your terminal (for Linux and OSX users). Alternatively, if Python is installed,
-clone this repository on GitHub.
+Simply type "sudo pip install aztex" into your terminal (for Linux and OSX users). Or, clone this repository on GitHub.
+
+## Use
+
+To compile a text file written in markdown run:
+```
+$ aztex input.txt
+```
+or 
+```
+ $ python aztex/main.py input.txt
+```
+
+To compile some text run:
+```
+$ aztex "some text"
+```
+ or 
+```
+ $ python aztex/main.py "some text"
+```
+
+To use our GUI run:
+```
+$ python aztex/AztexRunnerGUI.py
+```
 
 ## The Story Behind aztex
 aztex was born as a an idea for the final project for the Software Design course at Franklin W. Olin College of Engineering by us: three 
@@ -18,7 +44,7 @@ to expand our knowledge.
 ## FAQ
 #### Why is aztex always written in lower case?
 The creators of aztex decided on this as a stylistic choice.
-### In what language is aztex written?
+#### In what language is aztex written?
 aztex is written almost completely in pure Python. The only external library is wxPython, which is used in the framework of
 the GUI.
 #### Who is the target audience for aztex?

@@ -56,9 +56,10 @@ class AztexGUI(wx.Frame):
 		self.sizer.Add(self.latexViewer, 1, wx.EXPAND)
 
 		# Show the frame
-		self.SetSizer(self.sizer)
+		self.panel.SetSizer(self.sizer)
+		self.sizer.Fit(self.panel)
+		self.panel.Layout()
 		self.Centre()
-		self.SetAutoLayout(1)
 		self.Show()
 
 	def OnAbout(self, event):
